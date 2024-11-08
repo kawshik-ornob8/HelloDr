@@ -2,21 +2,21 @@
 // admin_signup.php
 
 // Include the database connection
-require_once 'config.php';
+require_once '../config.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $fullname = $_POST['fullname'];
+    $full_name = $_POST['fullname'];
     $username = $_POST['username'];
     $email = $_POST['email'];
     $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
 
-    // Insert data into the admin table
-    $sql = "INSERT INTO admins (fullname, username, email, password) VALUES (?, ?, ?, ?)";
+    // Insert data into the admins table
+    $sql = "INSERT INTO admins (full_name, username, email, password) VALUES (?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssss", $fullname, $username, $email, $password);
+    $stmt->bind_param("ssss", $full_name, $username, $email, $password);
 
     if ($stmt->execute()) {
-        echo "<script>alert('Admin registration successful!'); window.location.href = 'login.php';</script>";
+        echo "<script>alert('Admin registration successful!'); window.location.href = 'admin_login.php';</script>";
     } else {
         echo "<script>alert('Error: Could not register admin.');</script>";
     }
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Signup</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin_signup.css">
 </head>
 <body>
     <div class="signup-container">
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <button type="submit">Sign Up</button>
         </form>
-        <p>Already have an account? <a href="login.php">Login here</a>.</p>
+        <p>Already have an admin account? <a href="admin_login.php">Login here</a>.</p>
     </div>
 </body>
 </html>

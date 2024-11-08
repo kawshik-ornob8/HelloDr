@@ -1,5 +1,5 @@
 <?php
-// Include the database connection file
+session_start();
 include('../config.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -19,18 +19,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($check_email->num_rows > 0) {
         echo "Error: This email is already registered!";
     } else {
-        // Prepare the SQL statement for insertion
-        $stmt = $conn->prepare("INSERT INTO doctors (full_name, date_of_birth, phone_number, email, doctor_reg_id, password) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssss", $full_name, $dob, $phone_number, $email_address, $doctor_reg_id, $password);
+        // Check if doctor_reg_id already exists
+        $check_reg_id = $conn->prepare("SELECT doctor_reg_id FROM doctors WHERE doctor_reg_id = ?");
+        $check_reg_id->bind_param("s", $doctor_reg_id);
+        $check_reg_id->execute();
+        $check_reg_id->store_result();
 
-        // Execute the query
-        if ($stmt->execute()) {
-            echo "Doctor registered successfully!";
+        if ($check_reg_id->num_rows > 0) {
+            echo "Error: This Doctor Registration ID is already taken!";
         } else {
-            echo "Error: " . $stmt->error;
+            // Prepare the SQL statement for insertion
+            $stmt = $conn->prepare("INSERT INTO doctors (full_name, date_of_birth, phone_number, email, doctor_reg_id, password) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("ssssss", $full_name, $dob, $phone_number, $email_address, $doctor_reg_id, $password);
+
+            // Execute the query
+            if ($stmt->execute()) {
+                echo "Doctor registered successfully!";
+            } else {
+                echo "Error: " . $stmt->error;
+            }
+
+            $stmt->close();
         }
 
-        $stmt->close();
+        $check_reg_id->close();
     }
 
     $check_email->close();
@@ -38,7 +50,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 $conn->close();
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -52,17 +63,17 @@ $conn->close();
     <div class="signup-container">
         <h2>Doctor Signup</h2>
         <form action="doctor_signup.php" method="POST">
-            <label for="fullname">Full Name:</label>
-            <input type="text" id="fullname" name="fullname" required>
+            <label for="full_name">Full Name:</label>
+            <input type="text" id="full_name" name="full_name" required>
 
             <label for="dob">Date of Birth:</label>
             <input type="date" id="dob" name="dob" required>
 
-            <label for="phone">Phone Number:</label>
-            <input type="tel" id="phone" name="phone" required>
+            <label for="phone_number">Phone Number:</label>
+            <input type="text" id="phone_number" name="phone_number" required>
 
-            <label for="email">Email Address:</label>
-            <input type="email" id="email" name="email" required>
+            <label for="email_address">Email Address:</label>
+            <input type="email" id="email_address" name="email_address" required>
 
             <label for="doctor_reg_id">Doctor Registration ID:</label>
             <input type="text" id="doctor_reg_id" name="doctor_reg_id" required>

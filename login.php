@@ -1,9 +1,7 @@
 <?php
 // Start the session
 session_start();
-
-// Include the database connection file
-include('db.php');
+include 'config.php';
 
 // Handle Patient Login
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['patient_login'])) {
@@ -70,6 +68,11 @@ $conn->close();
     <title>Login</title>
     
     <link rel="stylesheet" href="css/login.css">
+    <style>
+        body {
+            background-image: url("./images/bg-texture.png");
+        }
+    </style>
 </head>
 <body>
     <div class="login-container">

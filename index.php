@@ -1,3 +1,12 @@
+<?php
+// Include the database connection
+include 'config.php';
+
+// Query to fetch doctors from the database
+$query = "SELECT doctor_id, full_name, specialty, degree, bio, profile_photo FROM doctors";
+$result = $conn->query($query);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +14,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hello Dr. - Home</title>
-    
+
     <!-- CSS Links -->
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/about.css">
@@ -63,13 +72,20 @@
     <div class="container doctors__container">
         <h2>Meet Our Doctors</h2>
         <div class="doctor__list">
-            <article class="doctor">
-                <img src="./images/course1.jpg" alt="Dr. Anand Sutradhar">
-                <h4>Dr. Anand Sutradhar</h4>
-                <p>MBBS, BCS (Health), DDV. Specialist in Skin, Hair, and Nail diseases.</p>
-                <a href="appointment.php" class="btn btn-primary">Consult Now</a>
-            </article>
-            <!-- Add more doctor articles as needed -->
+            <?php while ($doctor = $result->fetch_assoc()): ?>
+                <article class="doctor">
+                    <!-- Display profile photo -->
+                    <img src="./images/<?php echo htmlspecialchars($doctor['profile_photo']); ?>" alt="<?php echo htmlspecialchars($doctor['full_name']); ?>">
+                    <!-- Display full name -->
+                    <h4><?php echo htmlspecialchars($doctor['full_name']); ?></h4>
+                    <!-- Display specialty and degree -->
+                    <p><?php echo htmlspecialchars($doctor['degree']); ?>, Specialist in <?php echo htmlspecialchars($doctor['specialty']); ?></p>
+                    <!-- Display bio -->
+                    <p><?php echo htmlspecialchars($doctor['bio']); ?></p>
+                    <!-- Link to consultation page -->
+                    <a href="appointment.php?doctor_id=<?php echo $doctor['doctor_id']; ?>" class="btn btn-primary">Consult Now</a>
+                </article>
+            <?php endwhile; ?>
         </div>
     </div>
 </section>

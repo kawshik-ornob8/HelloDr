@@ -1,5 +1,4 @@
 <?php
-// Start session and include database connection
 session_start();
 include '../config.php';
 
@@ -27,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Check for existing username or email
     if (empty($errors)) {
-        $stmt = $conn->prepare('SELECT * FROM users WHERE username = ? OR email = ?');
+        $stmt = $conn->prepare('SELECT * FROM patients WHERE username = ? OR email = ?');
         $stmt->bind_param('ss', $username, $email);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -35,13 +34,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($result->num_rows > 0) {
             $errors[] = 'Username or Email already exists.';
         } else {
-            // Insert new user data
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-            $stmt = $conn->prepare('INSERT INTO users (full_name, dob, sex, mobile, email, username, password) VALUES (?, ?, ?, ?, ?, ?, ?)');
+            $stmt = $conn->prepare('INSERT INTO patients (full_name, date_of_birth, sex, mobile_number, email, username, password) VALUES (?, ?, ?, ?, ?, ?, ?)');
             $stmt->bind_param('sssssss', $full_name, $dob, $sex, $mobile, $email, $username, $hashed_password);
 
             if ($stmt->execute()) {
-                header('Location: login.php');
+                $_SESSION['success'] = 'Account created successfully!';
+                header('Location: ../login.php');
                 exit();
             } else {
                 $errors[] = 'Failed to register. Please try again.';
@@ -50,60 +49,60 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Signup</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/user_signup.css">
 </head>
 <body>
-<div class="signup-container">
-    <h2>Create an Account</h2>
-    
-    <?php if (!empty($errors)): ?>
-        <div class="errors">
-            <?php foreach ($errors as $error): ?>
-                <p><?php echo $error; ?></p>
-            <?php endforeach; ?>
-        </div>
-    <?php endif; ?>
-    
-    <form action="signup.php" method="POST">
-        <label for="full_name">Full Name:</label>
-        <input type="text" name="full_name" required>
+    <div class="signup-container">
+        <h2>Create an Account</h2>
+        
+        <?php if (!empty($errors)): ?>
+            <div class="errors">
+                <?php foreach ($errors as $error): ?>
+                    <p><?php echo htmlspecialchars($error); ?></p>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+        
+        <form action="user_signup.php" method="POST">
+            <label for="full_name">Full Name:</label>
+            <input type="text" name="full_name" required>
 
-        <label for="dob">Date of Birth:</label>
-        <input type="date" name="dob" required>
+            <label for="dob">Date of Birth:</label>
+            <input type="date" name="dob" required>
 
-        <label for="sex">Sex:</label>
-        <select name="sex" required>
-            <option value="">Select</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
-        </select>
+            <label for="sex">Sex:</label>
+            <select name="sex" required>
+                <option value="">Select</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
 
-        <label for="mobile">Mobile Number:</label>
-        <input type="text" name="mobile" required>
+            <label for="mobile">Mobile Number:</label>
+            <input type="text" name="mobile" required>
 
-        <label for="email">Email:</label>
-        <input type="email" name="email" required>
+            <label for="email">Email:</label>
+            <input type="email" name="email" required>
 
-        <label for="username">Username:</label>
-        <input type="text" name="username" required>
+            <label for="username">Username:</label>
+            <input type="text" name="username" required>
 
-        <label for="password">Password:</label>
-        <input type="password" name="password" required>
+            <label for="password">Password:</label>
+            <input type="password" name="password" required>
 
-        <label for="confirm_password">Confirm Password:</label>
-        <input type="password" name="confirm_password" required>
+            <label for="confirm_password">Confirm Password:</label>
+            <input type="password" name="confirm_password" required>
 
-        <button type="submit">Sign Up</button>
-    </form>
-    <p>Already have an account? <a href="login.php">Log in here</a></p>
-</div>
+            <button type="submit">Sign Up</button>
+        </form>
+        <p>Already have an account? <a href="../login.php">Log in here</a></p>
+    </div>
 </body>
 </html>
