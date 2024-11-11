@@ -57,11 +57,81 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doctor Signup</title>
-    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .signup-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"], input[type="email"], input[type="password"], input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        p {
+            text-align: center;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .error {
+            color: red;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
     <div class="signup-container">
-        <h2>Doctor Signup</h2>
+        <h2>Create a Doctor Account</h2>
+        
         <form action="doctor_signup.php" method="POST">
             <label for="full_name">Full Name:</label>
             <input type="text" id="full_name" name="full_name" required>
@@ -83,6 +153,7 @@ $conn->close();
 
             <button type="submit">Sign Up</button>
         </form>
+        
         <p>Already have an account? <a href="../login.php">Login here</a>.</p>
     </div>
 </body>

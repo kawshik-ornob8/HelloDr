@@ -35,6 +35,7 @@ $result = $conn->query($query);
 <!-- Header / Navbar -->
 <?php include 'header.php'; ?>
 
+
 <!-- Hero Section -->
 <section class="hero">
     <div class="container hero__container">
@@ -70,6 +71,7 @@ $result = $conn->query($query);
     </div>
 </section>
 
+
 <!-- Doctors Section -->
 <section class="doctors">
     <div class="container doctors__container">
@@ -99,6 +101,7 @@ $result = $conn->query($query);
     </div>
 </section>
 
+<!-- EndDoctors Section -->
 
 
 <!-- Testimonials Section -->

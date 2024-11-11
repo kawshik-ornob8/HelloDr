@@ -1,86 +1,98 @@
-<?php
-// Include the database connection
-require_once('../config.php');
-
-// Check if doctor ID is set in the session
-if (!isset($_SESSION['doctor_id'])) {
-    die('Doctor ID not found.');
-}
-
-$doctor_id = $_SESSION['doctor_id'];
-
-// Fetch the doctor's details from the database
-$query = "SELECT * FROM doctors WHERE doctor_id = ?";
-$stmt = $conn->prepare($query);
-$stmt->bind_param("i", $doctor_id);
-$stmt->execute();
-$doctor = $stmt->get_result()->fetch_assoc();
-$stmt->close();
-
-// Set default values for counts if they are not set
-$doctor['patients_count'] = $doctor['patients_count'] ?? 0;
-$doctor['appointments_count'] = $doctor['appointments_count'] ?? 0;
-$doctor['followers_count'] = $doctor['followers_count'] ?? 0;
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Doctor Profile Card</title>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Profiles</title>
     <link rel="stylesheet" href="css/profile-card.css">
+    
 </head>
 <body>
-    <section class="profile_bg">
-        <div class="card_container">
-            <div class="card">
-                <div class="tag">Doctor</div>
-                <div class="profile_image">
-                    <img src="images/<?php echo htmlspecialchars($doctor['profile_photo']); ?>" alt="Profile Image" />
-                </div>
-                <div class="profile_name">
-                    <h1>Dr. <?php echo htmlspecialchars($doctor['full_name']); ?></h1>
-                </div>
-                <div class="profile_position">
-                    <h3><?php echo htmlspecialchars($doctor['specialty']); ?></h3>
-                </div>
-                <div class="profile_description">
-                    <h6>
-                        <?php echo nl2br(htmlspecialchars($doctor['bio'])); ?>
-                    </h6>
-                </div>
-                <div class="profile_projects_following_followers_container">
-                    <div class="profile_projects_count">
-                        <div class="profile_projects_count_inner">
-                            <p class="project_title">Patients</p>
-                            <p class="project_count"><?php echo htmlspecialchars($doctor['patients_count']); ?></p>
-                        </div>
-                    </div>
-                    <div class="profile_following">
-                        <div class="profile_following_inner">
-                            <p class="project_title">Appointments</p>
-                            <p class="project_count"><?php echo htmlspecialchars($doctor['appointments_count']); ?></p>
-                        </div>
-                    </div>
-                    <div class="profile_followers">
-                        <div class="profile_followers_inner">
-                            <p class="project_title">Followers</p>
-                            <p class="project_count"><?php echo htmlspecialchars($doctor['followers_count']); ?></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="profile_btn_group">
-                    <h4 class="follow_btn">
-                        <a href="#">Follow</a>
-                    </h4>
-                    <h4 class="hire_btn">
-                        <a href="#">Book Appointment</a>
-                    </h4>
-                </div>
-            </div>
+
+<?php
+session_start();
+include('../config.php');
+
+// Query to fetch all doctor data
+$sql = "SELECT * FROM doctors";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    while ($doctor = $result->fetch_assoc()) {
+        $doctor_id = $doctor['doctor_id'];
+        $full_name = htmlspecialchars($doctor['full_name']);
+        $specialty = "Specialty: " .htmlspecialchars($doctor['specialty']);
+        $faculty = "Degree: " . htmlspecialchars($doctor['degree']); // Example static data
+        $department = "Bio: " . htmlspecialchars($doctor['bio']); // Example static data
+        $email = htmlspecialchars($doctor['email']);
+        $phone_number = htmlspecialchars($doctor['phone_number']);
+        
+        // Check for profile photo in various formats
+        $extensions = ['jpg', 'jpeg', 'png'];
+        $profile_photo_path = "images/default.jpg"; // Default image if none found
+
+        foreach ($extensions as $ext) {
+            $possible_path = "images/{$doctor_id}.$ext";
+            if (file_exists($possible_path)) {
+                $profile_photo_path = $possible_path;
+                break;
+            }
+        }
+
+        // Fetch average rating and total reviews for the doctor
+        $rating_query = "SELECT AVG(rating) AS avg_rating, COUNT(*) AS review_count FROM reviews WHERE doctor_id = ?";
+        $stmt = $conn->prepare($rating_query);
+        $stmt->bind_param("i", $doctor_id);
+        $stmt->execute();
+        $rating_result = $stmt->get_result();
+        $rating_data = $rating_result->fetch_assoc();
+
+        // Set the rating and review count
+        $rating = !empty($rating_data['avg_rating']) ? round($rating_data['avg_rating'], 1) : 0;
+        $reviews_count = $rating_data['review_count'];
+        $stmt->close();
+?>
+
+<div class="profile-card">
+    <div class="profile-header">
+        <img src="<?php echo $profile_photo_path; ?>" alt="Profile Picture" class="profile-pic">
+        <div class="profile-info">
+            <h2><?php echo $full_name; ?></h2>
+            <p class="role"><?php echo $specialty; ?></p>
+            <p class="faculty"><?php echo $faculty; ?></p>
+            <p class="department"><?php echo $department; ?></p>
         </div>
-    </section>
+    </div>
+    
+    <div class="rating-section">
+        <span class="rating"><?php echo $rating; ?></span>
+        <div class="rating-bar">
+            <div class="rating-fill" style="width: <?php echo $rating * 20; ?>%;"></div>
+        </div>
+        <p class="reviews"><?php echo $reviews_count; ?> reviews</p>
+    </div>
+
+    <div class="contact-info">
+        <p><span class="icon">✉️</span> <?php echo $email; ?></p>
+        <p><span class="icon">📞</span> <?php echo $phone_number; ?></p>
+    </div>
+
+    <div class="action-buttons">
+        <button class="review-btn" onclick="window.location.href='../add_review.php?doctor_id=<?php echo $doctor_id; ?>'">Add Your Review</button>
+        <button class="view-profile-btn" onclick="window.location.href='view_profile.php?doctor_id=<?php echo $doctor_id; ?>'">View Profile</button>
+        <button class="review-btn" onclick="window.location.href='../appointment.php?doctor_id=<?php echo $doctor_id; ?>'">Appointment</button>
+    </div>
+</div>
+
+<?php
+    }
+} else {
+    echo "<p>No doctors found.</p>";
+}
+
+// Close the connection at the end
+$conn->close();
+?>
+
 </body>
 </html>

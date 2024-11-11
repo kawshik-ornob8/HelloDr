@@ -490,12 +490,11 @@ footer ul li a:hover {
 }
 
 .doctor img {
-    width: 100px;
-    height: 100px;
+    width: 250px;
+    height: 250px;
     border-radius: 8px;
     object-fit: cover;
     margin: 0 auto 15px;
-    /* Center the image horizontally */
     display: block;
     /* Ensures margin auto works with images */
 }

@@ -1,49 +1,81 @@
 <?php
-session_start();
+// Include the PHPMailer library
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require 'PHPMailer/src/Exception.php';
+require 'PHPMailer/src/PHPMailer.php';
+require 'PHPMailer/src/SMTP.php';
 include('config.php');
 
-// Check if the user is logged in (patient)
-if (!isset($_SESSION['patient_id'])) {
-    // Save the current page URL to the session before redirecting
-    $_SESSION['redirect_to'] = $_SERVER['REQUEST_URI'];
-    header("Location: user%20info/user_login.php"); // Redirect to login page if user is not logged in
+$doctor_id = $_POST['doctor_id'];
+$appointment_date = $_POST['appointment_date'];
+$appointment_time = $_POST['appointment_time'];
+
+// Get doctor information
+$query = "SELECT full_name, email FROM doctors WHERE doctor_id = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("i", $doctor_id);
+$stmt->execute();
+$doctor = $stmt->get_result()->fetch_assoc();
+
+if (!$doctor) {
+    echo "Doctor not found.";
     exit();
 }
 
-// Get patient ID from session
-$patient_id = $_SESSION['patient_id'];
+// Email details
+$doctor_email = $doctor['email'];
+$doctor_name = $doctor['full_name'];
 
-// Get data from POST request
-$doctor_id = $_POST['doctor_id'] ?? null;
-$appointment_date = $_POST['appointment_date'] ?? null;
-$appointment_time = $_POST['appointment_time'] ?? null;
+// Email message
+$message = "Dear Dr. $doctor_name,
 
-// Validate inputs
-if (!$doctor_id || !$appointment_date || !$appointment_time) {
-    die("All fields are required.");
+You have a new appointment request from Hello Dr.
+
+Date: $appointment_date
+Time: $appointment_time
+
+Please log in to your system to review and confirm the appointment.
+
+Thank you.";
+
+// Email subject
+
+$subject = "New Appointment Request from Hello Dr."; 
+
+// Initialize PHPMailer
+$mail = new PHPMailer(true);
+try {
+    // Server settings
+    $mail->isSMTP();
+    $mail->Host = 'smtp.gmail.com'; // Gmail SMTP server
+    $mail->SMTPAuth = true;
+    $mail->Username = 'kawshik15-14750@diu.edu.bd'; // Your Gmail address
+    $mail->Password = '212-15-14750-ornob'; // Your Gmail password (consider using an app-specific password if 2FA is enabled)
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->Port = 587;
+
+    // Recipients
+    $mail->setFrom('kawshik15-14750@diu.edu.bd', 'Appointment System'); // Sender info
+    $mail->addAddress($doctor_email, "Dr. $doctor_name"); // Doctor's email address
+
+    // Content
+    $mail->isHTML(false); // Set email format to plain text
+    $mail->Subject = $subject;
+    $mail->Body = $message;
+
+    // Send the email
+    if ($mail->send()) {
+        echo "Appointment request sent and doctor notified.";
+    } else {
+        echo "Failed to send email.";
+    }
+} catch (Exception $e) {
+    echo "Error: {$mail->ErrorInfo}";
 }
 
-// Prepare the SQL query to insert appointment
-$query = "INSERT INTO appointments (patient_id, doctor_id, appointment_date, appointment_time) VALUES (?, ?, ?, ?)";
-$stmt = $conn->prepare($query);
-
-// Check if the query was prepared successfully
-if ($stmt === false) {
-    die("Error preparing the query: " . $conn->error);
-}
-
-// Bind parameters and execute the query
-$stmt->bind_param("iiss", $patient_id, $doctor_id, $appointment_date, $appointment_time);
-$stmt->execute();
-
-// Check if the appointment was successfully requested
-if ($stmt->affected_rows > 0) {
-    echo "Appointment requested successfully!";
-} else {
-    echo "Failed to request appointment. Please try again.";
-}
-
-// Close the statement and connection
-$stmt->close();
-$conn->close();
+// Redirect to a confirmation page
+header("Location: appointment_success.php");
+exit();
 ?>
