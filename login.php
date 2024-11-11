@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['doctor_login'])) {
         if (password_verify($password, $row['password'])) {
             $_SESSION['doctor_id'] = $row['doctor_id'];
             $_SESSION['doctor_reg_id'] = $row['doctor_reg_id'];
-            header("Location: doctor_dashboard.php");
+            header("Location: doctor info/doctor_dashboard.php");
             exit;
         } else {
             $error_message = "Incorrect password.";

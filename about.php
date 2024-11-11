@@ -6,6 +6,35 @@ $team_result = $conn->query("SELECT * FROM team"); // Modify table name if neede
 if (!$team_result) {
     die("Error fetching team members: " . $conn->error);
 }
+
+// Use the correct column name `appointment_date` in the query
+$sql = "SELECT COUNT(*) as appointment_count 
+        FROM appointments 
+        WHERE appointment_date = CURDATE()"; // CURDATE() for today’s date
+
+$result = $conn->query($sql);
+
+$appointmentCount = 0; // Default to 0 in case no results are found
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $appointmentCount = $row['appointment_count'];
+}
+
+
+// Query to count the total number of patients
+$sql = "SELECT COUNT(*) as patient_count FROM patients";
+
+$result = $conn->query($sql);
+
+$patientCount = 0; // Default to 0 in case no results are found
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $patientCount = $row['patient_count'];
+}
+
+$conn->close();
+
+
 ?>
 
 <!DOCTYPE html>
@@ -51,14 +80,14 @@ if (!$team_result) {
                         <span class="achievement__icon">
                             <i class="uil uil-video"></i>
                         </span>
-                        <h3>450+</h3>
+                        <h3><?php echo $appointmentCount; ?>+</h3>
                         <p>Appointment Per Day</p>
                     </article>
                     <article class="achievement__card">
                         <span class="achievement__icon">
                             <i class="uil uil-users-alt"></i>
                         </span>
-                        <h3>87,995+</h3>
+                        <h3><?php echo $patientCount; ?>+</h3>
                         <p>Patient</p>
                     </article>
                     <article class="achievement__card">
@@ -74,39 +103,40 @@ if (!$team_result) {
     </section>
     <!-- =====End of Achievements====== -->
 
-    <!-- =====Team====== -->
-    <section class="team">
-        <h2>Meet Our Team</h2>
-        <div class="container team__container">
-            <?php if ($team_result->num_rows > 0): ?>
-                <?php while ($team_member = $team_result->fetch_assoc()) { ?>
-                    <article class="team__member">
-                        <div class="team__member-image">
-                            <img src="admin/<?php echo htmlspecialchars($team_member['image_url']); ?>" alt="<?php echo htmlspecialchars($team_member['id']); ?>">
-                        </div>
-                        <div class="team__member-info">
-                            <h4><?php echo htmlspecialchars($team_member['full_name']); ?></h4>
-                            <p><?php echo htmlspecialchars($team_member['role']); ?></p>
-                        </div>
-                        <div class="team__member-socials">
-                            <?php if (!empty($team_member['instagram'])) { ?>
-                                <a href="<?php echo htmlspecialchars($team_member['instagram']); ?>" target="_blank"><i class="uil uil-instagram"></i></a>
-                            <?php } ?>
-                            <?php if (!empty($team_member['facebook'])) { ?>
-                                <a href="<?php echo htmlspecialchars($team_member['facebook']); ?>" target="_blank"><i class="uil uil-facebook-f"></i></a>
-                            <?php } ?>
-                            <?php if (!empty($team_member['twitter'])) { ?>
-                                <a href="<?php echo htmlspecialchars($team_member['twitter']); ?>" target="_blank"><i class="uil uil-twitter-alt"></i></a>
-                            <?php } ?>
-                        </div>
-                    </article>
-                <?php } ?>
-            <?php else: ?>
-                <p>No team members available at the moment.</p>
-            <?php endif; ?>
-        </div>
-    </section>
-    <!-- =====End of Team====== -->
+<!-- =====Team====== -->
+<section class="team">
+    <h2>Meet Our Team</h2>
+    <div class="container team__container">
+        <?php if ($team_result->num_rows > 0): ?>
+            <?php while ($team_member = $team_result->fetch_assoc()) { ?>
+                <article class="team__member">
+                    <div class="team__member-image">
+                        <img src="admin/<?php echo htmlspecialchars($team_member['image_url']); ?>" alt="<?php echo htmlspecialchars($team_member['id']); ?>">
+                    </div>
+                    <div class="team__member-info">
+                        <h4><?php echo htmlspecialchars($team_member['name']); ?></h4>
+                        <p><?php echo htmlspecialchars($team_member['position']); ?> of Hello Dr.</p>
+                    </div>
+                    <div class="team__member-socials">
+                        <?php if (!empty($team_member['instagram_url'])) { ?>
+                            <a href="<?php echo htmlspecialchars($team_member['instagram_url']); ?>" target="_blank"><i class="uil uil-instagram"></i></a>
+                        <?php } ?>
+                        <?php if (!empty($team_member['facebook_url'])) { ?>
+                            <a href="<?php echo htmlspecialchars($team_member['facebook_url']); ?>" target="_blank"><i class="uil uil-facebook-f"></i></a>
+                        <?php } ?>
+                        <?php if (!empty($team_member['twitter_url'])) { ?>
+                            <a href="<?php echo htmlspecialchars($team_member['twitter_url']); ?>" target="_blank"><i class="uil uil-twitter-alt"></i></a>
+                        <?php } ?>
+                    </div>
+                </article>
+            <?php } ?>
+        <?php else: ?>
+            <p>No team members available at the moment.</p>
+        <?php endif; ?>
+    </div>
+</section>
+<!-- =====End of Team====== -->
+
 
     <!-- Footer -->
     <?php include 'footer.php'; ?>

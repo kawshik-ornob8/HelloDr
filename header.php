@@ -8,7 +8,7 @@ session_start();
         <ul class="nav__menu">
             <li><a href="index.php">Home</a></li>
             <li><a href="about.php">About</a></li>
-            <li><a href="appointment.php">Appointment</a></li>
+            <li><a href="doctor lists.php">Appointment</a></li>
             <li><a href="contact.php">Contact</a></li>
             
             <?php if (isset($_SESSION['username'])): ?>

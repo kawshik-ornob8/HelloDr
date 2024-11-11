@@ -1,3 +1,131 @@
-.courses {
+/* General reset */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #e8f0fe;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    margin: 0;
+}
+
+.container {
+    width: 90%;
+    max-width: 500px;
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    border: 1px solid #d0d4de;
+}
+
+.container img {
+    width: 80%;
+    height: 300px;
+    border-radius: 8px;
+    object-fit: cover;
+    margin: 0 auto 15px;
+    /* Center the image horizontally */
+    display: block;
+    /* Ensures margin auto works with images */
+}
+
+
+/* Step 1: Style the h2 element */
+
+h2 {
+    font-size: 1.8rem;
+    color: #444c7d;
+    text-align: center;
+    /* Center-aligns the heading */
+    margin-bottom: 2.2rem;
+    /* Adds space below h2 */
+}
+
+
+/* Step 2: Style the first paragraph (p) element */
+
+p:first-of-type {
+    font-size: 1rem;
+    color: #666;
+    text-align: center;
+    /* Center-aligns the paragraph */
+    margin-bottom: 2.2rem;
+    /* Adds space below the first paragraph */
+    line-height: 1.5;
+    /* Increases line height for readability */
+}
+
+
+/* Step 3: Style any additional paragraphs (p) */
+
+p+p {
+    font-size: 1rem;
+    color: #666;
+    text-align: center;
+    /* Center-aligns each additional paragraph */
+    margin-top: 0.5rem;
+    /* Adds a little extra space before each new paragraph */
+    margin-bottom: 1rem;
+    /* Adds space below each additional paragraph */
+    line-height: 1.5;
+}
+
+form {
+    margin-top: 1.5rem;
+}
+
+label {
+    display: block;
     margin-top: 1rem;
+    font-weight: 500;
+    color: #444c7d;
+    text-align: left;
+}
+
+input[type="date"],
+input[type="time"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #cbd1e0;
+    border-radius: 8px;
+    background-color: #f9fafb;
+    font-size: 1rem;
+    color: #444c7d;
+    transition: border-color 0.3s ease;
+}
+
+input[type="date"]:focus,
+input[type="time"]:focus {
+    border-color: #8094ff;
+    outline: none;
+}
+
+button[type="submit"] {
+    background-color: #8094ff;
+    color: #fff;
+    padding: 0.8rem 1.6rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 1rem;
+    display: inline-block;
+}
+
+button[type="submit"]:hover {
+    background-color: #4e73e6;
 }

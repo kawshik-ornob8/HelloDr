@@ -17,8 +17,7 @@ $result = $conn->query($query);
 
     <!-- CSS Links -->
     <link rel="stylesheet" href="./css/style.css">
-    <link rel="stylesheet" href="./css/about.css">
-    <link rel="stylesheet" href="./css/appointment.css">
+    
     
     <!-- ICONSCOUT CDN -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.6/css/unicons.css">
@@ -41,8 +40,12 @@ $result = $conn->query($query);
     <div class="container hero__container">
         <h1>Welcome to Hello Dr.</h1>
         <p>Your trusted partner for virtual healthcare services, connecting you with certified doctors anytime, anywhere.</p>
-        <a href="appointment.php" class="btn btn-primary">Book an Appointment</a>
+        <a href="doctor lists.php" class="btn btn-primary">Book an Appointment</a>
     </div>
+    <div class="header__right">
+            <div class="header__right-imge">
+                <img src="https://raw.githubusercontent.com/kawshik-ornob8/Hello-Dr/e972851db1151844e0a38b7d7065872edb4a2f55/images/header.svg">
+            </div>
 </section>
 
 <!-- Services Section -->
@@ -75,13 +78,19 @@ $result = $conn->query($query);
             <?php while ($doctor = $result->fetch_assoc()): ?>
                 <article class="doctor">
                     <!-- Display profile photo -->
-                    <img src="./images/<?php echo htmlspecialchars($doctor['profile_photo']); ?>" alt="<?php echo htmlspecialchars($doctor['full_name']); ?>">
+                    <img src="doctor info/images/<?php echo $doctor['doctor_id']; ?>.<?php echo htmlspecialchars(pathinfo($doctor['profile_photo'], PATHINFO_EXTENSION)); ?>" 
+                         alt="Profile photo of Dr. <?php echo htmlspecialchars($doctor['full_name']); ?>" 
+                         loading="lazy" >
+
                     <!-- Display full name -->
-                    <h4><?php echo htmlspecialchars($doctor['full_name']); ?></h4>
+                    <h4>Dr. <?php echo htmlspecialchars($doctor['full_name']); ?></h4>
+                    
                     <!-- Display specialty and degree -->
-                    <p><?php echo htmlspecialchars($doctor['degree']); ?>, Specialist in <?php echo htmlspecialchars($doctor['specialty']); ?></p>
+                    <p class="doctor__degree"><?php echo htmlspecialchars($doctor['degree']); ?>, Specialist in <?php echo htmlspecialchars($doctor['specialty']); ?></p>
+                    
                     <!-- Display bio -->
-                    <p><?php echo htmlspecialchars($doctor['bio']); ?></p>
+                    <p class="doctor__bio"><?php echo htmlspecialchars($doctor['bio']); ?></p>
+                    
                     <!-- Link to consultation page -->
                     <a href="appointment.php?doctor_id=<?php echo $doctor['doctor_id']; ?>" class="btn btn-primary">Consult Now</a>
                 </article>
@@ -89,6 +98,8 @@ $result = $conn->query($query);
         </div>
     </div>
 </section>
+
+
 
 <!-- Testimonials Section -->
 <section class="testimonials">
