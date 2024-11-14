@@ -76,7 +76,7 @@ $stmt->close();
         <h3>Messages</h3>
         <?php if ($unread_messages > 0): ?>
             <p>You have <?php echo $unread_messages; ?> unread message(s).</p>
-            <a href="message.php" class="button">View Messages</a>
+            <a href="doctor_conversation.php" class="button">View Messages</a>
         <?php else: ?>
             <p>No unread messages.</p>
         <?php endif; ?>

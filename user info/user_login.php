@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['patient_login'])) {
                 header("Location: $redirect_url");
                 exit;
             } else {
-                header("Location: home.php"); // Default redirect
+                header("Location: user_profile.php"); // Default redirect
                 exit;
             }
         } else {

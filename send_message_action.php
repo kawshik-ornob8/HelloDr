@@ -2,18 +2,24 @@
 session_start();
 include('config.php');
 
-$user_id = $_SESSION['user_id'];  // Assuming user_id is stored in session upon login
+// Get the form data
 $doctor_id = $_POST['doctor_id'];
+$patient_id = $_POST['patient_id'];
 $message = $_POST['message'];
+$sender = $_POST['sender']; // 1 for patient, 0 for doctor
 
-$query = "INSERT INTO messages (sender_id, receiver_id, message) VALUES (?, ?, ?)";
-$stmt = $conn->prepare($query);
-$stmt->bind_param("iis", $user_id, $doctor_id, $message);
-$stmt->execute();
+// Insert the new message into the database
+$sql = "INSERT INTO messages (doctor_id, patient_id, message, sender) VALUES (?, ?, ?, ?)";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("iisi", $doctor_id, $patient_id, $message, $sender);
 
-if ($stmt->affected_rows > 0) {
-    echo "Message sent successfully!";
+if ($stmt->execute()) {
+    // Message successfully inserted
+    echo json_encode(['success' => true]);
 } else {
-    echo "Failed to send message.";
+    // Error inserting message
+    echo json_encode(['success' => false]);
 }
+
+$stmt->close();
 ?>

@@ -1,3 +1,7 @@
+<?php
+session_start();
+include('../config.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,16 +19,21 @@
             margin: 0;
         }
         .container {
-            width: 800px;
+            width: 100%;
+            max-width: 800px;
             display: flex;
+            flex-direction: column;
             gap: 20px;
+            padding: 10px;
         }
 
         /* Profile Card */
         .profile-card {
             background: linear-gradient(to bottom, #6a0dad, #a34fe0);
             color: white;
-            width: 250px;
+            width: 100%;
+            max-width: 250px;
+            margin: 0 auto;
             padding: 20px;
             border-radius: 10px;
             text-align: center;
@@ -69,7 +78,6 @@
 
         /* Review Section */
         .review-section {
-            flex-grow: 1;
             background-color: #fff;
             padding: 20px;
             border-radius: 10px;
@@ -81,14 +89,19 @@
         }
         .review-section .teacher-info {
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             background-color: #f0f0f5;
             padding: 15px;
             border-radius: 8px;
             margin-bottom: 20px;
         }
-        .review-section .add-review {
-            display: block;
+        .review-section .teacher-info div {
+            flex: 1 1 100%;
+            margin-bottom: 10px;
+        }
+        .review-section .add-review, .review-section .send-message {
+            display: inline-block;
             background: #a34fe0;
             color: white;
             text-align: center;
@@ -97,6 +110,15 @@
             text-decoration: none;
             font-weight: bold;
             margin-bottom: 20px;
+        }
+        .review-section .send-message {
+            background: #6a0dad;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .review-section .send-message img {
+            width: 16px;
         }
         .review-section .review-item {
             background-color: #f9f9f9;
@@ -131,15 +153,41 @@
             text-align: center;
             margin-top: 20px;
         }
+
+        /* Responsive adjustments */
+        @media (min-width: 768px) {
+            .container {
+                flex-direction: row;
+            }
+            .profile-card {
+                max-width: 250px;
+                margin: 0;
+            }
+            .review-section {
+                flex-grow: 1;
+            }
+            .review-section .teacher-info div {
+                flex: 1 1 45%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .review-section h3 {
+                font-size: 20px;
+            }
+            .review-section .teacher-info div {
+                flex: 1 1 100%;
+            }
+            .profile-card .rating {
+                font-size: 20px;
+            }
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <?php
-    session_start();
-    include('../config.php');
-
     // Get doctor ID from URL
     $doctor_id = isset($_GET['doctor_id']) ? intval($_GET['doctor_id']) : 0;
     $view_all = isset($_GET['view_all']) ? true : false;
@@ -204,7 +252,13 @@
                     <p><strong>Doctor Registration ID:</strong> <?php echo $doctor_reg_id; ?></p>
                 </div>
             </div>
-            <a href="../add_review.php?doctor_id=<?php echo $doctor_id; ?>" class="add-review">Add Your Review</a>
+            <div style="display: flex; gap: 10px;">
+                <a href="../add_review.php?doctor_id=<?php echo $doctor_id; ?>" class="add-review">Add Your Review</a>
+                <a href="../send_message.php?doctor_id=<?php echo $doctor_id; ?>" class="send-message">
+                    <img src="images/chat.png" alt="Message Icon"> Send Message
+                </a>
+            </div>
+
             <h3>Reviews</h3>
 
             <?php
@@ -231,7 +285,6 @@
                     </div>
                     <?php
                 }
-                // Show View All button only if not all reviews are shown
                 if (!$view_all) {
                     echo '<a href="?doctor_id=' . $doctor_id . '&view_all=true" class="view-all-btn">View All Reviews</a>';
                 }
@@ -249,7 +302,6 @@
         echo "<p>Doctor not found.</p>";
     }
 
-    // Close connection
     $stmt->close();
     $conn->close();
     ?>

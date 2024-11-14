@@ -1,6 +1,9 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 ?>
+
 
 <nav>
     <div class="container nav__container">
@@ -13,7 +16,7 @@ session_start();
             
             <?php if (isset($_SESSION['username'])): ?>
                 <!-- Show username and logout option when logged in -->
-                <li><a href="#">Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?></a></li>
+                <li><a href="user info/user_login.php">Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?></a></li>
                 <li><a href="logout.php">Logout</a></li>
             <?php else: ?>
                 <!-- Show login and signup options when logged out -->

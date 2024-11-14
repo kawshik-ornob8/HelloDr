@@ -71,13 +71,27 @@ $result = $conn->query($query);
     </div>
 </section>
 
-
 <!-- Doctors Section -->
 <section class="doctors">
     <div class="container doctors__container">
-        <h2>Meet Our Doctors</h2>
+        <h2>Meet Our Top Doctors</h2>
         <div class="doctor__list">
-            <?php while ($doctor = $result->fetch_assoc()): ?>
+            <?php
+            // Query to fetch top 6 doctors sorted by average rating
+            $query = "
+                SELECT doctors.doctor_id, doctors.full_name, doctors.degree, doctors.specialty, doctors.bio, doctors.profile_photo, 
+                       IFNULL(AVG(reviews.rating), 0) AS average_rating
+                FROM doctors
+                LEFT JOIN reviews ON doctors.doctor_id = reviews.doctor_id
+                GROUP BY doctors.doctor_id
+                ORDER BY average_rating DESC
+                LIMIT 6
+            ";
+            $result = $conn->query($query);
+
+            // Loop through the results and display each doctor
+            while ($doctor = $result->fetch_assoc()):
+            ?>
                 <article class="doctor">
                     <!-- Display profile photo -->
                     <img src="doctor info/images/<?php echo $doctor['doctor_id']; ?>.<?php echo htmlspecialchars(pathinfo($doctor['profile_photo'], PATHINFO_EXTENSION)); ?>" 
@@ -92,16 +106,22 @@ $result = $conn->query($query);
                     
                     <!-- Display bio -->
                     <p class="doctor__bio"><?php echo htmlspecialchars($doctor['bio']); ?></p>
+
+                    <!-- Display average rating -->
+                    <p class="doctor__rating">Average Rating: <?php echo number_format($doctor['average_rating'], 1); ?> / 5</p>
                     
                     <!-- Link to consultation page -->
                     <a href="appointment.php?doctor_id=<?php echo $doctor['doctor_id']; ?>" class="btn btn-primary">Consult Now</a>
+                    
+                    <!-- Link to send message page -->
+                    <a href="send_message.php?doctor_id=<?php echo $doctor['doctor_id']; ?>" class="btn btn-secondary">Send Message</a>
                 </article>
             <?php endwhile; ?>
         </div>
     </div>
 </section>
+<!-- End Doctors Section -->
 
-<!-- EndDoctors Section -->
 
 
 <!-- Testimonials Section -->
