@@ -13,7 +13,7 @@ $result = $conn->query($query);
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello Dr. - Home</title>
+    <title>Hello Dr.</title>
 
     <!-- CSS Links -->
     <link rel="stylesheet" href="./css/style.css">
@@ -23,6 +23,8 @@ $result = $conn->query($query);
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.6/css/unicons.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;800;900&display=swap" rel="stylesheet">
+
+    <link rel="icon" type="image/x-icon" href="./images/favicon.png">
     
     <style>
         body {
@@ -49,32 +51,69 @@ $result = $conn->query($query);
             </div>
 </section>
 
-<!-- Services Section -->
-<section class="services">
-    <div class="container services__container">
-        <h2>Our Services</h2>
-        <p>We offer a range of healthcare services to support your wellbeing.</p>
-        <div class="service__list">
-            <article class="service">
-                <h3>Online Consultation</h3>
-                <p>Get advice from experienced doctors through video consultations.</p>
-            </article>
-            <article class="service">
-                <h3>Health Check-ups</h3>
-                <p>Schedule virtual check-ups to stay on top of your health.</p>
-            </article>
-            <article class="service">
-                <h3>Specialized Care</h3>
-                <p>Access specialists for conditions like dermatology, adolescent medicine, and more.</p>
-            </article>
-        </div>
-    </div>
-</section>
 
+<!--=====CATEGORIES======-->
+<section class="categories">
+            <div class="container categories__container">
+                <div class="categories__left">
+                    <h1>Categories</h1>
+                    <p>
+                        Talk to a doctor within minutes. Our qualified network of doctors is available 24/7. You can get a consultation and prescription whenever you need.
+                    </p>
+                    <a href="doctor info/profile-card.php" class="btn">Find Doctor</a>
+                </div>
+                <div class="categories__right">
+                    <article class="category">
+                        <span class="category__icon"><i class="uil uil-user-md"></i></span>
+                        <h5>Live Video Consultation</h5>
+                        <p>
+                            Instant video consultation now or schedule a future appointment
+                        </p>
+                    </article>
+
+                    <article class="category">
+                        <span class="category__icon"><i class="uil uil-heart-medical"></i></span>
+                        <h5>Health Tipes</h5>
+                        <p>Be Happy, Be Healthy</p>
+                    </article>
+
+                    <article class="category">
+                        <span class="category__icon"><i class="uil uil-ambulance"></i></span>
+                        <h5>24/7 Ambulance</h5>
+                        <p>Work or school? Are you just after a quick consultation</p>
+                    </article>
+
+                    <article class="category">
+                        <span class="category__icon"><i class="uil uil-medkit"></i></span>
+                        <h5>Diagnostic at your doorstep</h5>
+                        <p>
+                            Get tested in few hours at home & get report in the app within 24 hours.
+                        </p>
+                    </article>
+
+                    <article class="category">
+                        <span class="category__icon"><i class="uil uil-capsule"></i></span>
+                        <h5>Order Medicine Online</h5>
+                        <p>
+                            Order easily and get the medicine in 1 hour
+                        </p>
+                    </article>
+
+                    <article class="category">
+                        <span class="category__icon"><i class="uil uil-package"></i></span>
+                        <h5>Healthcare Packages</h5>
+                        <p>
+                            Consultations, hospital care, insurance & more
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </section>
+        <!--=====End OF CATEGORIES======-->
 <!-- Doctors Section -->
 <section class="doctors">
     <div class="container doctors__container">
-        <h2>Meet Our Top Doctors</h2>
+        <h2>Top Specialist Doctor</h2>
         <div class="doctor__list">
             <?php
             // Query to fetch top 6 doctors sorted by average rating
@@ -103,9 +142,6 @@ $result = $conn->query($query);
                     
                     <!-- Display specialty and degree -->
                     <p class="doctor__degree"><?php echo htmlspecialchars($doctor['degree']); ?>, Specialist in <?php echo htmlspecialchars($doctor['specialty']); ?></p>
-                    
-                    <!-- Display bio -->
-                    <p class="doctor__bio"><?php echo htmlspecialchars($doctor['bio']); ?></p>
 
                     <!-- Display average rating -->
                     <p class="doctor__rating">Average Rating: <?php echo number_format($doctor['average_rating'], 1); ?> / 5</p>
@@ -115,6 +151,13 @@ $result = $conn->query($query);
                     
                     <!-- Link to send message page -->
                     <a href="send_message.php?doctor_id=<?php echo $doctor['doctor_id']; ?>" class="btn btn-secondary">Send Message</a>
+                    
+                    <!-- Video Call Form -->
+                    <form action="start_video_call.php" method="POST">
+                        <input type="hidden" name="doctor_id" value="<?php echo $doctor['doctor_id']; ?>">
+                        <input type="hidden" name="room_id" value="unique-room-id-<?php echo $doctor['doctor_id']; ?>"> <!-- Replace with dynamic logic if needed -->
+                        <button type="submit" class="btn btn-tertiary">Video Call</button>
+                    </form>
                 </article>
             <?php endwhile; ?>
         </div>
@@ -123,18 +166,17 @@ $result = $conn->query($query);
 <!-- End Doctors Section -->
 
 
-
 <!-- Testimonials Section -->
 <section class="testimonials">
     <div class="container testimonials__container">
         <h2>What Our Patients Say</h2>
         <article class="testimonial">
             <p>"Hello Dr. made healthcare easy and accessible. The doctors are knowledgeable and caring."</p>
-            <h4>- Patient A</h4>
+            <h4>- Washik Wail Faieaz</h4>
         </article>
         <article class="testimonial">
             <p>"I received excellent advice for my condition. I highly recommend their services!"</p>
-            <h4>- Patient B</h4>
+            <h4>- Md Masud Rana</h4>
         </article>
     </div>
 </section>

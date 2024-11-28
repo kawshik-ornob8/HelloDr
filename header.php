@@ -16,7 +16,7 @@ if (session_status() === PHP_SESSION_NONE) {
             
             <?php if (isset($_SESSION['username'])): ?>
                 <!-- Show username and logout option when logged in -->
-                <li><a href="user info/user_login.php">Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?></a></li>
+                <li><a href="user info/user_profile.php">Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?></a></li>
                 <li><a href="logout.php">Logout</a></li>
             <?php else: ?>
                 <!-- Show login and signup options when logged out -->

@@ -10,11 +10,11 @@ if (!isset($_SESSION['doctor_id'])) {
 
 $doctor_id = $_SESSION['doctor_id'];
 
-// Fetch appointments for the logged-in doctor
+// Fetch appointments for the logged-in doctor where date is not in the past
 $stmt = $conn->prepare("SELECT a.appointment_id, a.appointment_date, a.appointment_time, p.full_name, p.mobile_number, p.email, a.status
                         FROM appointments a
                         JOIN patients p ON a.patient_id = p.patient_id
-                        WHERE a.doctor_id = ?
+                        WHERE a.doctor_id = ? AND a.appointment_date >= CURDATE()
                         ORDER BY a.appointment_date, a.appointment_time");
 $stmt->bind_param("i", $doctor_id);
 $stmt->execute();

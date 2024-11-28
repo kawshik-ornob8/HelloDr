@@ -1,0 +1,86 @@
+HelloDr/
+├── admin/ 
+│   ├── css
+│   │   ├── admin_login.css
+│   │   ├── admin_signup.css
+│   │   ├── manage_doctors.css
+│   │   └── manage_patients.css
+│   ├── images
+│   ├── admin_dashboard.php           
+│   ├── admin_login.php           
+│   ├── admin_signup.php       
+│   ├── manage_doctors.php 
+│   ├── manage_patients.php     
+│   └── team.php 
+│
+├── css/                   
+│   ├── about.css          
+│   ├── appointment.css          
+│   ├── contact.css
+│   ├── doctor lists.css
+│   ├── index.css
+│   ├── login.css
+│   ├── send_message.css
+│   ├── send_message_action.css
+│   └── styles.css
+│
+├── doctor info/
+│   ├── css
+│   │   ├── doctor_dashboard.css
+│   │   ├── nav.css
+│   │   ├── profile-card.css
+│   │   ├── view_appointments.css
+│   │   └── view_profile.css
+│   ├── images
+│   ├── approve_appointment.php
+│   ├── cancel_appointment.php
+│   ├── doctor_conversation.php
+│   ├── doctor_dashboard.php
+│   ├── doctor_logout.php
+│   ├── doctor_profile.php
+│   ├── doctor_profile_edit.php
+│   ├── doctor_signup.php
+│   ├── fetch_messages.php
+│   ├── profile-card.php
+│   ├── send_message.php
+│   ├── update_appointment.php
+│   ├── update_profile.php
+│   ├── view_appointments.php
+│   └── view_profile.php       
+│
+├── user info/                
+│   ├── css
+│   │   ├── user_login.css
+│   │   └── user_signup.css
+│   ├── images
+│   ├── edit_user_profile.php
+│   ├── user_login.php
+│   ├── user_profile.php    
+│   └── user_signup.php       
+│
+├── images/                 
+│  
+│
+├── main.js
+│
+│
+├── about.php
+├── add_review.php
+├── appointment.php
+├── appointment_success.php
+├── config.php
+├── contact.php
+├── conversation.php
+├── doctor lists.php
+├── footer.php
+├── get_new_messages.php
+├── header.php
+├── index.php
+├── login.php
+├── logout.php
+├── request_appointment.php
+├── request_appointment_action.php
+├── send_message.php
+├── send_message_action.php
+├── setup.php
+└── signup.php

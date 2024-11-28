@@ -30,6 +30,15 @@ $stmt->bind_param("i", $doctor_id);
 $stmt->execute();
 $unread_messages = $stmt->get_result()->fetch_assoc()['unread_messages'] ?? 0;
 $stmt->close();
+
+// Fetch active calls for the doctor
+$stmt = $conn->prepare("SELECT ac.*, p.full_name AS patient_name 
+                        FROM active_calls ac 
+                        JOIN patients p ON ac.patient_id = p.patient_id 
+                        WHERE ac.doctor_id = ?");
+$stmt->bind_param("i", $doctor_id);
+$stmt->execute();
+$active_calls = $stmt->get_result();
 ?>
 
 <!DOCTYPE html>
@@ -60,16 +69,15 @@ $stmt->close();
     </div>
 
     <!-- Today's Appointments Section -->
-<div class="section appointments">
-    <h3>Today's Total Appointments</h3>
-    <?php if ($total_appointments > 0): ?>
-        <p><?php echo $total_appointments; ?> appointment(s) scheduled today.</p>
-    <?php else: ?>
-        <p>No appointments scheduled for today.</p>
-    <?php endif; ?>
-    <a href="view_appointments.php" class="button">View Appointment Scheduled</a> <!-- New Button -->
-</div>
-
+    <div class="section appointments">
+        <h3>Today's Total Appointments</h3>
+        <?php if ($total_appointments > 0): ?>
+            <p><?php echo $total_appointments; ?> appointment(s) scheduled today.</p>
+        <?php else: ?>
+            <p>No appointments scheduled for today.</p>
+        <?php endif; ?>
+        <a href="view_appointments.php" class="button">View Appointment Scheduled</a>
+    </div>
 
     <!-- Messages Section -->
     <div class="section messages">
@@ -87,12 +95,22 @@ $stmt->close();
         <h3>Edit Profile</h3>
         <a href="doctor_profile_edit.php" class="button">Edit Profile</a>
     </div>
-
-    <!-- Placeholder for Video Call Feature -->
-    <div class="section video-call">
-        <h3>Video Call (Future Feature)</h3>
-        <p>This feature will allow video calls with patients directly from the dashboard.</p>
+<!-- Video Call Section -->
+<div class="section video-call">
+        <h3>Video Calls</h3>
+        <?php if ($active_calls->num_rows > 0): ?>
+            <ul>
+                <?php while ($call = $active_calls->fetch_assoc()): ?>
+                    <li><?php echo htmlspecialchars($call['patient_name']); ?>: 
+                        <a href="../video_call_room.php?room_id=<?php echo urlencode($call['room_id']); ?>">Join</a>
+                    </li>
+                <?php endwhile; ?>
+            </ul>
+        <?php else: ?>
+            <p>No active calls.</p>
+        <?php endif; ?>
     </div>
+
 </div>
 
 </body>

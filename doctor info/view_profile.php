@@ -7,305 +7,225 @@ include('../config.php');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        /* Base styles */
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #f4f4f9;
-            margin: 0;
-        }
-        .container {
-            width: 100%;
-            max-width: 800px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            padding: 10px;
-        }
-
-        /* Profile Card */
-        .profile-card {
-            background: linear-gradient(to bottom, #6a0dad, #a34fe0);
-            color: white;
-            width: 100%;
-            max-width: 250px;
-            margin: 0 auto;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-        }
-        .profile-card img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            margin-bottom: 10px;
-            border: 3px solid white;
-        }
-        .profile-card h2 {
-            margin: 0;
-            font-size: 18px;
-        }
-        .profile-card p {
-            margin: 5px 0;
-        }
-        .profile-card .rating {
-            font-size: 24px;
-            margin: 20px 0;
-        }
-        .profile-card .rating-stars {
-            color: #ffd700;
-        }
-        .profile-card .contact-info a {
-            color: white;
-            text-decoration: none;
-            display: block;
-            margin: 5px 0;
-        }
-        .profile-card .profile-btn {
-            background: #e0d4ff;
-            color: #6a0dad;
-            padding: 10px;
-            margin-top: 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: bold;
-            display: inline-block;
-        }
-
-        /* Review Section */
-        .review-section {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-        }
-        .review-section h3 {
-            font-size: 22px;
-            color: #6a0dad;
-            margin-bottom: 10px;
-        }
-        .review-section .teacher-info {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            background-color: #f0f0f5;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-        .review-section .teacher-info div {
-            flex: 1 1 100%;
-            margin-bottom: 10px;
-        }
-        .review-section .add-review, .review-section .send-message {
-            display: inline-block;
-            background: #a34fe0;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-        .review-section .send-message {
-            background: #6a0dad;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .review-section .send-message img {
-            width: 16px;
-        }
-        .review-section .review-item {
-            background-color: #f9f9f9;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-        }
-        .review-section .review-item .rating {
-            color: #ffd700;
-            font-size: 18px;
-        }
-        .review-section .review-item .review-text {
-            color: #333;
-            font-size: 14px;
-            margin-top: 10px;
-        }
-        .review-section .review-item .review-author {
-            color: #666;
-            font-size: 12px;
-            margin-top: 5px;
-            text-align: right;
-        }
-        .view-all-btn {
-            background: #6a0dad;
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            text-decoration: none;
-            display: inline-block;
-            font-weight: bold;
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        /* Responsive adjustments */
-        @media (min-width: 768px) {
-            .container {
-                flex-direction: row;
-            }
-            .profile-card {
-                max-width: 250px;
-                margin: 0;
-            }
-            .review-section {
-                flex-grow: 1;
-            }
-            .review-section .teacher-info div {
-                flex: 1 1 45%;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .review-section h3 {
-                font-size: 20px;
-            }
-            .review-section .teacher-info div {
-                flex: 1 1 100%;
-            }
-            .profile-card .rating {
-                font-size: 20px;
-            }
-        }
-    </style>
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="./css/view_profile.css">
+     <!-- ICONSCOUT CDN -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.6/css/unicons.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;800;900&display=swap" rel="stylesheet">
+    <title>Doctor Profile</title>
 </head>
 <body>
-
-<div class="container">
+    <header>
     <?php
-    // Get doctor ID from URL
-    $doctor_id = isset($_GET['doctor_id']) ? intval($_GET['doctor_id']) : 0;
-    $view_all = isset($_GET['view_all']) ? true : false;
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+?>
 
-    // Fetch doctor data
-    $sql = "SELECT * FROM doctors WHERE doctor_id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $doctor_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
 
-    if ($result->num_rows > 0) {
-        $doctor = $result->fetch_assoc();
-        $full_name = htmlspecialchars($doctor['full_name']);
-        $specialty = htmlspecialchars($doctor['specialty']);
-        $faculty = "Faculty of Science and Information Technology";
-        $department = "Software Engineering (SWE)";
-        $email = htmlspecialchars($doctor['email']);
-        $phone_number = htmlspecialchars($doctor['phone_number']);
-        $doctor_reg_id = htmlspecialchars($doctor['doctor_reg_id']);
-        $profile_photo_path = "images/default.jpg";
+<nav>
+    <div class="container nav__container">
+        <a href="../index.php"><h4>HELLO DR.</h4></a>
+        <ul class="nav__menu">
+            <li><a href="../index.php">Home</a></li>
+            <li><a href="../about.php">About</a></li>
+            <li><a href="../doctor lists.php">Appointment</a></li>
+            <li><a href="../contact.php">Contact</a></li>
+            
+            <?php if (isset($_SESSION['username'])): ?>
+                <!-- Show username and logout option when logged in -->
+                <li><a href="../user info/user_login.php">Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?></a></li>
+                <li><a href="../logout.php">Logout</a></li>
+            <?php else: ?>
+                <!-- Show login and signup options when logged out -->
+                <li><a href="../login.php">Login</a></li>
+                <li><a href="../signup.php">Signup</a></li>
+            <?php endif; ?>
+        </ul>
+        
+        <button id="open-menu-btn"><i class="uil uil-bars"></i></button>
+        <button id="close-menu-btn"><i class="uil uil-multiply"></i></button>
+    </div>
+</nav>
 
-        // Check for profile photo
-        $extensions = ['jpg', 'jpeg', 'png'];
-        foreach ($extensions as $ext) {
-            $possible_path = "images/{$doctor_id}.$ext";
-            if (file_exists($possible_path)) {
-                $profile_photo_path = $possible_path;
-                break;
-            }
-        }
-        ?>
-
-        <!-- Profile Card -->
-        <div class="profile-card">
-            <img src="<?php echo $profile_photo_path; ?>" alt="Profile Picture">
-            <h2><?php echo $full_name; ?></h2>
-            <p><?php echo $specialty; ?></p>
-            <p><?php echo $department; ?></p>
-            <p><?php echo $faculty; ?></p>
-            <div class="rating">
-                <span class="rating-stars">☆☆☆☆☆</span>
-            </div>
-            <div class="contact-info">
-                <a href="mailto:<?php echo $email; ?>"><?php echo $email; ?></a>
-                <a href="tel:<?php echo $phone_number; ?>"><?php echo $phone_number; ?></a>
-                <p>Doctor Registration ID: <?php echo $doctor_reg_id; ?></p>
-            </div>
-            <a href="#" class="profile-btn">View Official Profile</a>
-        </div>
-
-        <!-- Review Section -->
-        <div class="review-section">
-            <h3>About <?php echo $full_name; ?></h3>
-            <div class="teacher-info">
-                <div>
-                    <p><strong>Designation:</strong> <?php echo $specialty; ?></p>
-                    <p><strong>Faculty:</strong> <?php echo $faculty; ?></p>
-                </div>
-                <div>
-                    <p><strong>Department:</strong> <?php echo $department; ?></p>
-                    <p><strong>Doctor Registration ID:</strong> <?php echo $doctor_reg_id; ?></p>
-                </div>
-            </div>
-            <div style="display: flex; gap: 10px;">
-                <a href="../add_review.php?doctor_id=<?php echo $doctor_id; ?>" class="add-review">Add Your Review</a>
-                <a href="../send_message.php?doctor_id=<?php echo $doctor_id; ?>" class="send-message">
-                    <img src="images/chat.png" alt="Message Icon"> Send Message
-                </a>
-            </div>
-
-            <h3>Reviews</h3>
-
-            <?php
-            // Fetch reviews for this doctor (limit to 3 or show all if view_all is set)
-            $limit = $view_all ? "" : "LIMIT 3";
-            $review_sql = "SELECT r.rating, r.review_text, p.full_name FROM reviews r JOIN patients p ON r.patient_id = p.patient_id WHERE r.doctor_id = ? ORDER BY r.created_at DESC $limit";
-            $review_stmt = $conn->prepare($review_sql);
-            $review_stmt->bind_param("i", $doctor_id);
-            $review_stmt->execute();
-            $review_result = $review_stmt->get_result();
-
-            if ($review_result->num_rows > 0) {
-                while ($review = $review_result->fetch_assoc()) {
-                    $rating = htmlspecialchars($review['rating']);
-                    $review_text = htmlspecialchars($review['review_text']);
-                    $author = htmlspecialchars($review['full_name']);
-                    ?>
-                    <div class="review-item">
-                        <div class="rating">
-                            <?php echo str_repeat("★", $rating) . str_repeat("☆", 5 - $rating); ?>
-                        </div>
-                        <p class="review-text"><?php echo $review_text; ?></p>
-                        <p class="review-author">- <?php echo $author; ?></p>
-                    </div>
-                    <?php
-                }
-                if (!$view_all) {
-                    echo '<a href="?doctor_id=' . $doctor_id . '&view_all=true" class="view-all-btn">View All Reviews</a>';
-                }
-            } else {
-                echo "<p>No reviews found for this doctor.</p>";
-            }
-
-            $review_stmt->close();
-            ?>
-
-        </div>
-
+    </header>
+    <div class="containers">
         <?php
-    } else {
-        echo "<p>Doctor not found.</p>";
-    }
+        $doctor_id = isset($_GET['doctor_id']) ? intval($_GET['doctor_id']) : 0;
+        $view_all = isset($_GET['view_all']) ? true : false;
 
-    $stmt->close();
-    $conn->close();
-    ?>
-</div>
+        // Fetch doctor data
+        $sql = "SELECT * FROM doctors WHERE doctor_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $doctor_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $doctor = $result->fetch_assoc();
+            $full_name = htmlspecialchars($doctor['full_name']);
+            $specialty = htmlspecialchars($doctor['specialty']);
+            $email = htmlspecialchars($doctor['email']);
+            $phone_number = htmlspecialchars($doctor['phone_number']);
+            $doctor_reg_id = htmlspecialchars($doctor['doctor_reg_id']);
+            $profile_photo_path = "images/default.jpg";
+
+            // Check for profile photo
+            $extensions = ['jpg', 'jpeg', 'png'];
+            foreach ($extensions as $ext) {
+                $possible_path = "images/{$doctor_id}.$ext";
+                if (file_exists($possible_path)) {
+                    $profile_photo_path = $possible_path;
+                    break;
+                }
+            }
+            ?>
+            <div class="profile-card">
+                <img src="<?php echo $profile_photo_path; ?>" alt="Profile Picture">
+                <h2><?php echo $full_name; ?></h2>
+                <p><?php echo $specialty; ?></p>
+                <div class="contact-info">
+                    <a class="mail" href="mailto:<?php echo $email; ?>">📧 <?php echo $email; ?></a>
+                    <br>
+                    <a class="phone" href="tel:<?php echo $phone_number; ?>">📲 <?php echo $phone_number; ?></a>
+                    <p>Doctor Registration ID: <?php echo $doctor_reg_id; ?></p>
+                </div>
+                <a href="../send_message.php?doctor_id=<?php echo $doctor['doctor_id']; ?>" class="profile-btn">Send Message</a>
+                <button class="profile-btn" onclick="window.location.href='../add_review.php?doctor_id=<?php echo $doctor_id; ?>'">Add Your Review</button>
+            </div>
+            <div class="continer_reviews">
+            <div class="review-section">
+                <h3>About <?php echo $full_name; ?></h3>
+                <div class="teacher-info">
+                    <div>
+                        <p><strong>Specialty:</strong> <?php echo $specialty; ?></p>
+                        <p><strong>Doctor ID:</strong> <?php echo $doctor_reg_id; ?></p>
+                    </div>
+                </div>
+                <h3>Reviews</h3>
+                <?php
+                $limit = $view_all ? "" : "LIMIT 3";
+                $review_sql = "SELECT r.rating, r.review_text, p.full_name FROM reviews r JOIN patients p ON r.patient_id = p.patient_id WHERE r.doctor_id = ? ORDER BY r.created_at DESC $limit";
+                $review_stmt = $conn->prepare($review_sql);
+                $review_stmt->bind_param("i", $doctor_id);
+                $review_stmt->execute();
+                $review_result = $review_stmt->get_result();
+
+                if ($review_result->num_rows > 0) {
+                    while ($review = $review_result->fetch_assoc()) {
+                        $rating = htmlspecialchars($review['rating']);
+                        $review_text = htmlspecialchars($review['review_text']);
+                        $author = htmlspecialchars($review['full_name']);
+                        ?>
+                        <div class="review-item">
+                            <div class="rating"><?php echo str_repeat("★", $rating) . str_repeat("☆", 5 - $rating); ?></div>
+                            <p class="review-text"><?php echo $review_text; ?></p>
+                            <p class="review-author">- <?php echo $author; ?></p>
+                        </div>
+                        <?php
+                    }
+                    if (!$view_all) {
+                        echo '<a href="?doctor_id=' . $doctor_id . '&view_all=true" class="view-all-btn">View All Reviews</a>';
+                    }
+                } else {
+                    echo "<p>No reviews found for this doctor.</p>";
+                }
+
+                $review_stmt->close();
+                ?>
+            </div>
+            </div>
+            <?php
+        } else {
+            echo "<p>Doctor not found.</p>";
+        }
+
+        $stmt->close();
+        $conn->close();
+        ?>
+    </div>
+    
+    <!-- Footer -->
+<!--=====Footer======-->
+<footer>
+    <div class="container footer__container">
+        <div class="footer__1">
+            <a href="index.php" class="footer__logo"><h4>HELLO DR.</h4></a>
+            <p>
+                At Your Doctors Online, we provide easily accessible virtual health care for your families around the clock with the help of our board-certified online doctors. 
+                We believe that everyone in the world should have the ability to connect with an experienced doctor online.
+            </p>
+        </div>
+        <div class="footer__2">
+            <h4>Permalink</h4>
+            <ul class="permalink">
+                <li><a href="../index.php">Home</a></li>
+                <li><a href="../about.php">About</a></li>
+                <li><a href="../appointment.php">Appointment</a></li>
+                <li><a href="../admin/admin_dashboard.php">Admin Potal</a></li>
+            </ul>
+        </div>
+        <div class="footer__3">
+            <h4>Privacy</h4>
+            <ul class="privacy">
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms and Conditions</a></li>
+                <li><a href="#">Refund Policy</a></li>
+            </ul>
+        </div>
+
+        <div class="footer__4">
+            <h4>Contact us</h4>
+            <div>
+                <p>+8801975288108</p>
+                <p><a href="mailto:kawshik.ornob8@gmail.com">kawshik.ornob8@gmail.com</a></p>
+            </div>
+            <ul class="footer__socials">
+                <li><a href="https://www.facebook.com/kawshik.ornob.01" target="_blank"><i class="uil uil-facebook-f"></i></a></li>
+                <li><a href="https://www.instagram.com/iam_kawshik/" target="_blank"><i class="uil uil-instagram-alt"></i></a></li>
+                <li><a href="https://www.twitter.com/iam_kawshik/" target="_blank"><i class="uil uil-twitter"></i></a></li>
+            </ul>
+        </div>
+        
+    </div>
+    <div class="footer__copyright">
+        <small>&copy; <?php echo date("Y"); ?> Hello Dr. All Rights Reserved.</small>
+    </div>
+</footer>
+<!--=====End Footer======-->
+<!-- JavaScript Files -->
+<script>
+
+    //change navbar styles on scroll
+
+window.addEventListener('scroll', () => {
+    document.querySelector('nav').classList.toggle('window-scroll', window.scrollY > 0)
+})
+
+
+
+
+//show/hide nav menu
+const menu = document.querySelector(".nav__menu");
+const menuBtn = document.querySelector("#open-menu-btn");
+const closeBtn = document.querySelector("#close-menu-btn");
+//There is a problem i can,t find why the button is not working
+menuBtn.addEventListener('click', () => {
+    menu.style.display = "flex";
+    closeBtn.style.display = "inline-block";
+    menuBtn.style.display = "none";
+})
+
+//close nav menu
+const closeNav = () => {
+    menu.style.display = "none";
+    closeBtn.style.display = "none";
+    menuBtn.style.display = "inline-block";
+}
+
+closeBtn.addEventListener('click', closeNav)
+</script>
 
 </body>
 </html>

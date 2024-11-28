@@ -157,7 +157,7 @@ $result = $stmt->get_result();
         // Check for profile photo
         $extensions = ['jpg', 'jpeg', 'png'];
         foreach ($extensions as $ext) {
-            $possible_path = "images/patients/{$patient_id}.$ext";
+            $possible_path = "images/{$patient_id}.$ext";
             if (file_exists($possible_path)) {
                 $profile_photo_path = $possible_path;
                 break;
@@ -175,7 +175,7 @@ $result = $stmt->get_result();
                 <a href="mailto:<?php echo $email; ?>"><?php echo $email; ?></a>
                 <a href="tel:<?php echo $mobile_number; ?>"><?php echo $mobile_number; ?></a>
             </div>
-            <a href="#" class="profile-btn">Edit Profile</a>
+            <a href="edit_user_profile.php" class="profile-btn">Edit Profile</a>
         </div>
 
         <!-- Message Section -->
@@ -183,13 +183,13 @@ $result = $stmt->get_result();
             <h3>Messages</h3>
 
             <?php
-            // Fetch all messages
+            // Fetch all messages with unread messages first
             $message_sql = "SELECT m.message, m.is_read, m.doctor_id, m.created_at, d.full_name AS doctor_name 
                             FROM messages m 
                             JOIN doctors d ON m.doctor_id = d.doctor_id 
                             WHERE m.patient_id = ? 
                             GROUP BY m.doctor_id 
-                            ORDER BY m.created_at DESC";
+                            ORDER BY m.is_read ASC, m.created_at DESC"; // Prioritize unread messages
             $message_stmt = $conn->prepare($message_sql);
             $message_stmt->bind_param("i", $patient_id);
             $message_stmt->execute();
@@ -261,7 +261,6 @@ $result = $stmt->get_result();
         });
     });
 </script>
-
 
 </body>
 </html>

@@ -1,3 +1,17 @@
+<?php
+session_start();
+include('../config.php');
+
+// Check if connection is successful
+if (!$conn) {
+    die("Database connection failed: " . mysqli_connect_error());
+}
+
+// Query to fetch all doctor data
+$sql = "SELECT * FROM doctors";
+$result = $conn->query($sql);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,23 +19,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doctor Profiles</title>
     <link rel="stylesheet" href="css/profile-card.css">
-    
 </head>
 <body>
+<header>
+<nav>
+    <div class="container nav__container">
+        <a href="../index.php"><h4>HELLO DR.</h4></a>
+        <ul class="nav__menu">
+            <li><a href="../index.php">Home</a></li>
+            <li><a href="../about.php">About</a></li>
+            <li><a href="../doctor lists.php">Appointment</a></li>
+            <li><a href="../contact.php">Contact</a></li>
+            
+            <?php if (isset($_SESSION['username'])): ?>
+                <!-- Show username and logout option when logged in -->
+                <li><a href="../user info/user_login.php">Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?></a></li>
+                <li><a href="../logout.php">Logout</a></li>
+            <?php else: ?>
+                <!-- Show login and signup options when logged out -->
+                <li><a href="../login.php">Login</a></li>
+                <li><a href="../signup.php">Signup</a></li>
+            <?php endif; ?>
+        </ul>
+        
+        <button id="open-menu-btn"><i class="uil uil-bars"></i></button>
+        <button id="close-menu-btn"><i class="uil uil-multiply"></i></button>
+    </div>
+</nav>
+</header>
 
+<div>
+    <h2>Our Best Doctors</h2>
+</div>
+<div class="con_doc">
 <?php
-session_start();
-include('../config.php');
-
-// Query to fetch all doctor data
-$sql = "SELECT * FROM doctors";
-$result = $conn->query($sql);
-
 if ($result->num_rows > 0) {
     while ($doctor = $result->fetch_assoc()) {
         $doctor_id = $doctor['doctor_id'];
         $full_name = htmlspecialchars($doctor['full_name']);
-        $specialty = "Specialty: " .htmlspecialchars($doctor['specialty']);
+        $specialty = "Specialty: " . htmlspecialchars($doctor['specialty']);
         $faculty = "Degree: " . htmlspecialchars($doctor['degree']); // Example static data
         $department = "Bio: " . htmlspecialchars($doctor['bio']); // Example static data
         $email = htmlspecialchars($doctor['email']);
@@ -93,6 +129,34 @@ if ($result->num_rows > 0) {
 // Close the connection at the end
 $conn->close();
 ?>
+</div>
 
+<script>
+    // Change navbar styles on scroll
+    window.addEventListener('scroll', () => {
+        document.querySelector('nav').classList.toggle('window-scroll', window.scrollY > 0)
+    });
+
+    // Show/hide nav menu
+    const menu = document.querySelector(".nav__menu");
+    const menuBtn = document.querySelector("#open-menu-btn");
+    const closeBtn = document.querySelector("#close-menu-btn");
+
+    // Open menu
+    menuBtn.addEventListener('click', () => {
+        menu.style.display = "flex";
+        closeBtn.style.display = "inline-block";
+        menuBtn.style.display = "none";
+    });
+
+    // Close menu
+    const closeNav = () => {
+        menu.style.display = "none";
+        closeBtn.style.display = "none";
+        menuBtn.style.display = "inline-block";
+    };
+
+    closeBtn.addEventListener('click', closeNav);
+</script>
 </body>
 </html>

@@ -1,23 +1,24 @@
 <?php
-session_start();
 include('config.php');
+session_start();
 
-// Get the form data
-$doctor_id = $_POST['doctor_id'];
-$patient_id = $_POST['patient_id'];
+if (!isset($_POST['message']) || !isset($_POST['doctor_id']) || !isset($_POST['patient_id'])) {
+    echo json_encode(['success' => false]);
+    exit();
+}
+
 $message = $_POST['message'];
-$sender = $_POST['sender']; // 1 for patient, 0 for doctor
+$doctor_id = intval($_POST['doctor_id']);
+$patient_id = intval($_POST['patient_id']);
+$sender = intval($_POST['sender']);
 
-// Insert the new message into the database
-$sql = "INSERT INTO messages (doctor_id, patient_id, message, sender) VALUES (?, ?, ?, ?)";
+$sql = "INSERT INTO messages (doctor_id, patient_id, sender, message, created_at) VALUES (?, ?, ?, ?, NOW())";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("iisi", $doctor_id, $patient_id, $message, $sender);
+$stmt->bind_param("iiis", $doctor_id, $patient_id, $sender, $message);
 
 if ($stmt->execute()) {
-    // Message successfully inserted
     echo json_encode(['success' => true]);
 } else {
-    // Error inserting message
     echo json_encode(['success' => false]);
 }
 

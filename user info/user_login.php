@@ -2,6 +2,11 @@
 session_start();
 include('../config.php');
 
+// Store the referring page for redirection after login
+if (isset($_SERVER['HTTP_REFERER']) && !isset($_SESSION['redirect_to'])) {
+    $_SESSION['redirect_to'] = $_SERVER['HTTP_REFERER'];
+}
+
 // Initialize error message
 $error_message = "";
 
@@ -22,10 +27,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['patient_login'])) {
             $_SESSION['patient_id'] = $row['patient_id'];
             $_SESSION['username'] = $row['username'];
 
-            // Check if there's a redirect URL stored in the session
+            // Redirect to the stored page or default profile page
             if (isset($_SESSION['redirect_to'])) {
                 $redirect_url = $_SESSION['redirect_to'];
-                unset($_SESSION['redirect_to']); // Clear the redirect URL after use
+                unset($_SESSION['redirect_to']); // Clear after using
                 header("Location: $redirect_url");
                 exit;
             } else {
@@ -43,6 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['patient_login'])) {
 
 $conn->close();
 ?>
+
 
 
 <!DOCTYPE html>

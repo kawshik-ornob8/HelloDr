@@ -27,14 +27,39 @@ if ($result && mysqli_num_rows($result) > 0) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<link rel="icon" type="image/x-icon" href="../images/favicon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="css/style.css">
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
         .dashboard-container {
+            width: 80%;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             text-align: center;
-            margin-top: 50px;
+        }
+
+        h2 {
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 16px;
+            margin: 10px 0;
         }
 
         .button {
@@ -46,6 +71,7 @@ if ($result && mysqli_num_rows($result) > 0) {
             text-decoration: none;
             border-radius: 4px;
             font-size: 16px;
+            transition: background-color 0.3s;
         }
 
         .button:hover {
@@ -55,18 +81,19 @@ if ($result && mysqli_num_rows($result) > 0) {
 </head>
 <body>
     <div class="dashboard-container">
-        <h2>Welcome to Admin Dashboard</h2>
-        
-        <!-- Display Admin Full Name and Email -->
+        <h2>Welcome, <?php echo htmlspecialchars($admin_name); ?>!</h2>
+
+        <!-- Display Admin Details -->
         <p><strong>Admin Name:</strong> <?php echo htmlspecialchars($admin_name); ?></p>
         <p><strong>Email:</strong> <?php echo htmlspecialchars($admin_email); ?></p>
 
-        <a href="../logout.php" class="button">Logout</a>
+        <!-- Navigation Buttons -->
         <p>Choose an option below:</p>
-
-        <!-- Links to Team and Patient Management pages -->
-        <a href="team.php" class="button">Update Team Members</a>
         <a href="manage_patients.php" class="button">Manage Patients</a>
+        <a href="manage_doctors.php" class="button">Manage Doctors</a>
+        <a href="team.php" class="button">Update Team Members</a>
+        <a href="admin_signup.php" class="button">Add New Admin</a>
+        <a href="../logout.php" class="button">Logout</a>
     </div>
 </body>
 </html>

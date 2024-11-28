@@ -14,7 +14,7 @@
                 <li><a href="index.php">Home</a></li>
                 <li><a href="about.php">About</a></li>
                 <li><a href="appointment.php">Appointment</a></li>
-                <li><a href="admin/admin_dashboard.php">Admin Potal</a></li>
+                <li><a href="admin/admin_dashboard.php">Admin Portal</a></li>
             </ul>
         </div>
         <div class="footer__3">

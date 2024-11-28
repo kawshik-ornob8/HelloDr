@@ -154,7 +154,7 @@ nav button {
     align-items: center;
     justify-content: space-between;
     padding: 50px 0;
-    margin-left: 20px;
+    margin-left: 200px;
 }
 
 .hero__container {
@@ -466,6 +466,7 @@ footer ul li a:hover {
     font-size: 2em;
     color: #ffffff;
     margin-bottom: 40px;
+    margin-top: 100px;
 }
 
 .doctor__list {
@@ -479,7 +480,7 @@ footer ul li a:hover {
     background: #fff;
     border-radius: 8px;
     padding: 20px;
-    width: 300px;
+    width: 350px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s;
     text-align: center;
@@ -490,7 +491,7 @@ footer ul li a:hover {
 }
 
 .doctor img {
-    width: 250px;
+    width: 300px;
     height: 250px;
     border-radius: 8px;
     object-fit: cover;
@@ -689,6 +690,9 @@ footer ul li a:hover {
 @media screen and (max-width:600px) {
     .container {
         width: var(--container-width-sm);
+    }
+    .hero {
+        margin-left: 10px;
     }
     /*========Navbar========*/
     .nav__menu {
