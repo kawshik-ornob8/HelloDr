@@ -175,6 +175,7 @@ $result = $stmt->get_result();
                 <a href="mailto:<?php echo $email; ?>"><?php echo $email; ?></a>
                 <a href="tel:<?php echo $mobile_number; ?>"><?php echo $mobile_number; ?></a>
             </div>
+            <a href="patients_view_appointments.php" class="profile-btn">View Appointments</a>
             <a href="edit_user_profile.php" class="profile-btn">Edit Profile</a>
         </div>
 

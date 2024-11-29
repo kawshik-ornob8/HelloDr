@@ -1,6 +1,7 @@
 /* Example CSS for styling the login page */
 
 .login-container {
+    text-decoration: none;
     width: 300px;
     margin: 100px auto;
     padding: 20px;
@@ -44,6 +45,7 @@ form input {
 form button {
     padding: 10px;
     margin-top: 10px;
+    margin-bottom: 10px;
     background-color: #28a745;
     color: white;
     border: none;

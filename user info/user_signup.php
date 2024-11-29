@@ -1,6 +1,12 @@
 <?php
 session_start();
 include '../config.php';
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require '../PHPMailer/src/Exception.php';
+require '../PHPMailer/src/PHPMailer.php';
+require '../PHPMailer/src/SMTP.php';
 
 $errors = [];
 
@@ -35,13 +41,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors[] = 'Username or Email already exists.';
         } else {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-            $stmt = $conn->prepare('INSERT INTO patients (full_name, date_of_birth, sex, mobile_number, email, username, password) VALUES (?, ?, ?, ?, ?, ?, ?)');
-            $stmt->bind_param('sssssss', $full_name, $dob, $sex, $mobile, $email, $username, $hashed_password);
+            $activation_token = bin2hex(random_bytes(16)); // Generate a unique activation token
+
+            $stmt = $conn->prepare('INSERT INTO patients (full_name, date_of_birth, sex, mobile_number, email, username, password, activation_token, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0)');
+            $stmt->bind_param('ssssssss', $full_name, $dob, $sex, $mobile, $email, $username, $hashed_password, $activation_token);
 
             if ($stmt->execute()) {
-                $_SESSION['success'] = 'Account created successfully!';
-                header('Location: ../login.php');
-                exit();
+                // Send activation email
+                $activation_link = "http://192.168.1.200/HelloDr/user%20info/activate_account.php?token=$activation_token";
+                $subject = "Account Activation Required";
+                $message = <<<EOD
+Dear $full_name,
+
+Thank you for registering with us. Please activate your account by clicking the link below:
+$activation_link
+
+If you did not register for this account, please ignore this email.
+
+Regards,
+Your Website Team
+EOD;
+
+                $mail = new PHPMailer(true);
+                try {
+                    // SMTP server configuration
+                    $mail->isSMTP();
+                    $mail->Host = 'smtp.gmail.com';
+                    $mail->SMTPAuth = true;
+                    $mail->Username = 'kawshik15-14750@diu.edu.bd'; // Replace with your Gmail
+                    $mail->Password = '212-15-14750-ornob'; // Replace with your app-specific password
+                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                    $mail->Port = 587;
+
+                    // Email sender and recipient
+                    $mail->setFrom('kawshik15-14750@diu.edu.bd', 'Hello Dr.');
+                    $mail->addAddress($email);
+
+                    // Email content
+                    $mail->isHTML(false);
+                    $mail->Subject = $subject;
+                    $mail->Body = $message;
+
+                    if ($mail->send()) {
+                        $_SESSION['success'] = 'Account created successfully! Please check your email to activate your account.';
+                        header('Location: ../login.php');
+                        exit();
+                    } else {
+                        $errors[] = 'Failed to send activation email.';
+                    }
+                } catch (Exception $e) {
+                    $errors[] = "Mailer Error: {$mail->ErrorInfo}";
+                }
             } else {
                 $errors[] = 'Failed to register. Please try again.';
             }

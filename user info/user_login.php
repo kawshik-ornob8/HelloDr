@@ -23,22 +23,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['patient_login'])) {
     
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
-        if (password_verify($password, $row['password'])) {
-            $_SESSION['patient_id'] = $row['patient_id'];
-            $_SESSION['username'] = $row['username'];
 
-            // Redirect to the stored page or default profile page
-            if (isset($_SESSION['redirect_to'])) {
-                $redirect_url = $_SESSION['redirect_to'];
-                unset($_SESSION['redirect_to']); // Clear after using
-                header("Location: $redirect_url");
-                exit;
-            } else {
-                header("Location: user_profile.php"); // Default redirect
-                exit;
-            }
+        // Check if account is active
+        if ($row['is_active'] == 0) {
+            $error_message = "Your account is not active. Please activate your account first.";
         } else {
-            $error_message = "Incorrect password.";
+            if (password_verify($password, $row['password'])) {
+                $_SESSION['patient_id'] = $row['patient_id'];
+                $_SESSION['username'] = $row['username'];
+
+                // Redirect to the stored page or default profile page
+                if (isset($_SESSION['redirect_to'])) {
+                    $redirect_url = $_SESSION['redirect_to'];
+                    unset($_SESSION['redirect_to']); // Clear after using
+                    header("Location: $redirect_url");
+                    exit;
+                } else {
+                    header("Location: user_profile.php"); // Default redirect
+                    exit;
+                }
+            } else {
+                $error_message = "Incorrect password.";
+            }
         }
     } else {
         $error_message = "No user found with that username.";
@@ -48,8 +54,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['patient_login'])) {
 
 $conn->close();
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">

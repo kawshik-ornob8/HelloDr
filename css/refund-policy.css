@@ -1,0 +1,113 @@
+/* General Body Styling */
+
+body {
+    font-family: 'Montserrat', Arial, sans-serif;
+    background-color: var(--color-bg);
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+
+/* Section Styling */
+
+.refund-policy {
+    padding: 3rem 1rem;
+}
+
+.refund-policy .container {
+    max-width: 800px;
+    margin: 0 auto;
+    margin-top: 2.3rem;
+    background: #252a42;
+    /* Slightly lighter than body background for contrast */
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Header Styling */
+
+.refund-policy h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 1rem;
+    color: #ffffff;
+    border-bottom: ridge;
+}
+
+.refund-policy p {
+    font-size: 1rem;
+    color: #e0e0e0;
+    margin-bottom: 1.5rem;
+}
+
+.refund-policy a {
+    color: #4db8ff;
+    text-decoration: none;
+}
+
+.refund-policy a:hover {
+    text-decoration: underline;
+}
+
+
+/* Subtitles */
+
+.refund-policy h2 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    border-left: 2px solid #ccc;
+    border-right: 2px solid #ccc;
+    /* Highlight for section titles */
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+
+/* List Styling */
+
+.refund-policy ul {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+    color: #d1d1d1;
+}
+
+.refund-policy ul li {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.refund-policy ul li::before {
+    content: '•';
+    color: #ccc;
+    position: absolute;
+    left: 0;
+    font-size: 1.2rem;
+}
+
+
+/* Footer Styling */
+
+
+/* Responsive Design */
+
+@media screen and (max-width: 768px) {
+    .refund-policy h1 {
+        font-size: 2rem;
+    }
+    .refund-policy h2 {
+        font-size: 1.5rem;
+    }
+    .refund-policy ul li {
+        font-size: 0.9rem;
+    }
+}

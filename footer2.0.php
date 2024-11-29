@@ -37,9 +37,9 @@
             <div class="footer__3">
                 <h4>Privacy</h4>
                 <ul class="privacy">
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Terms and Conditions</a></li>
-                    <li><a href="#">Refund Policy</a></li>
+                <li><a href="privacy-policy.php">Privacy Policy</a></li>
+                <li><a href="terms-and-conditions.php">Terms and Conditions</a></li>
+                <li><a href="refund-policy.php">Refund Policy</a></li>
                 </ul>
             </div>
             <div class="footer__4">

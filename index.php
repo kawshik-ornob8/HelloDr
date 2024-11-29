@@ -150,13 +150,13 @@ $result = $conn->query($query);
                     <a href="appointment.php?doctor_id=<?php echo $doctor['doctor_id']; ?>" class="btn btn-primary">Consult Now</a>
                     
                     <!-- Link to send message page -->
-                    <a href="send_message.php?doctor_id=<?php echo $doctor['doctor_id']; ?>" class="btn btn-secondary">Send Message</a>
+                    <a href="send_message.php?doctor_id=<?php echo $doctor['doctor_id']; ?>" class="btn btn-primary">Send Message</a>
                     
                     <!-- Video Call Form -->
                     <form action="start_video_call.php" method="POST">
                         <input type="hidden" name="doctor_id" value="<?php echo $doctor['doctor_id']; ?>">
                         <input type="hidden" name="room_id" value="unique-room-id-<?php echo $doctor['doctor_id']; ?>"> <!-- Replace with dynamic logic if needed -->
-                        <button type="submit" class="btn btn-tertiary">Video Call</button>
+                        <button type="submit" class="btn btn-secondary">Video Call</button>
                     </form>
                 </article>
             <?php endwhile; ?>
@@ -172,7 +172,7 @@ $result = $conn->query($query);
         <h2>What Our Patients Say</h2>
         <article class="testimonial">
             <p>"Hello Dr. made healthcare easy and accessible. The doctors are knowledgeable and caring."</p>
-            <h4>- Washik Wail Faieaz</h4>
+            <h4>- Washik Wail</h4>
         </article>
         <article class="testimonial">
             <p>"I received excellent advice for my condition. I highly recommend their services!"</p>
