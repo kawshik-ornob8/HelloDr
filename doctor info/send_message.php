@@ -4,37 +4,43 @@ include('../config.php');
 
 // Ensure doctor is logged in
 if (!isset($_SESSION['doctor_id'])) {
-    http_response_code(403);
-    echo json_encode(["error" => "Unauthorized access"]);
+    echo json_encode(['success' => false, 'message' => 'Doctor not logged in.']);
     exit;
 }
 
-// Get doctor ID and input data
-$doctor_id = intval($_SESSION['doctor_id']);
-$data = json_decode(file_get_contents("php://input"), true);
+// Get doctor ID
+$doctor_id = $_SESSION['doctor_id'];
 
-// Ensure patient_id, message, and sender are set
-if (!isset($data['patient_id']) || !isset($data['message']) || !isset($data['sender'])) {
-    http_response_code(400);
-    echo json_encode(["error" => "Invalid input"]);
-    exit;
+// Get posted data
+$patient_id = $_POST['patient_id'];
+$message = $_POST['message'];
+$sender = $_POST['sender'];  // Should be 0 for doctor, 1 for patient
+
+// Handle image upload
+$image_path = null;
+if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+    $image_name = basename($_FILES['image']['name']);
+    $target_dir = "../images/chat/";
+    $target_file = $target_dir . uniqid() . "_" . $image_name;
+    
+    if (move_uploaded_file($_FILES['image']['tmp_name'], $target_file)) {
+        $image_path = $target_file;  // Save the path to the uploaded image
+    }
 }
 
-$patient_id = intval($data['patient_id']);
-$message = htmlspecialchars($data['message']);
-$sender = intval($data['sender']); // 0 for doctor, 1 for patient
+// Insert message into database
+$sql = "INSERT INTO messages (message, created_at, doctor_id, is_read, patient_id, sender, image_path)
+        VALUES (?, NOW(), ?, 0, ?, ?, ?)";
 
-// Insert the message into the messages table
-$insert_sql = "
-    INSERT INTO messages (doctor_id, patient_id, message, sender, created_at, is_read)
-    VALUES (?, ?, ?, ?, NOW(), 0)
-";
-$insert_stmt = $conn->prepare($insert_sql);
-$insert_stmt->bind_param("iisi", $doctor_id, $patient_id, $message, $sender);
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("siiis", $message, $doctor_id, $patient_id, $sender, $image_path);
 
-if ($insert_stmt->execute()) {
-    echo json_encode(["success" => true]);
+if ($stmt->execute()) {
+    echo json_encode(['success' => true]);
 } else {
-    echo json_encode(["success" => false, "error" => "Failed to send message"]);
+    echo json_encode(['success' => false, 'message' => 'Failed to send message.']);
 }
+
+$stmt->close();
+$conn->close();
 ?>

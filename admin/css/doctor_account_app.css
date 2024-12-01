@@ -1,0 +1,68 @@
+/* Common button styles */
+
+.view-btn,
+.approve-btn,
+.reject-btn {
+    display: inline-block;
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+
+/* View Button Styles */
+
+.view-btn {
+    background-color: #3498db;
+    /* Blue */
+    color: #fff;
+    border: 2px solid #3498db;
+}
+
+.view-btn:hover {
+    background-color: #2980b9;
+    border-color: #2980b9;
+}
+
+
+/* Approve Button Styles */
+
+.approve-btn {
+    background-color: #2ecc71;
+    /* Green */
+    color: #fff;
+    border: 2px solid #2ecc71;
+}
+
+.approve-btn:hover {
+    background-color: #27ae60;
+    border-color: #27ae60;
+}
+
+
+/* Reject Button Styles */
+
+.reject-btn {
+    background-color: #e74c3c;
+    /* Red */
+    color: #fff;
+    border: 2px solid #e74c3c;
+}
+
+.reject-btn:hover {
+    background-color: #c0392b;
+    border-color: #c0392b;
+}
+
+
+/* Optional: Add spacing between buttons */
+
+.approve-btn,
+.reject-btn {
+    margin-left: 10px;
+}

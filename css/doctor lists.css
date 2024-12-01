@@ -1,140 +1,123 @@
-/* Reset some default styles */
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-
-/* Set up a clean and modern font */
+/* General Styling */
 
 body {
-    font-family: 'Arial', sans-serif;
-    line-height: 1.6;
-    background-color: #f4f7fa;
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #f8f9fa;
     color: #333;
-    padding: 20px;
+}
+
+h2 {
+    font-size: 24px;
+    text-align: center;
+    margin-top: 20px;
+    color: #003366;
 }
 
 
-/* Container for the whole content */
+/* Specialty Grid Styling */
 
-.container {
-    max-width: 1200px;
+.specialty-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    padding: 20px;
     margin: 0 auto;
+    max-width: 1200px;
+}
+
+
+/* Specialty Card */
+
+.specialty-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
     padding: 20px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.specialty-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.specialty-card a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.specialty-card img {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 15px;
+}
+
+.specialty-card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #003366;
+}
+
+.specialty-card p {
+    font-size: 14px;
+    color: #555;
 }
 
 
-/* Title */
-
-h2,
-h3 {
-    color: #333;
-    margin-bottom: 20px;
-    font-size: 1.8rem;
-}
-
-
-/* Form styling */
-
-form {
-    margin-bottom: 30px;
-}
-
-label {
-    display: block;
-    font-size: 1rem;
-    margin-bottom: 5px;
-    color: #333;
-}
-
-select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    font-size: 1rem;
-    color: #333;
-    transition: border-color 0.3s ease;
-}
-
-select:focus {
-    border-color: #007BFF;
-    outline: none;
-}
-
-
-/* Doctor table */
+/* Table Styling */
 
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 30px;
-    background-color: #f9f9f9;
+    margin-top: 20px;
+    background: white;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-th,
-td {
-    padding: 15px;
+table th,
+table td {
     text-align: left;
-    font-size: 1rem;
+    padding: 10px 15px;
     border-bottom: 1px solid #ddd;
 }
 
-th {
-    background-color: #007BFF;
-    color: #fff;
+table th {
+    background-color: #003366;
+    color: white;
 }
 
-tr:hover {
+table tr:hover {
     background-color: #f1f1f1;
 }
 
 button {
-    padding: 10px 15px;
-    background-color: #28a745;
+    background-color: #003366;
     color: white;
     border: none;
-    border-radius: 5px;
+    padding: 8px 12px;
+    border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s;
 }
 
 button:hover {
-    background-color: #218838;
+    background-color: #0055a5;
 }
 
 
-/* Responsiveness */
+/* Responsive Design */
 
 @media (max-width: 768px) {
-    .container {
-        padding: 15px;
+    .specialty-grid {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     }
-    h2,
-    h3 {
-        font-size: 1.5rem;
-    }
-    select {
-        padding: 8px;
-    }
-    table {
-        font-size: 0.9rem;
-    }
-    th,
-    td {
-        padding: 10px;
-    }
-    button {
-        padding: 8px 12px;
+    table th,
+    table td {
+        font-size: 14px;
     }
 }

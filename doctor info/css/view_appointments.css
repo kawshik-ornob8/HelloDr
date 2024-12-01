@@ -137,3 +137,41 @@ tr:nth-child(even) {
 .pagination a:hover:not(.active) {
     background-color: #dee2e6;
 }
+
+#notification-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.notification {
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    padding: 10px;
+    width: 250px;
+    animation: slide-in 0.5s ease;
+}
+
+.notification a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.notification a:hover {
+    text-decoration: underline;
+}
+
+@keyframes slide-in {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}

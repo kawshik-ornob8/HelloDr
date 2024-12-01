@@ -63,7 +63,7 @@
                         </li>
                         <li>
                             <i class="uil uil-envelope"></i>
-                            <h5>kawshik.ornob8@gmail.com</h5> 
+                            <h5>contact.hellodr@gmail.com</h5> 
                         </li>
                         <li>
                             <i class="uil uil-location-point"></i>
@@ -84,7 +84,7 @@
                 </aside>
 
 
-                <form action="https://formspree.io/f/xwkzzlkj" method="POST" class="contact__form">
+                <form action="https://formspree.io/f/mldeoadq" method="POST" class="contact__form">
                     <div class="form__name">
                         <input type="text" name="First Name" placeholder="First Name" required>
                         <input type="text" name="Last Name" placeholder="Last Name" required>
@@ -115,18 +115,18 @@
                 <div class="footer__2">
                     <h4>Permalink</h4>
                     <ul class="permalink">
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="about.html">About</a></li>
-                        <li><a href="appointment.html">Appointment</a></li>
-                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="index.php">Home</a></li>
+                        <li><a href="about.php">About</a></li>
+                        <li><a href="appointment.php">Appointment</a></li>
+                        <li><a href="contact.php">Contact</a></li>
                     </ul>
                 </div>
                 <div class="footer__3">
                     <h4>Privacy</h4>
                     <ul class="privacy">
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms and Conditions</a></li>
-                        <li><a href="#">Refund Policy</a></li>
+                        <li><a href="privacy-policy.php">Privacy Policy</a></li>
+                        <li><a href="terms-and-conditions.php">Terms and Conditions</a></li>
+                        <li><a href="refund-policy.php">Refund Policy</a></li>
                     </ul>
                 </div>
 
@@ -134,7 +134,7 @@
                     <h4>Contact us</h4>
                     <div>
                         <p>+8801975288108</p>
-                        <p>kawshik.ornob8@gmail.com</p>
+                        <p>contact.hellodr@gmail.com</p>
                     </div>
                     <ul class="footer__socials">
                         <li><a href="https://www.facebook.com/kawshik.ornob.01"><i class="uil uil-facebook-f"></i></a></li>

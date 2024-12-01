@@ -27,12 +27,11 @@ $patient_result = $patient_stmt->get_result();
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="icon" type="image/x-icon" href="../images/favicon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doctor Conversations</title>
+    <link rel="stylesheet" href="css/view_appointments.css">
     <style>
-        /* Updated CSS for a modern look and new form styling */
         body {
             font-family: Arial, sans-serif;
             display: flex;
@@ -124,6 +123,12 @@ $patient_result = $patient_stmt->get_result();
         .reply-form button:hover {
             background-color: #005bb5;
         }
+        .image-preview {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -155,8 +160,9 @@ $patient_result = $patient_stmt->get_result();
         </div>
 
         <!-- Reply Form -->
-        <form class="reply-form" id="replyForm" style="display: none;">
+        <form class="reply-form" id="replyForm" style="display: none;" enctype="multipart/form-data">
             <textarea id="replyMessage" rows="3" placeholder="Type your reply..."></textarea>
+            <input type="file" id="messageImage" accept="image/*">
             <button type="button" onclick="sendMessage()">Send</button>
         </form>
     </div>
@@ -166,69 +172,96 @@ $patient_result = $patient_stmt->get_result();
     let currentPatientId = null;
 
     document.addEventListener('DOMContentLoaded', function () {
-        const patientList = document.getElementById('patientList');
-        const messageList = document.getElementById('messageList');
-        const replyForm = document.getElementById('replyForm');
+    const patientList = document.getElementById('patientList');
+    const messageList = document.getElementById('messageList');
+    const replyForm = document.getElementById('replyForm');
+    const messageImage = document.getElementById('messageImage');
 
-        // Add click event listener for each patient
-        patientList.addEventListener('click', function(event) {
-            if (event.target.tagName === 'LI') {
-                currentPatientId = event.target.getAttribute('data-patient-id');
-                loadMessages(currentPatientId);
-                replyForm.style.display = 'flex';
-            }
-        });
+    // Add click event listener for each patient
+    patientList.addEventListener('click', function(event) {
+        if (event.target.tagName === 'LI') {
+            currentPatientId = event.target.getAttribute('data-patient-id');
+            loadMessages(currentPatientId);  // Load messages for the selected patient
+            replyForm.style.display = 'flex';
+        }
     });
 
-    function loadMessages(patientId) {
-        fetch(`fetch_messages.php?patient_id=${patientId}`)
-            .then(response => response.json())
-            .then(data => {
-                messageList.innerHTML = '';
-                if (data.length > 0) {
-                    data.forEach(message => {
-                        const messageItem = document.createElement('div');
-                        messageItem.classList.add('message-item');
+    // Auto-fetch messages for the selected patient every 5 seconds
+    setInterval(autoFetchMessages, 0.5); // Fetch every 5 seconds
+});
 
-                        // Add unread class if message is not read
-                        if (!message.is_read) {
-                            messageItem.classList.add('unread');
-                        }
+// Function to load messages for a patient
+function loadMessages(patientId) {
+    fetch(`fetch_messages.php?patient_id=${patientId}`)
+        .then(response => response.json())
+        .then(data => {
+            const messageList = document.getElementById('messageList');
+            messageList.innerHTML = '';
+            if (data.length === 0) {
+                messageList.innerHTML = '<p>No messages found.</p>';
+            } else {
+                data.forEach(message => {
+                    const messageItem = document.createElement('div');
+                    messageItem.classList.add('message-item');
+                    if (message.is_read === 0) {
+                        messageItem.classList.add('unread');
+                    }
 
-                        // Check the sender and apply the correct styling
-                        if (message.sender === 1) {
-                            messageItem.style.backgroundColor = '#d4edda'; // Light green for patient
-                        } else {
-                            messageItem.style.backgroundColor = '#f7f7f7'; // Light grey for doctor
-                        }
+                    // Check the sender and apply the correct styling
+                    if (message.sender === 1) {
+                        // Patient message
+                        messageItem.style.backgroundColor = '#d4edda'; // Light green for patient
+                    } else {
+                        // Doctor message (sender = 0)
+                        messageItem.style.backgroundColor = '#f7f7f7'; // Light grey for doctor
+                    }
 
-                        messageItem.innerHTML = `
-                            <p class="message-text">${message.message}</p>
-                            <p class="message-meta">Sent on: ${message.created_at} | Status: ${message.is_read ? 'Read' : 'Unread'}</p>
-                        `;
-                        messageList.appendChild(messageItem);
-                    });
-                } else {
-                    messageList.innerHTML = '<p>No messages found for this patient.</p>';
-                }
-            });
+                    let messageContent = `<p class="message-text">${message.message}</p>`;
+                    if (message.image_path) {
+                        messageContent += `<img src="${message.image_path}" class="image-preview" />`;
+                    }
+                    messageContent += `<p class="message-meta">Sent on: ${message.created_at}</p>`;
+
+                    messageItem.innerHTML = messageContent;
+                    messageList.appendChild(messageItem);
+                });
+            }
+        });
+}
+
+// Function to auto-fetch messages periodically
+function autoFetchMessages() {
+    if (currentPatientId) {
+        loadMessages(currentPatientId);
     }
+}
+
 
     function sendMessage() {
         const replyMessage = document.getElementById('replyMessage').value.trim();
+        const fileInput = document.getElementById('messageImage');
+        const image = fileInput.files[0];
 
-        if (replyMessage === '' || !currentPatientId) return;
+        if (replyMessage === '' && !image) return;
+
+        const formData = new FormData();
+        formData.append('patient_id', currentPatientId);
+        formData.append('message', replyMessage);
+        formData.append('sender', 0);  // sender = 0 for doctor
+        if (image) {
+            formData.append('image', image);
+        }
 
         fetch('send_message.php', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ patient_id: currentPatientId, message: replyMessage, sender: 0 }) // sender is 0 for doctor
+            body: formData
         })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
                 loadMessages(currentPatientId);
                 document.getElementById('replyMessage').value = '';
+                fileInput.value = '';  // Clear file input
             } else {
                 alert('Error sending message.');
             }

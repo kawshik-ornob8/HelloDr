@@ -8,26 +8,29 @@ if (!isset($_SESSION['admin_id'])) {
     exit;
 }
 
-// Fetch admin details from the database
+// Fetch admin details using a prepared statement
 $admin_id = $_SESSION['admin_id'];
-$query = "SELECT full_name, email FROM admins WHERE admin_id = $admin_id";
-$result = mysqli_query($conn, $query);
+$stmt = $conn->prepare("SELECT full_name, email FROM admins WHERE admin_id = ?");
+$stmt->bind_param("i", $admin_id);
+$stmt->execute();
+$result = $stmt->get_result();
 
-if ($result && mysqli_num_rows($result) > 0) {
-    $admin = mysqli_fetch_assoc($result);
+if ($result && $result->num_rows > 0) {
+    $admin = $result->fetch_assoc();
     $admin_name = $admin['full_name'];
     $admin_email = $admin['email'];
 } else {
     // Handle error if admin details are not found
     $admin_name = "Admin";
-    $admin_email = "";
+    $admin_email = "Not Available";
 }
+$stmt->close();
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="icon" type="image/x-icon" href="../images/favicon.png">
+    <link rel="icon" type="image/x-icon" href="../images/favicon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
@@ -77,6 +80,14 @@ if ($result && mysqli_num_rows($result) > 0) {
         .button:hover {
             background-color: #0056b3;
         }
+
+        .logout-button {
+            background-color: #dc3545;
+        }
+
+        .logout-button:hover {
+            background-color: #a71d2a;
+        }
     </style>
 </head>
 <body>
@@ -91,9 +102,10 @@ if ($result && mysqli_num_rows($result) > 0) {
         <p>Choose an option below:</p>
         <a href="manage_patients.php" class="button">Manage Patients</a>
         <a href="manage_doctors.php" class="button">Manage Doctors</a>
+        <a href="doctor_account_app.php" class="button">Pending Doctor Accounts</a>
         <a href="team.php" class="button">Update Team Members</a>
         <a href="admin_signup.php" class="button">Add New Admin</a>
-        <a href="../logout.php" class="button">Logout</a>
+        <a href="../logout.php" class="button logout-button">Logout</a>
     </div>
 </body>
 </html>

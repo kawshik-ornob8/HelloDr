@@ -125,3 +125,29 @@ tr:nth-child(even) {
 .delete-btn:hover {
     background-color: #c82333;
 }
+
+.approve-btn {
+    padding: 5px 10px;
+    background-color: #00ce15;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.approve-btn:hover {
+    background-color: #23c89f;
+}
+
+.reject-btn {
+    padding: 5px 10px;
+    background-color: #dc3545;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.reject-btn:hover {
+    background-color: #ff2d42;
+}

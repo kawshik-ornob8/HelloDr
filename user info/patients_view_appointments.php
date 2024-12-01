@@ -59,7 +59,7 @@ $result = $stmt->get_result();
                             </form>
                         <?php else: ?>
                             <!-- Video Call Form -->
-                            <form action="../start_video_call.php" method="POST">
+                            <form action="start_video_call.php" method="POST">
                                 <input type="hidden" name="doctor_id" value="<?php echo $row['doctor_id']; ?>">
                                 <input type="hidden" name="room_id" value="unique-room-id-<?php echo $row['doctor_id']; ?>">
                                 <button type="submit" class="btn btn-secondary">Start Video Call</button>

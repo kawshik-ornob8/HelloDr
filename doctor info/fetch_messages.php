@@ -4,54 +4,35 @@ include('../config.php');
 
 // Ensure doctor is logged in
 if (!isset($_SESSION['doctor_id'])) {
-    http_response_code(403); // Forbidden access
-    echo json_encode(["error" => "Unauthorized access"]);
+    echo json_encode([]);
     exit;
 }
 
-// Get the logged-in doctor's ID
-$doctor_id = intval($_SESSION['doctor_id']);
+// Get doctor ID
+$doctor_id = $_SESSION['doctor_id'];
 
-// Check if patient_id is provided in the request
-if (!isset($_GET['patient_id'])) {
-    http_response_code(400); // Bad request
-    echo json_encode(["error" => "Patient ID is required"]);
-    exit;
-}
+// Get patient ID from request
+$patient_id = isset($_GET['patient_id']) ? intval($_GET['patient_id']) : 0;
 
-$patient_id = intval($_GET['patient_id']);
-
-// Fetch messages for the selected patient and logged-in doctor
-$message_sql = "
-    SELECT message, created_at, is_read
-    FROM messages
-    WHERE doctor_id = ? AND patient_id = ?
-    ORDER BY created_at ASC
+// Fetch messages for the doctor and patient
+$sql = "
+    SELECT m.message_id, m.message, m.created_at, m.sender, m.is_read, m.image_path
+    FROM messages m
+    WHERE m.doctor_id = ? AND m.patient_id = ?
+    ORDER BY m.created_at ASC
 ";
-$message_stmt = $conn->prepare($message_sql);
-$message_stmt->bind_param("ii", $doctor_id, $patient_id);
-$message_stmt->execute();
-$message_result = $message_stmt->get_result();
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ii", $doctor_id, $patient_id);
+$stmt->execute();
+$result = $stmt->get_result();
 
 $messages = [];
-while ($row = $message_result->fetch_assoc()) {
-    $messages[] = [
-        'message' => htmlspecialchars($row['message']),
-        'created_at' => $row['created_at'],
-        'is_read' => (bool)$row['is_read']
-    ];
+while ($row = $result->fetch_assoc()) {
+    $messages[] = $row;
 }
 
-// Mark all unread messages as read after fetching
-$update_sql = "
-    UPDATE messages
-    SET is_read = 1
-    WHERE doctor_id = ? AND patient_id = ? AND is_read = 0
-";
-$update_stmt = $conn->prepare($update_sql);
-$update_stmt->bind_param("ii", $doctor_id, $patient_id);
-$update_stmt->execute();
-
-header('Content-Type: application/json');
 echo json_encode($messages);
+
+$stmt->close();
+$conn->close();
 ?>

@@ -153,7 +153,7 @@ $result = $conn->query($query);
                     <a href="send_message.php?doctor_id=<?php echo $doctor['doctor_id']; ?>" class="btn btn-primary">Send Message</a>
                     
                     <!-- Video Call Form -->
-                    <form action="start_video_call.php" method="POST">
+                    <form action="user%20info/start_video_call.php" method="POST">
                         <input type="hidden" name="doctor_id" value="<?php echo $doctor['doctor_id']; ?>">
                         <input type="hidden" name="room_id" value="unique-room-id-<?php echo $doctor['doctor_id']; ?>"> <!-- Replace with dynamic logic if needed -->
                         <button type="submit" class="btn btn-secondary">Video Call</button>

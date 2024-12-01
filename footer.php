@@ -13,7 +13,7 @@
             <ul class="permalink">
                 <li><a href="index.php">Home</a></li>
                 <li><a href="about.php">About</a></li>
-                <li><a href="appointment.php">Appointment</a></li>
+                <li><a href="doctor lists.php">Appointment</a></li>
                 <li><a href="admin/admin_dashboard.php">Admin Portal</a></li>
             </ul>
         </div>
@@ -30,7 +30,7 @@
             <h4>Contact us</h4>
             <div>
                 <p>+8801975288108</p>
-                <p><a href="mailto:kawshik.ornob8@gmail.com">kawshik.ornob8@gmail.com</a></p>
+                <p><a href="mailto:contact.hellodr@gmail.com">contact.hellodr@gmail.com</a></p>
             </div>
             <ul class="footer__socials">
                 <li><a href="https://www.facebook.com/kawshik.ornob.01" target="_blank"><i class="uil uil-facebook-f"></i></a></li>

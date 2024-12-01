@@ -11,7 +11,7 @@ if (!isset($_SESSION['failed_attempts'])) {
 // Check if the user visited forget.php and reset the counter
 if (isset($_SESSION['visited_forget']) && $_SESSION['visited_forget']) {
     $_SESSION['failed_attempts'] = 0;
-    $_SESSION['visited_forget'] = false; // Reset this flag after counter reset
+    $_SESSION['visited_forget'] = false;
 }
 
 // Handle Patient Login
@@ -19,7 +19,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['patient_login'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    // Check if user exists in the patients table
     $stmt = $conn->prepare("SELECT * FROM patients WHERE username = ?");
     $stmt->bind_param("s", $username);
     $stmt->execute();
@@ -28,22 +27,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['patient_login'])) {
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
 
-        // Check if account is active
-        if ($row['is_active'] == 0) {
-            $error_message = "Your account is not active. Please contact support.";
+        if (password_verify($password, $row['password'])) {
+            $_SESSION['failed_attempts'] = 0;
+            $_SESSION['patient_id'] = $row['patient_id'];
+            $_SESSION['username'] = $row['username'];
+            header("Location: index.php");
+            exit;
         } else {
-            if (password_verify($password, $row['password'])) {
-                // Reset failed attempts on successful login
-                $_SESSION['failed_attempts'] = 0;
-
-                $_SESSION['patient_id'] = $row['patient_id'];
-                $_SESSION['username'] = $row['username'];
-                header("Location: index.php");
-                exit;
-            } else {
-                $_SESSION['failed_attempts'] += 1;
-                $error_message = "Incorrect password.";
-            }
+            $_SESSION['failed_attempts'] += 1;
+            $error_message = "Incorrect password.";
         }
     } else {
         $_SESSION['failed_attempts'] += 1;
@@ -57,7 +49,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['doctor_login'])) {
     $doctor_id = $_POST['doctor_id'];
     $password = $_POST['password'];
 
-    // Check if doctor exists in the doctors table
     $stmt = $conn->prepare("SELECT * FROM doctors WHERE doctor_reg_id = ?");
     $stmt->bind_param("s", $doctor_id);
     $stmt->execute();
@@ -66,14 +57,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['doctor_login'])) {
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
 
-        // Check if account is active
         if ($row['is_active'] == 0) {
-            $error_message = "Your account is not active. Please contact support.";
-        } else {
+            $error_message = "Your account is not active. Please check your email.";
+        } elseif ($row['is_active'] == 2) {
+            $error_message = "Please wait for admin approval of your account.";
+        } elseif ($row['is_active'] == 1) {
             if (password_verify($password, $row['password'])) {
-                // Reset failed attempts on successful login
                 $_SESSION['failed_attempts'] = 0;
-
                 $_SESSION['doctor_id'] = $row['doctor_id'];
                 $_SESSION['doctor_reg_id'] = $row['doctor_reg_id'];
                 header("Location: doctor info/doctor_dashboard.php");
@@ -82,6 +72,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['doctor_login'])) {
                 $_SESSION['failed_attempts'] += 1;
                 $error_message = "Incorrect password.";
             }
+        } else {
+            $error_message = "Unknown account status. Please contact support.";
         }
     } else {
         $_SESSION['failed_attempts'] += 1;
@@ -92,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['doctor_login'])) {
 
 // Redirect to forget.php if 3 failed attempts
 if ($_SESSION['failed_attempts'] >= 3) {
-    $_SESSION['visited_forget'] = true; // Set flag to indicate forget.php visit
+    $_SESSION['visited_forget'] = true;
     header("Location: forget.php");
     exit;
 }
@@ -122,9 +114,6 @@ $conn->close();
         .navigation-buttons a.home {
             background-color: #28a745;
         }
-
-        
-
         .navigation-buttons a {
             display: flex;
             margin-bottom: 3%;
@@ -134,12 +123,8 @@ $conn->close();
             padding: 10px 44.5%;
             border-radius: 5px;
         }
-
         .navigation-buttons a:hover {
             background-color: #0056b3;
-        }
-        .doctor-login-form {
-            text-decoration: none;
         }
     </style>
 </head>
@@ -160,13 +145,10 @@ $conn->close();
             <form action="login.php" method="POST">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required>
-
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" required>
-
                 <button type="submit" name="patient_login">Login</button>
             </form>
-
             <a href="forget.php" class="forget" style="text-decoration: none; margin-top: 5px;">Forgotten password?</a>
         </div>
 
@@ -175,26 +157,21 @@ $conn->close();
             <form action="login.php" method="POST">
                 <label for="doctor_id">Doctor Registration ID:</label>
                 <input type="text" id="doctor_id" name="doctor_id" required>
-
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" required>
-
                 <button type="submit" name="doctor_login">Login</button>
             </form>
-
             <a href="forget.php" class="forget" style="text-decoration: none; margin-top: 5px;">Forgotten password?</a>
-
-
         </div>
+
         <!-- Navigation buttons -->
         <div class="navigation-buttons">
-        <a href="index.php" class="home">Home</a>
+            <a href="index.php" class="home">Home</a>
             <a href="javascript:history.back()" class="back">Back</a>
         </div>
     </div>
 
     <script>
-        // Show the respective login form based on the selection
         document.getElementById('patient-login-link').onclick = function() {
             document.getElementById('patient-login-form').style.display = 'block';
             document.getElementById('doctor-login-form').style.display = 'none';

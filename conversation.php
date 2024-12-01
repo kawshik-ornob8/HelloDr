@@ -3,7 +3,7 @@ session_start();
 include('config.php');
 
 if (!isset($_SESSION['patient_id'])) {
-    header("Location: user%20info/user_login.php");
+    header("Location: user_info/user_login.php");
     exit();
 }
 
@@ -24,7 +24,7 @@ $doctor_name = $doctor_result->fetch_assoc()['full_name'] ?? 'Unknown Doctor';
 $doctor_stmt->close();
 
 // Initial fetch of messages
-$sql = "SELECT m.message, m.created_at, m.sender
+$sql = "SELECT m.message, m.created_at, m.sender, m.image_path
         FROM messages m
         WHERE (m.patient_id = ? AND m.doctor_id = ?)
         ORDER BY m.created_at ASC";
@@ -77,6 +77,9 @@ $stmt->close();
             padding: 10px;
             border-radius: 5px;
         }
+        input[type="file"] {
+            margin-top: 10px;
+        }
         button {
             padding: 10px;
             background-color: #0066cc;
@@ -94,12 +97,16 @@ $stmt->close();
         <?php foreach ($messages as $message): ?>
             <div class="message-item <?php echo $message['sender'] == 1 ? 'patient-message' : 'doctor-message'; ?>">
                 <p><?php echo htmlspecialchars($message['message']); ?></p>
+                <?php if ($message['image_path']): ?>
+                    <img src="HelloDr/<?php echo htmlspecialchars($message['image_path']); ?>" alt="Image" style="max-width: 720px; max-height: auto;">
+                <?php endif; ?>
                 <small><?php echo date("F j, Y, g:i a", strtotime($message['created_at'])); ?></small>
             </div>
         <?php endforeach; ?>
     </div>
-    <form id="messageForm">
+    <form id="messageForm" enctype="multipart/form-data">
         <textarea id="messageInput" name="message" placeholder="Type your message here"></textarea>
+        <input type="file" id="messageImage" name="message_image" accept="image/*">
         <button type="submit">Send</button>
     </form>
 </div>
@@ -108,6 +115,7 @@ $stmt->close();
     const messagesContainer = document.getElementById('messagesContainer');
     const messageForm = document.getElementById('messageForm');
     const messageInput = document.getElementById('messageInput');
+    const messageImage = document.getElementById('messageImage');
     let lastMessageTimestamp = '<?php echo end($messages)['created_at'] ?? "1970-01-01 00:00:00"; ?>';
 
     // Fetch new messages and append them
@@ -122,6 +130,16 @@ $stmt->close();
 
                         const messageText = document.createElement('p');
                         messageText.textContent = message.message;
+
+                        // If the message has an image, add it
+                        if (message.image_path) {
+                            const imageElement = document.createElement('img');
+                            imageElement.src = message.image_path;
+                            imageElement.alt = 'Image';
+                            imageElement.style.maxWidth = '100px'; // Resize the image
+                            imageElement.style.maxHeight = '100px'; // Resize the image
+                            messageDiv.appendChild(imageElement);
+                        }
 
                         const messageMeta = document.createElement('small');
                         messageMeta.textContent = new Date(message.created_at).toLocaleString();
@@ -149,6 +167,11 @@ $stmt->close();
         formData.append('patient_id', <?php echo $patient_id; ?>);
         formData.append('sender', 1); // Sender is the patient
 
+        // Check if an image is selected and append to form data
+        if (messageImage.files[0]) {
+            formData.append('message_image', messageImage.files[0]);
+        }
+
         fetch('send_message_action.php', {
             method: 'POST',
             body: formData
@@ -157,7 +180,8 @@ $stmt->close();
             .then(data => {
                 if (data.success) {
                     fetchMessages();
-                    messageInput.value = '';
+                    messageInput.value = ''; // Clear message input
+                    messageImage.value = ''; // Clear file input
                 } else {
                     alert('Failed to send message.');
                 }
@@ -165,7 +189,7 @@ $stmt->close();
             .catch(error => console.error('Error sending message:', error));
     });
 
-    // Fetch messages every 1 seconds
+    // Fetch messages every 1 second
     setInterval(fetchMessages, 1000);
 </script>
 </body>

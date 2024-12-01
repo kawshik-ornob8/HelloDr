@@ -30,7 +30,7 @@
                 <ul class="permalink">
                     <li><a href="index.php">Home</a></li>
                     <li><a href="about.php">About</a></li>
-                    <li><a href="appointment.php">Appointment</a></li>
+                    <li><a href="doctor lists.php">Appointment</a></li>
                     <li><a href="contact.php">Contact</a></li>
                 </ul>
             </div>
@@ -45,7 +45,7 @@
             <div class="footer__4">
                 <h4>Contact Us</h4>
                 <p>+8801975288108</p>
-                <p>kawshik.ornob8@gmail.com</p>
+                <p>contact.hellodr@gmail.com</p>
                 <ul class="footer__socials">
                     <li><a href="https://www.facebook.com/kawshik.ornob.01"><i class="uil uil-facebook-f"></i></a></li>
                     <li><a href="https://www.instagram.com/iam_kawshik/"><i class="uil uil-instagram-alt"></i></a></li>

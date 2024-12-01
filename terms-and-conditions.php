@@ -58,7 +58,7 @@
 
             <h2>Contact Information</h2>
             <p>If you have any questions or concerns regarding these Terms and Conditions, please contact us at:</p>
-            <p>Email: <a href="mailto:supporthellodr@gmail.com">supporthellodr@gmail.com</a></p>
+            <p>Email: <a href="mailto:contact.hellodr@gmail.com">contact.hellodr@gmail.com</a></p>
             <p>Phone: +880 1750036049</p>
         </div>
     </section>
