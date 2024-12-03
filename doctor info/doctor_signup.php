@@ -106,13 +106,13 @@ EOD;
                     $mail->isSMTP();
                     $mail->Host = 'smtp.gmail.com';
                     $mail->SMTPAuth = true;
-                    $mail->Username = 'kawshik15-14750@diu.edu.bd'; // Replace with your Gmail
-                    $mail->Password = '212-15-14750-ornob'; // Replace with your app-specific password
+                    $mail->Username = $config['smtp_username'];
+    $mail->Password = $config['smtp_password'];
                     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                     $mail->Port = 587;
 
                     // Email sender and recipient
-                    $mail->setFrom('kawshik15-14750@diu.edu.bd', 'Hello Dr.');
+                    $mail->setFrom($config['smtp_username'], 'Hello Dr.');
                     $mail->addAddress($email_address);
 
                     // Email content

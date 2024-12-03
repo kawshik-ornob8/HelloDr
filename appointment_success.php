@@ -8,13 +8,16 @@
         /* General styles for the container */
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f4f8;
+            background-color: #1f2641;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+        }
+        body {
+            background-image: url("./images/bg-texture.png");
         }
 
         .container {

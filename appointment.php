@@ -29,12 +29,15 @@ $prev_time = isset($_COOKIE['appointment_time']) ? $_COOKIE['appointment_time'] 
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f7f9fc;
+            background-color: #1f2641;
             color: #333;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+        }
+        body {
+            background-image: url("./images/bg-texture.png");
         }
 
         .container {
@@ -110,7 +113,8 @@ $prev_time = isset($_COOKIE['appointment_time']) ? $_COOKIE['appointment_time'] 
             <input type="hidden" name="doctor_id" value="<?php echo $doctor['doctor_id']; ?>">
             
             <label for="appointment_date">Preferred Date:</label>
-            <input type="date" name="appointment_date" value="<?php echo htmlspecialchars($prev_date); ?>" required>
+            <input type="date" name="appointment_date" value="<?php echo htmlspecialchars($prev_date); ?>" min="<?php echo date('Y-m-d'); ?>" required>
+
 
             <label for="appointment_time">Preferred Time:</label>
             <select name="appointment_time" id="appointment_time" required>

@@ -64,13 +64,13 @@ EOD;
                 $mail->isSMTP();
                 $mail->Host = 'smtp.gmail.com';  // Gmail SMTP server
                 $mail->SMTPAuth = true;
-                $mail->Username = 'kawshik15-14750@diu.edu.bd';  // Replace with your Gmail
-                $mail->Password = '212-15-14750-ornob';   // Replace with your app-specific password
+                $mail->Username = $config['smtp_username'];
+                $mail->Password = $config['smtp_password'];
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                 $mail->Port = 587;
 
                 // Email sender and recipient
-                $mail->setFrom('kawshik15-14750@diu.edu.bd', 'Hello Dr.'); // Replace with your email
+                $mail->setFrom($config['smtp_username'], 'Hello Dr.'); // Replace with your email
                 $mail->addAddress($email);  // Send the email to the user
 
                 // Email content

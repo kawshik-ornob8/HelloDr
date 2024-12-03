@@ -54,12 +54,12 @@ if (isset($_POST['appointment_id'])) {
                 $mail->isSMTP();
                 $mail->Host = 'smtp.gmail.com'; // Update with your SMTP host
                 $mail->SMTPAuth = true;
-                $mail->Username = 'kawshik15-14750@diu.edu.bd'; // Update with your email
-                $mail->Password = '212-15-14750-ornob'; // Update with your email password
+                $mail->Username = $config['smtp_username'];
+    $mail->Password = $config['smtp_password'];
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                 $mail->Port = 587;
 
-                $mail->setFrom('kawshik15-14750@diu.edu.bd', 'Hello Dr.');
+                $mail->setFrom($config['smtp_username'], 'Hello Dr.');
                 $mail->addAddress($to);
 
                 $mail->Subject = $subject;
