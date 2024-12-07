@@ -31,10 +31,10 @@
             <div class="container nav__container">
                 <a href="index.html"><h4>HELLO DR.</h4></a>
                 <ul class="nav__menu">
-                    <li><a href="index.php">Home</a></li>
-                    <li><a href="about.php">About</a></li>
-                    <li><a href="doctor_lists.php">Appointment</a></li>
-                    <li><a href="contact.php">Contact</a></li>
+                    <li><a href="index">Home</a></li>
+                    <li><a href="about">About</a></li>
+                    <li><a href="doctor_lists">Appointment</a></li>
+                    <li><a href="contact">Contact</a></li>
                 </ul>
                 <button id="open-menu-btn"><i class="uil uil-bars"></i></button>
                 <button id="close-menu-btn"><i class="uil uil-multiply"></i></button>

@@ -45,7 +45,7 @@ $result = $conn->query($query);
         <div class="container hero__container">
             <h1>Welcome to Hello Dr.</h1>
             <p>Your trusted partner for virtual healthcare services, connecting you with certified doctors anytime, anywhere.</p>
-            <a href="doctor lists" class="btn btn-primary">Book an Appointment</a>
+            <a href="doctor_lists" class="btn btn-primary">Book an Appointment</a>
         </div>
         <div class="header__right">
             <div class="header__right-imge">
