@@ -87,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 }
 
                 // Send activation email
-                $activation_link = "http://192.168.1.200/HelloDr/doctor%20info/activate_account?token=$activation_token";
+                $activation_link = "http://192.168.1.200/HelloDr/doctor/activate_account?token=$activation_token";
                 $subject = "Account Activation Required";
                 $message = <<<EOD
 Dear $full_name,

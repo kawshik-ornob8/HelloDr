@@ -29,8 +29,8 @@
                 <h4>Permalink</h4>
                 <ul class="permalink">
                     <li><a href="index">Home</a></li>
-                    <li><a href="abou">About</a></li>
-                    <li><a href="doctor lists">Appointment</a></li>
+                    <li><a href="about">About</a></li>
+                    <li><a href="doctor_lists">Appointment</a></li>
                     <li><a href="contact">Contact</a></li>
                 </ul>
             </div>

@@ -27,15 +27,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['patient_login'])) {
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
 
-        if (password_verify($password, $row['password'])) {
-            $_SESSION['failed_attempts'] = 0;
-            $_SESSION['patient_id'] = $row['patient_id'];
-            $_SESSION['username'] = $row['username'];
-            header("Location: index");
-            exit;
+        // Check if patient is active
+        if ($row['is_active'] == 0) {
+            $error_message = "Your account is not active. Please check your email.";
+        } elseif ($row['is_active'] == 1) {
+            if (password_verify($password, $row['password'])) {
+                $_SESSION['failed_attempts'] = 0;
+                $_SESSION['patient_id'] = $row['patient_id'];
+                $_SESSION['username'] = $row['username'];
+                header("Location: index");
+                exit;
+            } else {
+                $_SESSION['failed_attempts'] += 1;
+                $error_message = "Incorrect password.";
+            }
         } else {
-            $_SESSION['failed_attempts'] += 1;
-            $error_message = "Incorrect password.";
+            $error_message = "Unknown account status. Please contact support.";
         }
     } else {
         $_SESSION['failed_attempts'] += 1;
