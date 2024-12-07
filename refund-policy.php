@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/refund-policy.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;800;900&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="./images/favicon.png">
+    
 </head>
 <body>
     <?php include 'header.php'; ?>

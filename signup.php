@@ -106,6 +106,8 @@
         }
 
     </style>
+
+    
 </head>
 <body>
 
@@ -127,6 +129,20 @@
             document.querySelector('h2').style.animation = 'slideIn 1s ease-out forwards';
         });
     </script>
+    <script>
+    // Show the loader on page load
+    document.addEventListener("DOMContentLoaded", function () {
+        const loader = document.getElementById("page-loader");
+
+        // Hide the loader after the page has fully loaded
+        window.addEventListener("load", function () {
+            if (loader) {
+                loader.style.display = "none"; // Hide loader
+            }
+        });
+    });
+</script>
+
 
 </body>
 </html>

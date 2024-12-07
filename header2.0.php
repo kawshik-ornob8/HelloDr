@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="./css/contact.css">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.6/css/unicons.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    
     <style>
         body {
             background-image: url("./images/bg-texture.png");

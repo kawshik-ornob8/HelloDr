@@ -140,14 +140,14 @@ $result = $conn->query($query);
                             loading="lazy">
 
                         <!-- Display full name -->
-                        <h4>Dr. <?php echo htmlspecialchars($doctor['full_name']); ?></h4>
+                        <h4> <?php echo htmlspecialchars($doctor['full_name']); ?></h4>
 
                         <!-- Display specialty and degree -->
                         <p class="doctor__degree"><?php echo htmlspecialchars($doctor['degree']); ?>, Specialist in <?php echo htmlspecialchars($doctor['specialty']); ?></p>
 
                         <!-- Display average rating -->
                         <div class="doctor__rating">
-                            <p>Average Rating:</p>
+                        <p style="color: black; font-weight: bold;">Average Rating</p>
                             <?php
                             $average_rating = round($doctor['average_rating'], 1); // Round to 1 decimal
                             $full_stars = floor($average_rating); // Number of full stars
@@ -156,20 +156,20 @@ $result = $conn->query($query);
 
                             // Display full stars
                             for ($i = 0; $i < $full_stars; $i++) {
-                                echo '<span style="color: gold; font-size: 1.2rem;">&#9733;</span>';
+                                echo '<span style="color: gold; font-size: 2rem;">&#9733;</span>';
                             }
 
                             // Display half star
                             if ($half_star) {
-                                echo '<span style="color: gold; font-size: 1.2rem;">&#9734;</span>';
+                                echo '<span style="color: gold; font-size: 2rem;">&#9734;</span>';
                             }
 
                             // Display empty stars
                             for ($i = 0; $i < $empty_stars; $i++) {
-                                echo '<span style="color: #ccc; font-size: 1.2rem;">&#9733;</span>';
+                                echo '<span style="color: #ccc; font-size: 2rem;">&#9733;</span>';
                             }
                             ?>
-                            <p>(<?php echo $average_rating; ?> / 5)</p>
+                            <p>Per consult (<?php echo $average_rating; ?> / 5)</p>
                         </div>
 
 
@@ -178,13 +178,6 @@ $result = $conn->query($query);
 
                         <!-- Link to send message page -->
                         <a href="send_message?doctor_id=<?php echo $doctor['doctor_id']; ?>" class="btn btn-primary">Send Message</a>
-
-                        <!-- Video Call Form -->
-                        <form action="user/start_video_call" method="POST">
-                            <input type="hidden" name="doctor_id" value="<?php echo $doctor['doctor_id']; ?>">
-                            <input type="hidden" name="room_id" value="unique-room-id-<?php echo $doctor['doctor_id']; ?>"> <!-- Replace with dynamic logic if needed -->
-                            <button type="submit" class="btn btn-secondary">Video Call</button>
-                        </form>
                     </article>
                 <?php endwhile; ?>
             </div>

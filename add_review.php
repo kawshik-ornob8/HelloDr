@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Show success message and redirect
         echo "<script>
                 alert('Review added successfully!');
-                window.location.href = 'doctor%20info/view_profile.php?doctor_id=" . $doctor_id . "'; // Redirect to view_profile.php
+                window.location.href = 'doctor/view_profile.php?doctor_id=" . $doctor_id . "'; // Redirect to view_profile.php
               </script>";
     } else {
         echo "<p class='error-message'>Error: " . $stmt->error . "</p>";
