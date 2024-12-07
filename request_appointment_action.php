@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Ensure that the patient is logged in
 if (!isset($_SESSION['patient_id'])) {
     // If not logged in, redirect to login page
-    header("Location: user info/user_login.php");
+    header("Location: user/user_login");
     exit();
 }
 
@@ -112,7 +112,7 @@ EOD;
     }
 
     // Redirect to a confirmation page
-    header("Location: appointment_success.php");
+    header("Location: appointment_success");
     exit();
 }
 } else {

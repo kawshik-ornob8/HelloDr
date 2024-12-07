@@ -32,7 +32,7 @@
                 <ul class="nav__menu">
                     <li><a href="index.php">Home</a></li>
                     <li><a href="about.php">About</a></li>
-                    <li><a href="appointment.php">Appointment</a></li>
+                    <li><a href="doctor_lists.php">Appointment</a></li>
                     <li><a href="contact.php">Contact</a></li>
                 </ul>
                 <button id="open-menu-btn"><i class="uil uil-bars"></i></button>

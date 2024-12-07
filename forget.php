@@ -110,7 +110,7 @@ $conn->close();
     <link rel="stylesheet" href="css/login.css">
     <style>
         body {
-            background-image: url("./images/bg-texture.png");
+            background-color: #f4f7f6;
         }
         .navigation-buttons {
             margin-top: 20px;
@@ -147,7 +147,7 @@ $conn->close();
         }
         ?>
 
-        <form action="forget.php" method="POST">
+        <form action="forget" method="POST">
             <label for="email">Email Address:</label>
             <input type="email" id="email" name="email" required>
 
@@ -161,7 +161,7 @@ $conn->close();
         </form>
         <!-- Navigation buttons -->
         <div class="navigation-buttons">
-            <a href="index.php">Home</a>
+            <a href="index">Home</a>
             <a href="javascript:history.back()" class="back">Back</a>
         </div>
     </div>

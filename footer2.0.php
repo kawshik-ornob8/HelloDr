@@ -20,7 +20,7 @@
 <footer>
         <div class="container footer__container">
             <div class="footer__1">
-                <a href="index.php" class="footer__logo"><h4>HELLO DR.</h4></a>
+                <a href="index" class="footer__logo"><h4>HELLO DR.</h4></a>
                 <p>
                     At Your Doctors Online, we provide accessible virtual health care for your family around the clock with the help of our board-certified online doctors.
                 </p>
@@ -28,18 +28,18 @@
             <div class="footer__2">
                 <h4>Permalink</h4>
                 <ul class="permalink">
-                    <li><a href="index.php">Home</a></li>
-                    <li><a href="about.php">About</a></li>
-                    <li><a href="doctor lists.php">Appointment</a></li>
-                    <li><a href="contact.php">Contact</a></li>
+                    <li><a href="index">Home</a></li>
+                    <li><a href="abou">About</a></li>
+                    <li><a href="doctor lists">Appointment</a></li>
+                    <li><a href="contact">Contact</a></li>
                 </ul>
             </div>
             <div class="footer__3">
                 <h4>Privacy</h4>
                 <ul class="privacy">
-                <li><a href="privacy-policy.php">Privacy Policy</a></li>
-                <li><a href="terms-and-conditions.php">Terms and Conditions</a></li>
-                <li><a href="refund-policy.php">Refund Policy</a></li>
+                <li><a href="privacy-policy">Privacy Policy</a></li>
+                <li><a href="terms-and-conditions">Terms and Conditions</a></li>
+                <li><a href="refund-policy">Refund Policy</a></li>
                 </ul>
             </div>
             <div class="footer__4">

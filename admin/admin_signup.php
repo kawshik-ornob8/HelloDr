@@ -176,7 +176,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
     <div class="signup-container">
         <h2>Add New Admin</h2>
-        <form action="admin_signup.php" method="POST">
+        <form action="admin_signup" method="POST">
             <label for="fullname">Full Name:</label>
             <input type="text" id="fullname" name="fullname" required>
 
@@ -193,7 +193,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </form>
 
         <!-- Back to Dashboard Button -->
-        <a href="admin_dashboard.php" class="button">Back to Dashboard</a>
+        <a href="admin_dashboard" class="button">Back to Dashboard</a>
     </div>
 </body>
 </html>

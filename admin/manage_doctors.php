@@ -4,7 +4,7 @@ include "../config.php";
 
 // Check if the user is logged in and is an admin
 if (!isset($_SESSION['admin_id'])) {
-    header('Location: admin_login.php'); // Redirect to login if not logged in as an admin
+    header('Location: admin_login'); // Redirect to login if not logged in as an admin
     exit;
 }
 
@@ -67,7 +67,7 @@ if (isset($_GET['delete_id']) && is_numeric($_GET['delete_id'])) {
     $delete_stmt->execute();
 
     // Redirect after deletion
-    header("Location: manage_doctors.php?page=$page&search=" . urlencode($search));
+    header("Location: manage_doctors?page=$page&search=" . urlencode($search));
     exit;
 }
 ?>
@@ -115,7 +115,7 @@ if (isset($_GET['delete_id']) && is_numeric($_GET['delete_id'])) {
                     <td><?php echo htmlspecialchars($row['specialty']); ?></td>
                     <td><?php echo htmlspecialchars($row['degree']); ?></td>
                     <td>
-                        <a href="manage_doctors.php?delete_id=<?php echo $row['doctor_id']; ?>&page=<?php echo $page; ?>&search=<?php echo urlencode($search); ?>" class="delete-btn">Delete</a>
+                        <a href="manage_doctors?delete_id=<?php echo $row['doctor_id']; ?>&page=<?php echo $page; ?>&search=<?php echo urlencode($search); ?>" class="delete-btn">Delete</a>
                     </td>
                 </tr>
             <?php } ?>
@@ -131,22 +131,22 @@ if (isset($_GET['delete_id']) && is_numeric($_GET['delete_id'])) {
             $next = $page + 1;
 
             if ($page > 1) {
-                echo "<a href='manage_doctors.php?page=$prev&search=" . urlencode($search) . "'>Previous</a>";
+                echo "<a href='manage_doctors?page=$prev&search=" . urlencode($search) . "'>Previous</a>";
             }
 
             for ($i = 1; $i <= $total_pages; $i++) {
                 $active = ($page == $i) ? "active" : "";
-                echo "<a href='manage_doctors.php?page=$i&search=" . urlencode($search) . "' class='$active'>$i</a>";
+                echo "<a href='manage_doctors?page=$i&search=" . urlencode($search) . "' class='$active'>$i</a>";
             }
 
             if ($page < $total_pages) {
-                echo "<a href='manage_doctors.php?page=$next&search=" . urlencode($search) . "'>Next</a>";
+                echo "<a href='manage_doctors?page=$next&search=" . urlencode($search) . "'>Next</a>";
             }
             ?>
         </div>
     <?php } ?>
 
-    <a href="admin_dashboard.php" class="back-btn">Back to Dashboard</a>
+    <a href="admin_dashboard" class="back-btn">Back to Dashboard</a>
 </div>
 
 </body>

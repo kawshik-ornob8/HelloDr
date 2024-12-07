@@ -1,7 +1,15 @@
 <?php
 include('config.php');
 
+// Check if 'doctor_id' exists in the URL
+if (!isset($_GET['doctor_id']) || empty($_GET['doctor_id'])) {
+    echo "Doctor ID is missing.";
+    exit();
+}
+
 $doctor_id = $_GET['doctor_id'];
+
+// Fetch doctor details
 $query = "SELECT * FROM doctors WHERE doctor_id = ?";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("i", $doctor_id);
@@ -17,6 +25,7 @@ if (!$doctor) {
 $prev_date = isset($_COOKIE['appointment_date']) ? $_COOKIE['appointment_date'] : '';
 $prev_time = isset($_COOKIE['appointment_time']) ? $_COOKIE['appointment_time'] : '';
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -100,7 +109,7 @@ $prev_time = isset($_COOKIE['appointment_time']) ? $_COOKIE['appointment_time'] 
 <body>
     <div class="container">
         <!-- Doctor's Profile Information -->
-        <img src="doctor info/images/<?php echo $doctor['doctor_id']; ?>.<?php echo htmlspecialchars(pathinfo($doctor['profile_photo'], PATHINFO_EXTENSION)); ?>" 
+        <img src="doctor/images/<?php echo $doctor['doctor_id']; ?>.<?php echo htmlspecialchars(pathinfo($doctor['profile_photo'], PATHINFO_EXTENSION)); ?>" 
              alt="Profile photo of Dr. <?php echo htmlspecialchars($doctor['full_name']); ?>" 
              loading="lazy">
         <h2>Consult With</h2>
@@ -109,7 +118,7 @@ $prev_time = isset($_COOKIE['appointment_time']) ? $_COOKIE['appointment_time'] 
         <p>Bio: <?php echo htmlspecialchars($doctor['bio']); ?></p>
 
         <!-- Form for requesting appointment -->
-        <form action="request_appointment_action.php" method="post">
+        <form action="request_appointment_action" method="post">
             <input type="hidden" name="doctor_id" value="<?php echo $doctor['doctor_id']; ?>">
             
             <label for="appointment_date">Preferred Date:</label>

@@ -4,7 +4,7 @@ include "../config.php";
 
 // Check if the user is logged in and is an admin
 if (!isset($_SESSION['admin_id'])) {
-    header('Location: admin_login.php');
+    header('Location: admin_login');
     exit;
 }
 
@@ -73,7 +73,7 @@ if (isset($_GET['approve_id']) && is_numeric($_GET['approve_id'])) {
     if ($approve_stmt) {
         $approve_stmt->bind_param("i", $approve_id);
         $approve_stmt->execute();
-        header("Location: doctor_account_app.php?page=$page&search=" . urlencode($search));
+        header("Location: doctor_account_app?page=$page&search=" . urlencode($search));
         exit;
     } else {
         die("Error preparing approval statement: " . $conn->error);
@@ -89,7 +89,7 @@ if (isset($_GET['reject_id']) && is_numeric($_GET['reject_id'])) {
     if ($reject_stmt) {
         $reject_stmt->bind_param("i", $reject_id);
         $reject_stmt->execute();
-        header("Location: doctor_account_app.php?page=$page&search=" . urlencode($search));
+        header("Location: doctor_account_app?page=$page&search=" . urlencode($search));
         exit;
     } else {
         die("Error preparing rejection statement: " . $conn->error);
@@ -143,8 +143,8 @@ if (isset($_GET['reject_id']) && is_numeric($_GET['reject_id'])) {
                         <a href="../images/certificates/<?php echo htmlspecialchars($row['certificate']); ?>" target="_blank" class="view-btn">View Certificate</a>
                     </td>
                     <td>
-                        <a href="doctor_account_app.php?approve_id=<?php echo $row['doctor_id']; ?>&page=<?php echo $page; ?>&search=<?php echo urlencode($search); ?>" class="approve-btn">Approve</a>
-                        <a href="doctor_account_app.php?reject_id=<?php echo $row['doctor_id']; ?>&page=<?php echo $page; ?>&search=<?php echo urlencode($search); ?>" class="reject-btn">Reject</a>
+                        <a href="doctor_account_app?approve_id=<?php echo $row['doctor_id']; ?>&page=<?php echo $page; ?>&search=<?php echo urlencode($search); ?>" class="approve-btn">Approve</a>
+                        <a href="doctor_account_app?reject_id=<?php echo $row['doctor_id']; ?>&page=<?php echo $page; ?>&search=<?php echo urlencode($search); ?>" class="reject-btn">Reject</a>
                     </td>
                 </tr>
             <?php } ?>
@@ -160,22 +160,22 @@ if (isset($_GET['reject_id']) && is_numeric($_GET['reject_id'])) {
             $next = $page + 1;
 
             if ($page > 1) {
-                echo "<a href='doctor_account_app.php?page=$prev&search=" . urlencode($search) . "'>Previous</a>";
+                echo "<a href='doctor_account_app?page=$prev&search=" . urlencode($search) . "'>Previous</a>";
             }
 
             for ($i = 1; $i <= $total_pages; $i++) {
                 $active = ($page == $i) ? "active" : "";
-                echo "<a href='doctor_account_app.php?page=$i&search=" . urlencode($search) . "' class='$active'>$i</a>";
+                echo "<a href='doctor_account_app?page=$i&search=" . urlencode($search) . "' class='$active'>$i</a>";
             }
 
             if ($page < $total_pages) {
-                echo "<a href='doctor_account_app.php?page=$next&search=" . urlencode($search) . "'>Next</a>";
+                echo "<a href='doctor_account_app?page=$next&search=" . urlencode($search) . "'>Next</a>";
             }
             ?>
         </div>
     <?php } ?>
 
-    <a href="admin_dashboard.php" class="back-btn">Back to Dashboard</a>
+    <a href="admin_dashboard" class="back-btn">Back to Dashboard</a>
 </div>
 
 </body>

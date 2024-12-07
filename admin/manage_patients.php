@@ -4,7 +4,7 @@ include "../config.php";
 
 // Check if the user is logged in and is an admin
 if (!isset($_SESSION['admin_id'])) {
-    header('Location: admin_login.php'); // Redirect to login if not logged in as an admin
+    header('Location: admin_login'); // Redirect to login if not logged in as an admin
     exit;
 }
 
@@ -48,7 +48,7 @@ if (isset($_GET['delete_id']) && is_numeric($_GET['delete_id'])) {
     $delete_id = $_GET['delete_id'];
     $delete_query = "DELETE FROM patients WHERE patient_id = $delete_id"; // Use `patient_id` instead of `id`
     mysqli_query($conn, $delete_query);
-    header("Location: manage_patients.php?page=$page&search=$search");
+    header("Location: manage_patients?page=$page&search=$search");
     exit;
 }
 ?>
@@ -93,7 +93,7 @@ if (isset($_GET['delete_id']) && is_numeric($_GET['delete_id'])) {
                     <td><?php echo isset($row['email']) ? $row['email'] : 'N/A'; ?></td>
                     <td><?php echo isset($row['mobile_number']) ? $row['mobile_number'] : 'N/A'; ?></td>
                     <td>
-                        <a href="manage_patients.php?delete_id=<?php echo isset($row['patient_id']) ? $row['patient_id'] : ''; ?>&page=<?php echo $page; ?>&search=<?php echo $search; ?>" class="delete-btn">Delete</a>
+                        <a href="manage_patients?delete_id=<?php echo isset($row['patient_id']) ? $row['patient_id'] : ''; ?>&page=<?php echo $page; ?>&search=<?php echo $search; ?>" class="delete-btn">Delete</a>
                     </td>
                 </tr>
             <?php } ?>
@@ -109,21 +109,21 @@ if (isset($_GET['delete_id']) && is_numeric($_GET['delete_id'])) {
             $next = $page + 1;
 
             if ($page > 1) {
-                echo "<a href='manage_patients.php?page=$prev&search=$search'>Previous</a>";
+                echo "<a href='manage_patients?page=$prev&search=$search'>Previous</a>";
             }
 
             for ($i = 1; $i <= $total_pages; $i++) {
                 $active = ($page == $i) ? "active" : "";
-                echo "<a href='manage_patients.php?page=$i&search=$search' class='$active'>$i</a>";
+                echo "<a href='manage_patients?page=$i&search=$search' class='$active'>$i</a>";
             }
 
             if ($page < $total_pages) {
-                echo "<a href='manage_patients.php?page=$next&search=$search'>Next</a>";
+                echo "<a href='manage_patients?page=$next&search=$search'>Next</a>";
             }
             ?>
         </div>
     <?php } ?>
-    <a href="admin_dashboard.php" class="back-btn">Back to Dashboard</a>
+    <a href="admin_dashboard" class="back-btn">Back to Dashboard</a>
 </div>
 
 </body>

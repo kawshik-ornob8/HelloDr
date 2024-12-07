@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (password_verify($password, $admin['password'])) {
             $_SESSION['admin_id'] = $admin['admin_id'];
             $_SESSION['admin_username'] = $admin['username'];
-            header("Location: admin_dashboard.php"); // Redirect to the admin dashboard
+            header("Location: admin_dashboard"); // Redirect to the admin dashboard
             exit;
         } else {
             $error = "Invalid password. Please try again.";
@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="login-container">
         <h2>Admin Login</h2>
         <?php if (isset($error)) { echo "<p style='color: red;'>$error</p>"; } ?>
-        <form action="admin_login.php" method="POST">
+        <form action="admin_login" method="POST">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
 
@@ -56,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <button type="submit">Login</button>
         </form>
-        <p><a href="../index.php">Return to Home</a></p>
+        <p><a href="../index">Return to Home</a></p>
     </div>
 </body>
 </html>

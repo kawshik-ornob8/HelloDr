@@ -4,7 +4,7 @@ include('../config.php'); // Include the database configuration file
 
 // Check if the admin is logged in
 if (!isset($_SESSION['admin_id'])) {
-    header("Location: admin_login.php");
+    header("Location: admin_login");
     exit;
 }
 
@@ -100,12 +100,12 @@ $stmt->close();
 
         <!-- Navigation Buttons -->
         <p>Choose an option below:</p>
-        <a href="manage_patients.php" class="button">Manage Patients</a>
-        <a href="manage_doctors.php" class="button">Manage Doctors</a>
-        <a href="doctor_account_app.php" class="button">Pending Doctor Accounts</a>
-        <a href="team.php" class="button">Update Team Members</a>
-        <a href="admin_signup.php" class="button">Add New Admin</a>
-        <a href="../logout.php" class="button logout-button">Logout</a>
+        <a href="manage_patients" class="button">Manage Patients</a>
+        <a href="manage_doctors" class="button">Manage Doctors</a>
+        <a href="doctor_account_app" class="button">Pending Doctor Accounts</a>
+        <a href="team" class="button">Update Team Members</a>
+        <a href="admin_signup" class="button">Add New Admin</a>
+        <a href="../logout" class="button logout-button">Logout</a>
     </div>
 </body>
 </html>

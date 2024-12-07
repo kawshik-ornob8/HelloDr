@@ -4,7 +4,7 @@ include('../config.php'); // Include the database configuration file
 
 // Check if the admin is logged in
 if (!isset($_SESSION['admin_id'])) {
-    header("Location: admin_login.php");
+    header("Location: admin_login");
     exit;
 }
 
@@ -109,7 +109,7 @@ if (!$team_result) {
 <body>
     <div class="dashboard-container">
         <h2>Admin Dashboard - Meet Our Team</h2>
-        <a href="../logout.php" class="button">Logout</a>
+        <a href="../logout" class="button">Logout</a>
 
         <?php if (isset($success_message)) echo "<p class='success'>$success_message</p>"; ?>
         <?php if (isset($error_message)) echo "<p class='error'>$error_message</p>"; ?>
@@ -127,17 +127,17 @@ if (!$team_result) {
                 <p><strong>Position:</strong> <?php echo htmlspecialchars($team_member['position']); ?></p>
                 <img src="<?php echo htmlspecialchars($team_member['image_url']); ?>" alt="Image" style="width:50px;height:50px;">
                 
-                <form action="team.php" method="POST" style="display:inline;">
+                <form action="team" method="POST" style="display:inline;">
                     <input type="hidden" name="team_member_id" value="<?php echo $team_member['id']; ?>">
                     <button type="submit" name="edit" value="1">Edit</button>
                 </form>
-                <form action="team.php" method="POST" style="display:inline;">
+                <form action="team" method="POST" style="display:inline;">
                     <input type="hidden" name="team_member_id" value="<?php echo $team_member['id']; ?>">
                     <button type="submit" name="delete">Delete</button>
                 </form>
 
                 <?php if (isset($_POST['edit']) && $_POST['team_member_id'] == $team_member['id']) { ?>
-                    <form action="team.php" method="POST" enctype="multipart/form-data">
+                    <form action="team" method="POST" enctype="multipart/form-data">
                         <input type="hidden" name="team_member_id" value="<?php echo $team_member['id']; ?>">
                         <input type="hidden" name="existing_image" value="<?php echo $team_member['image_url']; ?>">
                         <input type="hidden" name="update" value="1">
@@ -170,7 +170,7 @@ if (!$team_result) {
 
         <!-- Form to Add a New Team Member -->
         <h3>Add New Team Member</h3>
-        <form action="team.php" method="POST" enctype="multipart/form-data">
+        <form action="team" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="add" value="1">
 
             <label for="name">Full Name:</label>

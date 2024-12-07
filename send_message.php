@@ -20,7 +20,7 @@ if (isset($_GET['doctor_id'])) {
 if (isset($_SESSION['patient_id'])) {
     $patient_id = intval($_SESSION['patient_id']);
 } else {
-    header("Location: user%20info/user_login.php");
+    header("Location: user/user_login.php");
     exit();
 }
 
@@ -94,7 +94,7 @@ if ($stmt) {
                 <li><a href="appointment.php">Appointment</a></li>
                 <li><a href="contact.php">Contact</a></li>
                 <?php if (isset($_SESSION['username'])): ?>
-                    <li><a href="user info/user_profile.php">Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?></a></li>
+                    <li><a href="user/user_profile.php">Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?></a></li>
                     <li><a href="logout.php">Logout</a></li>
                 <?php endif; ?>
             </ul>

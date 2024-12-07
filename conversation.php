@@ -3,7 +3,7 @@ session_start();
 include('config.php');
 
 if (!isset($_SESSION['patient_id'])) {
-    header("Location: user_info/user_login.php");
+    header("Location: user/user_login.php");
     exit();
 }
 

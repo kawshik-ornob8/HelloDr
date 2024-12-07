@@ -114,7 +114,7 @@
                         </ul>
                     </li>
                     <li>
-                        <span class="folder">user info/</span>
+                        <span class="folder">user_info/</span>
                         <ul class="directory hidden">
                             <li>
                                 <span class="folder">css/</span>

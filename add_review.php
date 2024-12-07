@@ -5,7 +5,7 @@ include('config.php'); // Adjust path if necessary
 // Check if the user is logged in and is a patient
 if (!isset($_SESSION['patient_id']) || !isset($_SESSION['username'])) {
     $_SESSION['redirect_to'] = 'add_review.php';
-    header("Location: user info/user_login.php");
+    header("Location: user/user_login.php");
     exit;
 }
 

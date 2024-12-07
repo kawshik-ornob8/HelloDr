@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['patient_login'])) {
             $_SESSION['failed_attempts'] = 0;
             $_SESSION['patient_id'] = $row['patient_id'];
             $_SESSION['username'] = $row['username'];
-            header("Location: index.php");
+            header("Location: index");
             exit;
         } else {
             $_SESSION['failed_attempts'] += 1;
@@ -66,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['doctor_login'])) {
                 $_SESSION['failed_attempts'] = 0;
                 $_SESSION['doctor_id'] = $row['doctor_id'];
                 $_SESSION['doctor_reg_id'] = $row['doctor_reg_id'];
-                header("Location: doctor info/doctor_dashboard.php");
+                header("Location: doctor/doctor_dashboard");
                 exit;
             } else {
                 $_SESSION['failed_attempts'] += 1;
@@ -85,7 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['doctor_login'])) {
 // Redirect to forget.php if 3 failed attempts
 if ($_SESSION['failed_attempts'] >= 3) {
     $_SESSION['visited_forget'] = true;
-    header("Location: forget.php");
+    header("Location: forget");
     exit;
 }
 
@@ -142,31 +142,31 @@ $conn->close();
 
         <!-- Patient Login Form -->
         <div id="patient-login-form" style="display:none;">
-            <form action="login.php" method="POST">
+            <form action="login" method="POST">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required>
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" required>
                 <button type="submit" name="patient_login">Login</button>
             </form>
-            <a href="forget.php" class="forget" style="text-decoration: none; margin-top: 5px;">Forgotten password?</a>
+            <a href="forget" class="forget" style="text-decoration: none; margin-top: 5px;">Forgotten password?</a>
         </div>
 
         <!-- Doctor Login Form -->
         <div id="doctor-login-form" style="display:none;">
-            <form action="login.php" method="POST">
+            <form action="login" method="POST">
                 <label for="doctor_id">Doctor Registration ID:</label>
                 <input type="text" id="doctor_id" name="doctor_id" required>
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" required>
                 <button type="submit" name="doctor_login">Login</button>
             </form>
-            <a href="forget.php" class="forget" style="text-decoration: none; margin-top: 5px;">Forgotten password?</a>
+            <a href="forget" class="forget" style="text-decoration: none; margin-top: 5px;">Forgotten password?</a>
         </div>
 
         <!-- Navigation buttons -->
         <div class="navigation-buttons">
-            <a href="index.php" class="home">Home</a>
+            <a href="index" class="home">Home</a>
             <a href="javascript:history.back()" class="back">Back</a>
         </div>
     </div>

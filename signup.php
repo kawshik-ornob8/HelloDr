@@ -113,8 +113,8 @@
         <h2>Welcome to Our Platform</h2>
         
         <div class="option-buttons">
-            <a href="doctor info/doctor_signup.php">Doctor Signup</a>
-            <a href="user info/user_signup.php">User Signup</a>
+            <a href="doctor/doctor_signup.php">Doctor Signup</a>
+            <a href="user/user_signup.php">User Signup</a>
             <a href="login.php">Login</a>
             <a href="forgot_password.php" class="forgot-password">Forgot Password</a>
         </div>

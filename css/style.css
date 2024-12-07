@@ -460,6 +460,7 @@ footer ul li a:hover {
     max-width: 1200px;
     margin: 0 auto;
     text-align: center;
+    color: #000;
 }
 
 .doctors h2 {
@@ -492,9 +493,9 @@ footer ul li a:hover {
 
 .doctor img {
     width: 300px;
-    height: 250px;
+    height: 300px;
     border-radius: 8px;
-    object-fit: cover;
+    object-fit: contain;
     margin: 0 auto 15px;
     display: block;
     /* Ensures margin auto works with images */

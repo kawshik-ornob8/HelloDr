@@ -4,7 +4,7 @@ include('config.php');
 
 // Ensure the patient is logged in
 if (!isset($_SESSION['patient_id'])) {
-    header("Location: user info/user_login.php");
+    header("Location: user/user_login");
     exit();
 }
 
@@ -33,7 +33,7 @@ $stmt->bind_param("iiss", $patient_id, $doctor_id, $appointment_date, $appointme
 
 if ($stmt->execute()) {
     // Redirect to email notification script
-    header("Location: request_appointment_action.php?doctor_id=$doctor_id&appointment_date=$appointment_date&appointment_time=$appointment_time");
+    header("Location: request_appointment_action?doctor_id=$doctor_id&appointment_date=$appointment_date&appointment_time=$appointment_time");
     exit();
 } else {
     error_log("Failed to insert appointment: " . $stmt->error);

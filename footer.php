@@ -2,7 +2,7 @@
 <footer>
     <div class="container footer__container">
         <div class="footer__1">
-            <a href="index.php" class="footer__logo"><h4>HELLO DR.</h4></a>
+            <a href="index" class="footer__logo"><h4>HELLO DR.</h4></a>
             <p>
                 At Your Doctors Online, we provide easily accessible virtual health care for your families around the clock with the help of our board-certified online doctors. 
                 We believe that everyone in the world should have the ability to connect with an experienced doctor online.
@@ -11,18 +11,18 @@
         <div class="footer__2">
             <h4>Permalink</h4>
             <ul class="permalink">
-                <li><a href="index.php">Home</a></li>
-                <li><a href="about.php">About</a></li>
-                <li><a href="doctor lists.php">Appointment</a></li>
-                <li><a href="admin/admin_dashboard.php">Admin Portal</a></li>
+                <li><a href="index">Home</a></li>
+                <li><a href="about">About</a></li>
+                <li><a href="doctor_lists">Appointment</a></li>
+                <li><a href="admin/admin_dashboard">Admin Portal</a></li>
             </ul>
         </div>
         <div class="footer__3">
             <h4>Privacy</h4>
             <ul class="privacy">
-                <li><a href="privacy-policy.php">Privacy Policy</a></li>
-                <li><a href="terms-and-conditions.php">Terms and Conditions</a></li>
-                <li><a href="refund-policy.php">Refund Policy</a></li>
+                <li><a href="privacy-policy">Privacy Policy</a></li>
+                <li><a href="terms-and-conditions">Terms and Conditions</a></li>
+                <li><a href="refund-policy">Refund Policy</a></li>
             </ul>
         </div>
 
