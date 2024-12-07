@@ -133,9 +133,9 @@ $stmt->close();
     <h1>Call Ended Successfully</h1>
     <p>Your video consultation has ended. What would you like to do next?</p>
     <div>
-        <button class="btn-message" onclick="window.location.href='send_message.php?patient_id=<?php echo htmlspecialchars($patient_id); ?>'">Send Message</button>
+        <button class="btn-message" onclick="window.location.href='send_message?patient_id=<?php echo htmlspecialchars($patient_id); ?>'">Send Message</button>
 
-        <button class="btn-dashboard" onclick="window.location.href='doctor_dashboard.php'">Go to Dashboard</button>
+        <button class="btn-dashboard" onclick="window.location.href='doctor_dashboard'">Go to Dashboard</button>
     </div>
     <p class="timer" id="timer">Redirecting to dashboard in 10 seconds...</p>
 </div>
