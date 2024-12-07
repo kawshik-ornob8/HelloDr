@@ -29,12 +29,15 @@ $prev_time = isset($_COOKIE['appointment_time']) ? $_COOKIE['appointment_time'] 
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consult Dr. <?php echo htmlspecialchars($doctor['full_name']); ?></title>
     <link rel="stylesheet" href="css/appointment.css">
-    <link rel="icon" type="image/x-icon" href="./images/favicon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -45,6 +48,7 @@ $prev_time = isset($_COOKIE['appointment_time']) ? $_COOKIE['appointment_time'] 
             align-items: center;
             min-height: 100vh;
         }
+
         body {
             background-image: url("./images/bg-texture.png");
         }
@@ -85,7 +89,9 @@ $prev_time = isset($_COOKIE['appointment_time']) ? $_COOKIE['appointment_time'] 
             margin: 10px 0 5px;
         }
 
-        input, select, button {
+        input,
+        select,
+        button {
             width: 100%;
             padding: 10px;
             margin-bottom: 15px;
@@ -106,12 +112,13 @@ $prev_time = isset($_COOKIE['appointment_time']) ? $_COOKIE['appointment_time'] 
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <!-- Doctor's Profile Information -->
-        <img src="doctor/images/<?php echo $doctor['doctor_id']; ?>.<?php echo htmlspecialchars(pathinfo($doctor['profile_photo'], PATHINFO_EXTENSION)); ?>" 
-             alt="Profile photo of Dr. <?php echo htmlspecialchars($doctor['full_name']); ?>" 
-             loading="lazy">
+        <img src="doctor/images/<?php echo $doctor['doctor_id']; ?>.<?php echo htmlspecialchars(pathinfo($doctor['profile_photo'], PATHINFO_EXTENSION)); ?>"
+            alt="Profile photo of Dr. <?php echo htmlspecialchars($doctor['full_name']); ?>"
+            loading="lazy">
         <h2>Consult With</h2>
         <h2>Dr. <?php echo htmlspecialchars($doctor['full_name']); ?></h2>
         <p>Specialty: <?php echo htmlspecialchars($doctor['specialty']); ?></p>
@@ -120,26 +127,26 @@ $prev_time = isset($_COOKIE['appointment_time']) ? $_COOKIE['appointment_time'] 
         <!-- Form for requesting appointment -->
         <form action="request_appointment_action" method="post">
             <input type="hidden" name="doctor_id" value="<?php echo $doctor['doctor_id']; ?>">
-            
+
             <label for="appointment_date">Preferred Date:</label>
-            <input type="date" name="appointment_date" value="<?php echo htmlspecialchars($prev_date); ?>" min="<?php echo date('Y-m-d'); ?>" required>
+            <input type="text" id="appointment_date" name="appointment_date" value="<?php echo htmlspecialchars($prev_date); ?>" min="<?php echo date('Y-m-d'); ?>" required>
 
 
             <label for="appointment_time">Preferred Time:</label>
             <select name="appointment_time" id="appointment_time" required>
                 <option value="">Select a time</option>
                 <?php
-$start_time = strtotime("10:00");
-$end_time = strtotime("21:30");
-$interval = 30 * 60; // 30 minutes
+                $start_time = strtotime("10:00");
+                $end_time = strtotime("21:30");
+                $interval = 30 * 60; // 30 minutes
 
-for ($time = $start_time; $time <= $end_time; $time += $interval) {
-    $formatted_time = date("h:i A", $time); // Format in 12-hour AM/PM
-    $value_time = date("H:i", $time); // Hidden value in 24-hour format
-    $selected = ($value_time == $prev_time) ? "selected" : "";
-    echo "<option value=\"$value_time\" $selected>$formatted_time</option>";
-}
-?>
+                for ($time = $start_time; $time <= $end_time; $time += $interval) {
+                    $formatted_time = date("h:i A", $time); // Format in 12-hour AM/PM
+                    $value_time = date("H:i", $time); // Hidden value in 24-hour format
+                    $selected = ($value_time == $prev_time) ? "selected" : "";
+                    echo "<option value=\"$value_time\" $selected>$formatted_time</option>";
+                }
+                ?>
 
             </select>
 
@@ -149,5 +156,15 @@ for ($time = $start_time; $time <= $end_time; $time += $interval) {
         <!-- Back Button -->
         <button onclick="history.back()">Back</button>
     </div>
+
+    <script>
+        flatpickr("#appointment_date", {
+            dateFormat: "Y-m-d", // You can adjust the format here
+            minDate: "<?php echo date('Y-m-d'); ?>", // Set the minimum date as today (PHP)
+            defaultDate: "<?php echo htmlspecialchars($prev_date); ?>", // Set the default date (PHP)
+        });
+    </script>
+
 </body>
+
 </html>

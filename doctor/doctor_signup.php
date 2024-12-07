@@ -1,6 +1,7 @@
 <?php
 session_start();
 include('../config.php');
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -107,7 +108,7 @@ EOD;
                     $mail->Host = 'smtp.gmail.com';
                     $mail->SMTPAuth = true;
                     $mail->Username = $config['smtp_username'];
-    $mail->Password = $config['smtp_password'];
+                    $mail->Password = $config['smtp_password'];
                     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                     $mail->Port = 587;
 
@@ -140,9 +141,13 @@ EOD;
 
 <!DOCTYPE html>
 <html lang="en">s
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
     <title>Doctor Signup</title>
     <style>
         body {
@@ -172,7 +177,11 @@ EOD;
             font-weight: bold;
         }
 
-        input[type="text"], input[type="email"], input[type="password"], input[type="date"], input[type="file"] {
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="date"],
+        input[type="file"] {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
@@ -213,8 +222,23 @@ EOD;
         a:hover {
             text-decoration: underline;
         }
+
+        #dob {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        #dob:focus {
+            border-color: #007BFF;
+            outline: none;
+        }
     </style>
 </head>
+
 <body>
     <div class="signup-container">
         <h2>Create a Doctor Account</h2>
@@ -232,7 +256,15 @@ EOD;
             <input type="text" id="full_name" name="full_name" required>
 
             <label for="dob">Date of Birth:</label>
-            <input type="date" id="dob" name="dob" required>
+            <input type="text" id="dob" name="dob" required>
+
+            <script>
+                flatpickr("#dob", {
+                    dateFormat: "Y-m-d",
+                    locale: "en"
+                });
+            </script>
+
 
             <label for="phone_number">Phone Number:</label>
             <input type="text" id="phone_number" name="phone_number" required>
@@ -249,7 +281,7 @@ EOD;
             <label for="confirm_password">Confirm Password:</label>
             <input type="password" id="confirm_password" name="confirm_password" required>
 
-            <label for="certificate">Upload Certificate:</label>
+            <label for="certificate">BMDC Certificate:</label>
             <input type="file" id="certificate" name="certificate" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" required>
 
             <button type="submit">Sign Up</button>
@@ -258,4 +290,5 @@ EOD;
         <p>Already have an account? <a href="../login">Login here</a>.</p>
     </div>
 </body>
+
 </html>
