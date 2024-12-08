@@ -32,7 +32,7 @@
                 <a href="index.html"><h4>HELLO DR.</h4></a>
                 <ul class="nav__menu">
                     <li><a href="index">Home</a></li>
-                    <li><a href="about">About</a></li>
+                    <li><a href="about">About</a></li> 
                     <li><a href="doctor_lists">Appointment</a></li>
                     <li><a href="contact">Contact</a></li>
                 </ul>

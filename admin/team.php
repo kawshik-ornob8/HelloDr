@@ -70,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add'])) {
 
     // Handle image upload for new member
     if (!empty($_FILES['image']['name'])) {
-        $target_dir = "uploads/";
+        $target_dir = "images/";
         $image_extension = pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION);
         $image_url = $target_dir . uniqid() . "." . $image_extension; // Use a unique name
         move_uploaded_file($_FILES["image"]["tmp_name"], $image_url);

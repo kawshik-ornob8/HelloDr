@@ -79,7 +79,7 @@
 
 .team__member {
     background: var(--color-bg2);
-    padding: 2rem;
+    padding: 1rem;
     border: 1px solid transparent;
     transition: var(--transition);
     position: relative;
