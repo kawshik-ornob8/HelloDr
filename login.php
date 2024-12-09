@@ -168,15 +168,14 @@ $conn->close();
                 <div class="mt-6 text-center">
                     <p class="text-gray-600">or sign in with</p>
                     <div class="flex justify-center mt-4">
-                        <a class="text-blue-800 mx-2" href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a class="text-blue-500 mx-2" href="#"><i class="fab fa-twitter"></i></a>
-                        <a class="text-red-600 mx-2" href="#"><i class="fab fa-google"></i></a>
+                        <a class="text-red-500 mx-6" href="#"><i class="fab fa-google"></i></a>
                     </div>
                 </div>
                 <div class="mb-4">
-                    <button onclick="window.history.back();" class="bg-gray-300 text-black py-2 px-4 rounded-md shadow hover:bg-gray-400">
+                    <button onclick="window.location.href='index';" class="bg-gray-300 text-black py-2 px-4 rounded-md shadow hover:bg-gray-400">
                         <i class="fas fa-arrow-left"></i> Back
                     </button>
+
                 </div>
             </div>
 

@@ -69,7 +69,7 @@ EOD;
                     $mail->Host = 'smtp.gmail.com';
                     $mail->SMTPAuth = true;
                     $mail->Username = $config['smtp_username'];
-    $mail->Password = $config['smtp_password'];
+                    $mail->Password = $config['smtp_password'];
                     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                     $mail->Port = 587;
 
@@ -107,7 +107,6 @@ EOD;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Signup</title>
     <style>
-        /* CSS styling */
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f7f6;
@@ -144,6 +143,24 @@ EOD;
             box-sizing: border-box;
         }
 
+        input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            font-size: 16px;
+            color: #333;
+            box-sizing: border-box;
+        }
+
+        input[type="date"]:focus {
+            outline: none;
+            border-color: #007bff;
+            background-color: #eef6ff;
+        }
+
         button {
             width: 100%;
             padding: 10px;
@@ -176,6 +193,12 @@ EOD;
         a:hover {
             text-decoration: underline;
         }
+
+        #age {
+            font-weight: bold;
+            color: #333;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -189,13 +212,15 @@ EOD;
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
-        
+
         <form action="user_signup" method="POST">
             <label for="full_name">Full Name:</label>
             <input type="text" name="full_name" required>
 
             <label for="dob">Date of Birth:</label>
-            <input type="date" name="dob" required>
+            <input type="date" id="dob" name="dob" required>
+
+            <div id="age"></div>
 
             <label for="sex">Sex:</label>
             <select name="sex" required>
@@ -224,5 +249,24 @@ EOD;
         </form>
         <p>Already have an account? <a href="../login">Log in here</a></p>
     </div>
+
+    <script>
+        // Disable future dates
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('dob').setAttribute('max', today);
+
+        // Calculate age on Date of Birth change
+        document.getElementById('dob').addEventListener('change', function() {
+            const dob = new Date(this.value);
+            const ageInMilliseconds = new Date() - dob;
+            const ageDate = new Date(ageInMilliseconds);
+
+            const years = ageDate.getUTCFullYear() - 1970;
+            const months = ageDate.getUTCMonth();
+            const days = ageDate.getUTCDate() - 1;
+
+            document.getElementById('age').innerText = `Your Age: ${years} years, ${months} months, ${days} days`;
+        });
+    </script>
 </body>
 </html>
