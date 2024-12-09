@@ -101,93 +101,112 @@ $conn->close();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <link rel="icon" type="image/x-icon" href="./images/favicon.png">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="css/login.css">
-    <style>
-        body {
-            background-image: url("./images/bg-texture.png");
-            background-color: grey;
-        }
-        .navigation-buttons {
-            margin-top: 3%;
-        }
-        .navigation-buttons a.back {
-            background-color: red;
-        }
-        .navigation-buttons a.home {
-            background-color: #28a745;
-        }
-        .navigation-buttons a {
-            display: flex;
-            margin-bottom: 3%;
-            text-decoration: none;
-            color: white;
-            background-color: #007BFF;
-            padding: 10px 44.5%;
-            border-radius: 5px;
-        }
-        .navigation-buttons a:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Sign In</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+
+
 </head>
-<body>
-    <div class="login-container">
-        <h2>Login</h2>
-        
-        <?php if (isset($error_message)) { echo "<p style='color:red;'>$error_message</p>"; } ?>
 
-        <p>Please choose your login type:</p>
-        <div class="login-options">
-            <a href="#" id="patient-login-link" class="login-button">Patient Login</a>
-            <a href="#" id="doctor-login-link" class="login-button">Doctor Login</a>
-        </div>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row items-center justify-center">
+            <!-- Login Form -->
+            <div class="w-full md:w-1/2 lg:w-1/3 bg-white p-8 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-semibold mb-4">Sign In</h2>
+                <p class="text-gray-600 mb-6">Please choose your login type:</p>
 
-        <!-- Patient Login Form -->
-        <div id="patient-login-form" style="display:none;">
-            <form action="login" method="POST">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-                <button type="submit" name="patient_login">Login</button>
-            </form>
-            <a href="forget" class="forget" style="text-decoration: none; margin-top: 5px;">Forgotten password?</a>
-        </div>
+                <?php if (isset($error_message)) {
+                    echo "<p class='text-red-500 text-sm mb-4'>$error_message</p>";
+                } ?>
 
-        <!-- Doctor Login Form -->
-        <div id="doctor-login-form" style="display:none;">
-            <form action="login" method="POST">
-                <label for="doctor_id">Doctor Registration ID:</label>
-                <input type="text" id="doctor_id" name="doctor_id" required>
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-                <button type="submit" name="doctor_login">Login</button>
-            </form>
-            <a href="forget" class="forget" style="text-decoration: none; margin-top: 5px;">Forgotten password?</a>
-        </div>
+                <!-- Role Selection -->
+                <div class="mb-4">
+                    <label class="block text-gray-700">Select Role</label>
+                    <select id="role" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500" onchange="toggleLoginForms()">
+                        <option value="" disabled selected>Select Role</option>
+                        <option value="patient">Patient</option>
+                        <option value="doctor">Doctor</option>
+                    </select>
+                </div>
 
-        <!-- Navigation buttons -->
-        <div class="navigation-buttons">
-            <a href="index" class="home">Home</a>
-            <a href="javascript:history.back()" class="back">Back</a>
+                <!-- Patient Login Form -->
+                <form action="login" method="POST" id="patient-login-form" style="display:none;">
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Username</label>
+                        <input type="text" name="username" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500" required />
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Password</label>
+                        <input type="password" name="password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500" required />
+                    </div>
+                    <button type="submit" name="patient_login" class="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition duration-200">Patient Login</button>
+                </form>
+
+                <!-- Doctor Login Form -->
+                <form action="login" method="POST" id="doctor-login-form" style="display:none;">
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Doctor Registration ID</label>
+                        <input type="text" name="doctor_id" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500" required />
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Password</label>
+                        <input type="password" name="password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500" required />
+                    </div>
+                    <button type="submit" name="doctor_login" class="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition duration-200">Doctor Login</button>
+                </form>
+
+                <!-- Forgot Password link -->
+                <div class="mt-4">
+                    <a href="forget" class="text-gray-600 hover:text-gray-900">Forgot Password?</a>
+                </div>
+
+                <div class="mt-6 text-center">
+                    <p class="text-gray-600">or sign in with</p>
+                    <div class="flex justify-center mt-4">
+                        <a class="text-blue-800 mx-2" href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a class="text-blue-500 mx-2" href="#"><i class="fab fa-twitter"></i></a>
+                        <a class="text-red-600 mx-2" href="#"><i class="fab fa-google"></i></a>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <button onclick="window.history.back();" class="bg-gray-300 text-black py-2 px-4 rounded-md shadow hover:bg-gray-400">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                </div>
+            </div>
+
+
+
+            <!-- Right Side Image -->
+            <div class="hidden md:block md:w-1/2 lg:w-2/3">
+                <img alt="Illustration of a person using a laptop and mobile devices" class="w-full h-auto" height="400" src="images/undraw.svg" width="400" />
+            </div>
         </div>
     </div>
-
-    <script>
-        document.getElementById('patient-login-link').onclick = function() {
-            document.getElementById('patient-login-form').style.display = 'block';
-            document.getElementById('doctor-login-form').style.display = 'none';
-        };
-
-        document.getElementById('doctor-login-link').onclick = function() {
-            document.getElementById('doctor-login-form').style.display = 'block';
-            document.getElementById('patient-login-form').style.display = 'none';
-        };
-    </script>
 </body>
+
 </html>
+
+<script>
+    function toggleLoginForms() {
+        const role = document.getElementById('role').value;
+        const patientForm = document.getElementById('patient-login-form');
+        const doctorForm = document.getElementById('doctor-login-form');
+
+        if (role === 'patient') {
+            patientForm.style.display = 'block';
+            doctorForm.style.display = 'none';
+        } else if (role === 'doctor') {
+            doctorForm.style.display = 'block';
+            patientForm.style.display = 'none';
+        } else {
+            patientForm.style.display = 'none';
+            doctorForm.style.display = 'none';
+        }
+    }
+</script>

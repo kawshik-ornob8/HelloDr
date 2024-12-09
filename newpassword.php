@@ -58,18 +58,122 @@ $conn->close();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Reset Password</title>
     <link rel="stylesheet" href="css/login.css">
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f1f8ff; /* Light blue-gray background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            background-color: #ffffff;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 2em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        p {
+            text-align: center;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        input {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 12px;
+            background-color: #28a745;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .alert {
+            margin-top: 10px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .alert-success {
+            color: green;
+        }
+
+        .alert-error {
+            color: red;
+        }
+
+        .forgot-password {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .forgot-password:hover {
+            color: #0056b3;
+        }
+    </style>
 </head>
+
 <body>
     <div class="login-container">
         <h2>Reset Password</h2>
-        <?php 
+        <?php
         if (!empty($success_message)) {
-            echo "<p style='color:green;'>$success_message</p>";
+            echo "<div class='alert alert-success'>$success_message</div>";
         } elseif (!empty($error_message)) {
-            echo "<p style='color:red;'>$error_message</p>";
+            echo "<div class='alert alert-error'>$error_message</div>";
         }
         ?>
         <form action="" method="POST">
@@ -79,6 +183,11 @@ $conn->close();
             <input type="password" id="confirm_password" name="confirm_password" required>
             <button type="submit">Reset Password</button>
         </form>
+
+        <div class="mt-4 text-center">
+            <a href="login.php" class="forgot-password">Back to Login</a>
+        </div>
     </div>
 </body>
+
 </html>

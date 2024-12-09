@@ -1,148 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<link rel="icon" type="image/x-icon" href="./images/favicon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./images/favicon.png" type="image/x-icon">
     <title>Signup</title>
-    <style>
-        /* Basic Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f1f8ff; /* Light blue-gray background */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        .container {
-            background-color: #ffffff;
-            width: 90%;
-            max-width: 500px;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            transform: translateY(50px);
-            opacity: 0;
-            animation: fadeIn 1s forwards;
-        }
-
-        h2 {
-            text-align: center;
-            font-size: 2em;
-            color: #2c3e50; /* Darker text color */
-            margin-bottom: 20px;
-            animation: slideIn 1s ease-out forwards;
-        }
-
-        .option-buttons {
-            display: flex;
-            justify-content: space-around;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .option-buttons a {
-            display: block;
-            text-align: center;
-            background-color: #28a745; /* Green for button */
-            padding: 15px;
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-            font-weight: bold;
-            border-radius: 8px;
-            transition: background-color 0.3s;
-            animation: fadeIn 1.5s ease-out forwards;
-        }
-
-        .option-buttons a:hover {
-            background-color: #218838; /* Darker green for hover */
-        }
-
-        .option-buttons a:active {
-            transform: scale(0.98);
-        }
-
-        /* Animation for fading and sliding in */
-        @keyframes fadeIn {
-            0% {
-                opacity: 0;
-            }
-            100% {
-                opacity: 1;
-            }
-        }
-
-        @keyframes slideIn {
-            0% {
-                transform: translateY(-50px);
-            }
-            100% {
-                transform: translateY(0);
-            }
-        }
-
-        .forgot-password {
-            display: block;
-            text-align: center;
-            margin-top: 15px;
-            font-size: 14px;
-            color: #007bff; /* Blue for the link */
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .forgot-password:hover {
-            color: #0056b3; /* Darker blue on hover */
-        }
-
-    </style>
-
-    
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
 
-    <div class="container">
-        <h2>Welcome to Our Platform</h2>
-        
-        <div class="option-buttons">
-            <a href="doctor/doctor_signup.php">Doctor Signup</a>
-            <a href="user/user_signup.php">User Signup</a>
-            <a href="login.php">Login</a>
-            <a href="forgot_password.php" class="forgot-password">Forgot Password</a>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+    <div class="container bg-white w-full max-w-lg p-8 rounded-lg shadow-lg">
+        <h2 class="text-3xl font-semibold text-center text-gray-800 mb-6 animate__animated animate__fadeIn">Welcome to Our Platform</h2>
+        <div class="space-y-4">
+            <a href="doctor/doctor_signup" class="block text-center bg-green-500 text-white py-3 rounded-lg text-lg font-semibold hover:bg-green-600 transition duration-200">Doctor Signup</a>
+            <a href="user/user_signup" class="block text-center bg-blue-500 text-white py-3 rounded-lg text-lg font-semibold hover:bg-blue-600 transition duration-200">User Signup</a>
+            <a href="login" class="block text-center bg-gray-500 text-white py-3 rounded-lg text-lg font-semibold hover:bg-gray-600 transition duration-200">Login</a>
+            <a href="forget" class="block text-center text-blue-500 text-sm hover:text-blue-700 transition duration-200">Forgot Password</a>
         </div>
     </div>
-
-    <script>
-        // Adding animation delay for the container to appear after page load
-        window.addEventListener('load', () => {
-            document.querySelector('.container').style.animation = 'fadeIn 1s forwards';
-            document.querySelector('h2').style.animation = 'slideIn 1s ease-out forwards';
-        });
-    </script>
-    <script>
-    // Show the loader on page load
-    document.addEventListener("DOMContentLoaded", function () {
-        const loader = document.getElementById("page-loader");
-
-        // Hide the loader after the page has fully loaded
-        window.addEventListener("load", function () {
-            if (loader) {
-                loader.style.display = "none"; // Hide loader
-            }
-        });
-    });
-</script>
-
-
 </body>
+
 </html>
