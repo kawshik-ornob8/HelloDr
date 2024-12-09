@@ -169,7 +169,6 @@ $result = $conn->query($query);
                                 echo '<span style="color: #ccc; font-size: 2rem;">&#9733;</span>';
                             }
                             ?>
-                            <p>Per consult (<?php echo $average_rating; ?> / 5)</p>
                         </div>
 
 
