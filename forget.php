@@ -1,5 +1,4 @@
 <?php
-// Include the PHPMailer library
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -8,24 +7,30 @@ require 'PHPMailer/src/PHPMailer.php';
 require 'PHPMailer/src/SMTP.php';
 include('config.php');
 
-// Set timezone to Ashulia (GMT+6)
 date_default_timezone_set('Asia/Dhaka');
-
-// Start the session
 session_start();
 
 $success_message = '';
 $error_message = '';
 
-// Handle password reset request
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $user_type = $_POST['user_type'];
 
-    // Determine the table based on user type
-    $table = ($user_type === 'patient') ? 'patients' : 'doctors';
+    // Validate email format
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error_message = "Invalid email format.";
+        exit;
+    }
 
-    // Check if email exists in the respective table
+    $allowed_tables = ['patients', 'doctors'];
+    $table = ($user_type === 'patient') ? 'patients' : 'doctors';
+    $id_field = ($user_type === 'patient') ? 'patient_id' : 'doctor_id';
+
+    if (!in_array($table, $allowed_tables)) {
+        die("Invalid user type.");
+    }
+
     $stmt = $conn->prepare("SELECT * FROM $table WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
@@ -33,15 +38,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
-        $reset_token = bin2hex(random_bytes(16)); // Generate a secure token
-        $reset_token_expiry = date("Y-m-d H:i:s", strtotime("+1 hour")); // Token expires in 1 hour
+        $user_id = $row[$id_field];
+        $reset_token = bin2hex(random_bytes(16));
+        $reset_token_expiry = date("Y-m-d H:i:s", strtotime("+1 hour"));
 
-        // Save token to the database (reset any existing token)
         $stmt = $conn->prepare("UPDATE $table SET reset_token = ?, reset_token_expiry = ? WHERE email = ?");
         $stmt->bind_param("sss", $reset_token, $reset_token_expiry, $email);
         if ($stmt->execute()) {
-            // Send the reset email using PHPMailer
-            $reset_link = "http://192.168.1.200/HelloDr/reset_password.php?token=$reset_token";
+            $reset_link = "http://192.168.1.200/HelloDr/newpassword.php?token=$reset_token&user_id=$user_id&user_type=$user_type";
             $subject = "Password Reset Request";
             $message = <<<EOD
 Dear user,
@@ -54,31 +58,25 @@ This link will expire in 1 hour and can only be used once.
 If you did not request this, please ignore this email.
 
 Regards,
-Your Website Team
+HelloDr Team
 EOD;
 
-            // Initialize PHPMailer
             $mail = new PHPMailer(true);
             try {
-                // SMTP server configuration
                 $mail->isSMTP();
-                $mail->Host = 'smtp.gmail.com';  // Gmail SMTP server
+                $mail->Host = 'smtp.gmail.com';
                 $mail->SMTPAuth = true;
                 $mail->Username = $config['smtp_username'];
                 $mail->Password = $config['smtp_password'];
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                 $mail->Port = 587;
 
-                // Email sender and recipient
-                $mail->setFrom($config['smtp_username'], 'Hello Dr.'); // Replace with your email
-                $mail->addAddress($email);  // Send the email to the user
-
-                // Email content
-                $mail->isHTML(false);  // Plain text email
+                $mail->setFrom($config['smtp_username'], 'HelloDr Team');
+                $mail->addAddress($email);
+                $mail->isHTML(false);
                 $mail->Subject = $subject;
                 $mail->Body = $message;
 
-                // Send the email
                 if ($mail->send()) {
                     $success_message = "A password reset link has been sent to your email.";
                 } else {
@@ -96,49 +94,19 @@ EOD;
 
     $stmt->close();
 }
-
 $conn->close();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="icon" type="image/x-icon" href="./images/favicon.png">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forgot Password</title>
     <link rel="stylesheet" href="css/login.css">
-    <style>
-        body {
-            background-color: #f4f7f6;
-        }
-        .navigation-buttons {
-            margin-top: 20px;
-        }
-        .navigation-buttons a.back {
-            background-color: red;
-        }
-
-        
-
-        .navigation-buttons a {
-            margin: 5px;
-            text-decoration: none;
-            color: white;
-            background-color: #007BFF;
-            padding: 10px 50px;
-            border-radius: 5px;
-        }
-
-        .navigation-buttons a:hover {
-            background-color: #0056b3;
-        }
-    </style>
 </head>
 <body>
     <div class="login-container">
         <h2>Forgot Password</h2>
-
         <?php 
         if (!empty($success_message)) {
             echo "<p style='color:green;'>$success_message</p>";
@@ -146,24 +114,16 @@ $conn->close();
             echo "<p style='color:red;'>$error_message</p>";
         }
         ?>
-
-        <form action="forget" method="POST">
+        <form action="forget.php" method="POST">
             <label for="email">Email Address:</label>
             <input type="email" id="email" name="email" required>
-
             <label for="user_type">I am a:</label>
             <select id="user_type" name="user_type" required>
                 <option value="patient">Patient</option>
                 <option value="doctor">Doctor</option>
             </select>
-
             <button type="submit">Send Reset Link</button>
         </form>
-        <!-- Navigation buttons -->
-        <div class="navigation-buttons">
-            <a href="index">Home</a>
-            <a href="javascript:history.back()" class="back">Back</a>
-        </div>
     </div>
 </body>
 </html>
