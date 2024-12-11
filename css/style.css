@@ -649,6 +649,7 @@ footer ul li a:hover {
         align-items: center;
         justify-content: space-between;
         padding: 50px 0;
+        margin-left: 10px;
     }
     .hero__container {
         order: 1;

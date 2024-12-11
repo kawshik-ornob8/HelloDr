@@ -33,7 +33,7 @@ $result = $conn->query($sql);
             
             <?php if (isset($_SESSION['username'])): ?>
                 <!-- Show username and logout option when logged in -->
-                <li><a href="../user/user_login">Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?></a></li>
+                <li><a href="../user/user_profile">Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?></a></li>
                 <li><a href="../logout">Logout</a></li>
             <?php else: ?>
                 <!-- Show login and signup options when logged out -->
