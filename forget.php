@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = $conn->prepare("UPDATE $table SET reset_token = ?, reset_token_expiry = ? WHERE email = ?");
         $stmt->bind_param("sss", $reset_token, $reset_token_expiry, $email);
         if ($stmt->execute()) {
-            $reset_link = "http://192.168.1.200/HelloDr/newpassword.php?token=$reset_token&user_id=$user_id&user_type=$user_type";
+            $reset_link = $config['base_url'] . "/HelloDr/newpassword.php?token=$reset_token&user_id=$user_id&user_type=$user_type";
             $subject = "Password Reset Request";
             $message = <<<EOD
 Dear user,

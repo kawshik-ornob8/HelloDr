@@ -59,13 +59,15 @@ if (isset($_POST['appointment_id'])) {
 
         if ($update_stmt->execute()) {
             // Prepare email notification
+            // Prepare email notification
             $subject = "Appointment Approved";
             $message = "Dear " . htmlspecialchars($full_name) . ",\n\n" .
-                       "Your appointment has been approved.\n" .
-                       "Date: " . htmlspecialchars($appointment_date) . "\n" .
-                       "Time: " . htmlspecialchars($appointment_time) . "\n" .
-                       "Now you need to pay ৳" . htmlspecialchars($amount) . ".\n\n" .
-                       "Thank you for choosing our service.\n\nBest regards,\nHello Dr.";
+                "Your appointment has been approved.\n" .
+                "Date: " . htmlspecialchars($appointment_date) . "\n" .
+                "Time: " . htmlspecialchars($appointment_time) . "\n" .
+                "Now you need to pay ৳" . htmlspecialchars($amount) . ".\n\n" .
+                "To view or manage your appointment, please click the following link: " . $config['appointments_url'] . "\n\n" .
+                "Thank you for choosing our service.\n\nBest regards,\nHello Dr.";
 
             // Send email using PHPMailer
             $mail = new PHPMailer(true);
@@ -107,4 +109,3 @@ if (isset($_POST['appointment_id'])) {
     header("Location: view_appointments");
     exit;
 }
-?>

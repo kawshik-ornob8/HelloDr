@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($stmt->execute()) {
                 // Send activation email
-                $activation_link = "http://192.168.1.200/HelloDr/user/activate_account?token=$activation_token";
+                $activation_link =  $config['base_url'] . "/HelloDr/user/activate_account?token=$activation_token";
                 $subject = "Account Activation Required";
                 $message = <<<EOD
 Dear $full_name,

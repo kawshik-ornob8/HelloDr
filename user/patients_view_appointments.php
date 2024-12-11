@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_payment'])) {
                 echo "<script>alert('Payment successful, but email confirmation failed.');</script>";
             }
 
-            echo "<script>alert('Payment successful! A confirmation email has been sent.'); window.location.href = 'patients_view_appointments';</script>";
+            echo "<script>alert('Payment successful! A confirmation email has been sent.'); window.location.href = 'patients_view_appointments.php';</script>";
             exit();
         } else {
             echo "<script>alert('Payment failed. Please try again.');</script>";
@@ -98,6 +98,53 @@ $result = $stmt->get_result();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Appointments</title>
     <link rel="stylesheet" href="css/view_appointments.css">
+    <style>
+        /* Add some basic styling for better visibility */
+        .container {
+            width: 90%;
+            margin: auto;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #dddddd;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        .pay-btn, .btn-secondary {
+            padding: 8px 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-secondary {
+            background-color: #008CBA;
+        }
+
+        .button {
+            padding: 10px 15px;
+            background-color: #555555;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .button:hover, .pay-btn:hover, .btn-secondary:hover {
+            opacity: 0.8;
+        }
+    </style>
 </head>
 
 <body>
@@ -115,43 +162,68 @@ $result = $stmt->get_result();
                     <th>Actions</th>
                 </tr>
                 <?php while ($row = $result->fetch_assoc()): ?>
+                    <?php
+                    // Define appointment start and end times
+                    $appointment_datetime_str = $row['appointment_date'] . ' ' . $row['appointment_time'];
+                    $appointment_start = new DateTime($appointment_datetime_str);
+                    // Define duration (e.g., 30 minutes)
+                    $appointment_duration = new DateInterval('PT30M'); // 30 minutes
+                    $appointment_end = clone $appointment_start;
+                    $appointment_end->add($appointment_duration);
+
+                    // Get current datetime
+                    $current_datetime = new DateTime();
+
+                    // Determine the action based on current time
+                    $action = '';
+                    if ($row['status'] === 'Approved') {
+                        // Check if a payment exists for this appointment
+                        $payment_stmt = $conn->prepare("SELECT * FROM payments WHERE appointment_id = ?");
+                        $payment_stmt->bind_param("i", $row['appointment_id']);
+                        $payment_stmt->execute();
+                        $payment_result = $payment_stmt->get_result();
+
+                        if ($payment_result->num_rows == 0) {
+                            // Show the Pay button if no payment is found
+                            $action = '
+                                <form method="post" action="">
+                                    <input type="hidden" name="appointment_id" value="' . htmlspecialchars($row['appointment_id']) . '">
+                                    <input type="hidden" name="payment_amount" value="' . htmlspecialchars($row['doctor_fee']) . '">
+                                    <button type="submit" name="confirm_payment" class="pay-btn">
+                                        Pay ৳' . htmlspecialchars($row['doctor_fee']) . '
+                                    </button>
+                                </form>
+                            ';
+                        } else {
+                            // Payment exists, determine what to show based on current time
+                            if ($current_datetime < $appointment_start) {
+                                // Before appointment start time
+                                $action = '<span>Wait for your appointment time.</span>';
+                            } elseif ($current_datetime >= $appointment_start && $current_datetime <= $appointment_end) {
+                                // During appointment time window
+                                $action = '
+                                    <form action="start_video_call.php" method="POST">
+                                        <input type="hidden" name="doctor_id" value="' . htmlspecialchars($row['doctor_id']) . '">
+                                        <input type="hidden" name="room_id" value="room-' . htmlspecialchars($row['doctor_id']) . '-' . htmlspecialchars($row['appointment_id']) . '">
+                                        <button type="submit" class="btn-secondary">Start Video Call</button>
+                                    </form>
+                                ';
+                            } else {
+                                // After appointment end time
+                                $action = '<span>Your appointment time has finished.</span>';
+                            }
+                        }
+                    } else {
+                        // Status is not 'Approved'
+                        $action = '<span>Wait for Approval</span>';
+                    }
+                    ?>
                     <tr>
                         <td><?php echo htmlspecialchars($row['appointment_date']); ?></td>
                         <td><?php echo htmlspecialchars($row['appointment_time']); ?></td>
                         <td><?php echo htmlspecialchars($row['doctor_name']); ?></td>
                         <td><?php echo htmlspecialchars($row['status']); ?></td>
-                        <td>
-                            <?php if ($row['status'] === 'Approved'): ?>
-                                <?php
-                                // Check if a payment exists for this appointment
-                                $payment_stmt = $conn->prepare("SELECT * FROM payments WHERE appointment_id = ?");
-                                $payment_stmt->bind_param("i", $row['appointment_id']);
-                                $payment_stmt->execute();
-                                $payment_result = $payment_stmt->get_result();
-
-                                if ($payment_result->num_rows == 0): ?>
-                                    <!-- Show the Pay button if no payment is found -->
-                                    <form method="post" action="">
-                                        <input type="hidden" name="appointment_id" value="<?php echo $row['appointment_id']; ?>">
-                                        <input type="hidden" name="payment_amount" value="<?php echo $row['doctor_fee']; ?>">
-                                        <button type="submit" name="confirm_payment" class="pay-btn">
-                                            Pay ৳<?php echo $row['doctor_fee']; ?>
-                                        </button>
-                                    </form>
-                                <?php else: ?>
-                                    <!-- Show the Start Video Call button if payment is successful -->
-                                    <form action="start_video_call.php" method="POST">
-                                        <input type="hidden" name="doctor_id" value="<?php echo $row['doctor_id']; ?>">
-                                        <input type="hidden" name="room_id" value="room-<?php echo $row['doctor_id'] . '-' . $row['appointment_id']; ?>">
-                                        <button type="submit" class="btn btn-secondary">Start Video Call</button>
-                                    </form>
-                                <?php endif; ?>
-                            <?php else: ?>
-                                <!-- Show 'Wait for Approval' if status is not 'Approved' -->
-                                <span>Wait for Approval</span>
-                            <?php endif; ?>
-                        </td>
-
+                        <td><?php echo $action; ?></td>
                     </tr>
                 <?php endwhile; ?>
             </table>
@@ -159,7 +231,7 @@ $result = $stmt->get_result();
             <p>You have no upcoming appointments.</p>
         <?php endif; ?>
 
-        <a href="user_profile" class="button">Back to Dashboard</a>
+        <a href="user_profile.php" class="button">Back to Dashboard</a>
     </div>
 
 </body>

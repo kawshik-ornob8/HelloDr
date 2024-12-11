@@ -45,7 +45,7 @@ HelloDr is a full-featured virtual healthcare platform designed to connect patie
    ```
 
 2. **Setup the database:**
-   - Import the `database.sql` file located in the root directory to your MySQL server.
+   - Import the `hello_dr.sql` file located in the root directory to your MySQL server.
 
 3. **Configure database connection:**
    - Update `config.php` with your database credentials.
@@ -58,19 +58,25 @@ HelloDr is a full-featured virtual healthcare platform designed to connect patie
 
 ## Project Screenshots
 
-![Hero Section](./screenshots/hero-section.png)
-*Hero section welcoming users to HelloDr.*
+![Hello Dr Index Page](./Project Screenshots/HelloDr._index.png)
 
-![Doctor Profiles](./screenshots/doctor-profiles.png)
+![Hello Dr Index Page in IPad Pro](./Project Screenshots/HelloDr._index(iPad Pro).png)
+
+![Hello Dr Index Page](./Project Screenshots/HelloDr._index.png)
+*Hello Dr Index Page*
+
+![Top Specialist Doctor](./Project Screenshots/Top Specialist Doctor.png)
+*Top Specialist Doctor welcoming users to HelloDr.*
+
+![Doctor Profiles](./Project Screenshots/HelloDr._doctor_profile_doctor_id=24.png)
 *Top-rated doctor profiles displayed on the homepage.*
 
-![Video Consultation](./screenshots/video-consultation.png)
+![Video Consultation](./Project Screenshots/video-consultation.png)
 *Real-time video call interface.*
 
-![Appointment Booking](./screenshots/appointment-booking.png)
+![Appointment Booking](./Project Screenshots/HelloDr._appointment_doctor_id=9(iPhone 12 Pro).png)
 *Streamlined appointment booking process.*
 
-*(Add screenshots of your project here. Save them in a `screenshots` folder.)*
 
 ---
 
@@ -90,13 +96,7 @@ We welcome contributions to make HelloDr even better! Feel free to fork the repo
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the [License](LICENSE).
 
 ---
 
-## Contact
-
-For inquiries or support:
-- **Developer:** Kawshik Ahmed Ornob
-- **Email:** [your-email@example.com]
-- **GitHub:** [github.com/your-username](https://github.com/your-username)

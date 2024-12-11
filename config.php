@@ -27,6 +27,13 @@ $config = [
     'email_from_name' => 'HelloDr Support',
 ];
 
+// Define the base URL for your application
+$config['base_url'] = 'http://172.20.10.2';
+$config['payment_url'] = $config['base_url'] . '/HelloDr/user/patients_payment'; // Payment page URL
+$config['appointments_url'] = $config['base_url'] . '/HelloDr/user/patients_view_appointments'; // View appointments URL
+
+
+
 // Error page handler
 function handleError($error_message = null) {
     $_SESSION['error_message'] = $error_message; // Optionally pass a custom error message

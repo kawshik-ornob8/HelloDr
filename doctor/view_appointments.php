@@ -1,12 +1,44 @@
+<?php
+session_start();
+include('../config.php');
+
+// Check if the doctor is logged in
+if (!isset($_SESSION['doctor_id'])) {
+    header("Location: doctor_login");
+    exit;
+}
+
+// Fetch appointments and active calls for the logged-in doctor
+$doctor_id = $_SESSION['doctor_id'];
+
+$query = "SELECT a.appointment_id, a.appointment_date, a.appointment_time, a.status, 
+                 p.full_name, p.mobile_number, p.email 
+          FROM appointments a 
+          JOIN patients p ON a.patient_id = p.patient_id 
+          WHERE a.doctor_id = ? 
+          ORDER BY a.appointment_date, a.appointment_time";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("i", $doctor_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+$appointments = [];
+while ($row = $result->fetch_assoc()) {
+    $appointments[] = $row;
+}
+$stmt->close();
+$conn->close();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Appointments</title>
     <link rel="stylesheet" href="css/view_appointments.css">
     <style>
-        /* Notification styles */
         .notification {
             position: fixed;
             bottom: 20px;
@@ -35,100 +67,85 @@
             display: flex;
             flex-direction: column-reverse;
         }
+
+        tr[style="background-color: red;"] {
+            color: white;
+            font-weight: bold;
+        }
     </style>
 </head>
+
 <body>
 
-<h2>Scheduled Appointments</h2>
+    <h2>Scheduled Appointments</h2>
 
-<div class="container">
-    <table id="appointments-table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Patient Name</th>
-                <th>Mobile Number</th>
-                <th>Email</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Appointments will be dynamically inserted here -->
+    <?php if (isset($_SESSION['success_message'])) : ?>
+        <p style="color: green;"><?php echo $_SESSION['success_message']; unset($_SESSION['success_message']); ?></p>
+    <?php endif; ?>
+
+    <?php if (isset($_SESSION['error_message'])) : ?>
+        <p style="color: red;"><?php echo $_SESSION['error_message']; unset($_SESSION['error_message']); ?></p>
+    <?php endif; ?>
+
+    <div class="container">
+        <?php
+        $current_date = null;
+        foreach ($appointments as $appointment) :
+            // If the date changes, close the previous table and start a new one
+            if ($current_date !== $appointment['appointment_date']) {
+                if ($current_date !== null) {
+                    echo '</tbody></table>';
+                }
+                $current_date = $appointment['appointment_date'];
+        ?>
+                <h3>Date: <?php echo htmlspecialchars($current_date); ?></h3>
+                <table id="appointments-table">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Patient Name</th>
+                            <th>Mobile Number</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            <?php
+            }
+            ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($appointment['appointment_time']); ?></td>
+                        <td><?php echo htmlspecialchars($appointment['full_name']); ?></td>
+                        <td><?php echo htmlspecialchars($appointment['mobile_number']); ?></td>
+                        <td><?php echo htmlspecialchars($appointment['email']); ?></td>
+                        <td><?php echo htmlspecialchars($appointment['status']); ?></td>
+                        <td>
+                            <?php if ($appointment['status'] === 'Pending') : ?>
+                                <form action="approve_appointment.php" method="post" style="display:inline;">
+                                    <input type="hidden" name="appointment_id" value="<?php echo $appointment['appointment_id']; ?>">
+                                    <button type="submit" class="approve-btn">Approve</button>
+                                </form>
+                                <form action="cancel_appointment.php" method="post" style="display:inline;">
+                                    <input type="hidden" name="appointment_id" value="<?php echo $appointment['appointment_id']; ?>">
+                                    <button type="submit" class="delete-btn">Delete</button>
+                                </form>
+                            <?php elseif ($appointment['status'] === 'Approved') : ?>
+                                <form action="cancel_appointment.php" method="post" style="display:inline;">
+                                    <input type="hidden" name="appointment_id" value="<?php echo $appointment['appointment_id']; ?>">
+                                    <button type="submit" class="delete-btn">Cancel</button>
+                                </form>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+        <?php endforeach; ?>
         </tbody>
-    </table>
+        </table>
 
-    <a href="doctor_dashboard" class="button">Back to Dashboard</a>
-</div>
+        <a href="doctor_dashboard.php" class="button">Back to Dashboard</a>
+    </div>
 
-<script>
-async function fetchAppointmentsAndCalls() {
-    try {
-        const response = await fetch('fetch_appointments_data');
-        const data = await response.json();
-        
-        if (data.error) {
-            console.error(data.error);
-            return;
-        }
-
-        // Update appointments table
-        const appointmentsTableBody = document.querySelector('#appointments-table tbody');
-        appointmentsTableBody.innerHTML = ''; // Clear current rows
-        data.appointments.forEach(appointment => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${appointment.appointment_date}</td>
-                <td>${appointment.appointment_time}</td>
-                <td>${appointment.full_name}</td>
-                <td>${appointment.mobile_number}</td>
-                <td>${appointment.email}</td>
-                <td>${appointment.status}</td>
-                <td>
-                    ${appointment.status === 'Pending' ? `
-                        <form action="approve_appointment" method="post" style="display:inline;">
-                            <input type="hidden" name="appointment_id" value="${appointment.appointment_id}">
-                            <button type="submit" class="approve-btn">Approve</button>
-                        </form>
-                        <form action="cancel_appointment" method="post" style="display:inline;">
-                            <input type="hidden" name="appointment_id" value="${appointment.appointment_id}">
-                            <button type="submit" class="delete-btn">Delete</button>
-                        </form>
-                    ` : ''}
-                </td>
-            `;
-            appointmentsTableBody.appendChild(row);
-        });
-
-        // Show pop-up notifications for active calls
-        const notificationContainer = document.getElementById('notification-container');
-        data.active_calls.forEach(call => {
-            const notification = document.createElement('div');
-            notification.className = 'notification';
-            notification.dataset.roomId = call.room_id;
-            notification.innerHTML = `
-                <p><strong>Active call with ${call.patient_name}</strong></p>
-                <a href="dr_video_call_room.php?room_id=${encodeURIComponent(call.room_id)}">Join</a>
-            `;
-            notificationContainer.appendChild(notification);
-
-            setTimeout(() => {
-                notification.remove();
-            }, 10000); // Auto-remove after 10 seconds
-        });
-
-    } catch (error) {
-        console.error('Error fetching data:', error);
-    }
-}
-
-// Fetch data on page load and periodically
-fetchAppointmentsAndCalls();
-setInterval(fetchAppointmentsAndCalls, 10000); // Update every 10 seconds
-</script>
-
-<div id="notification-container"></div>
-
+    <div id="notification-container"></div>
 </body>
+
 </html>
