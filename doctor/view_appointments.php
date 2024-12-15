@@ -90,7 +90,16 @@ $conn->close();
     <div class="container">
         <?php
         $current_date = null;
+        $current_time = date('Y-m-d H:i:s');
         foreach ($appointments as $appointment) :
+            // Combine date and time to check against current time
+            $appointment_datetime = $appointment['appointment_date'] . ' ' . $appointment['appointment_time'];
+
+            // Skip appointments that are in the past
+            if ($appointment_datetime < $current_time) {
+                continue;
+            }
+
             // If the date changes, close the previous table and start a new one
             if ($current_date !== $appointment['appointment_date']) {
                 if ($current_date !== null) {
@@ -121,20 +130,22 @@ $conn->close();
                         <td><?php echo htmlspecialchars($appointment['email']); ?></td>
                         <td><?php echo htmlspecialchars($appointment['status']); ?></td>
                         <td>
-                            <?php if ($appointment['status'] === 'Pending') : ?>
-                                <form action="approve_appointment.php" method="post" style="display:inline;">
-                                    <input type="hidden" name="appointment_id" value="<?php echo $appointment['appointment_id']; ?>">
-                                    <button type="submit" class="approve-btn">Approve</button>
-                                </form>
-                                <form action="cancel_appointment.php" method="post" style="display:inline;">
-                                    <input type="hidden" name="appointment_id" value="<?php echo $appointment['appointment_id']; ?>">
-                                    <button type="submit" class="delete-btn">Delete</button>
-                                </form>
-                            <?php elseif ($appointment['status'] === 'Approved') : ?>
-                                <form action="cancel_appointment.php" method="post" style="display:inline;">
-                                    <input type="hidden" name="appointment_id" value="<?php echo $appointment['appointment_id']; ?>">
-                                    <button type="submit" class="delete-btn">Cancel</button>
-                                </form>
+                            <?php if ($appointment_datetime >= $current_time) : ?>
+                                <?php if ($appointment['status'] === 'Pending') : ?>
+                                    <form action="approve_appointment" method="post" style="display:inline;">
+                                        <input type="hidden" name="appointment_id" value="<?php echo $appointment['appointment_id']; ?>">
+                                        <button type="submit" class="approve-btn">Approve</button>
+                                    </form>
+                                    <form action="cancel_appointment.php" method="post" style="display:inline;">
+                                        <input type="hidden" name="appointment_id" value="<?php echo $appointment['appointment_id']; ?>">
+                                        <button type="submit" class="delete-btn">Delete</button>
+                                    </form>
+                                <?php elseif ($appointment['status'] === 'Approved') : ?>
+                                    <form action="cancel_appointment.php" method="post" style="display:inline;">
+                                        <input type="hidden" name="appointment_id" value="<?php echo $appointment['appointment_id']; ?>">
+                                        <button type="submit" class="delete-btn">Cancel</button>
+                                    </form>
+                                <?php endif; ?>
                             <?php endif; ?>
                         </td>
                     </tr>
@@ -142,7 +153,7 @@ $conn->close();
         </tbody>
         </table>
 
-        <a href="doctor_dashboard.php" class="button">Back to Dashboard</a>
+        <a href="doctor_dashboard" class="button">Back to Dashboard</a>
     </div>
 
     <div id="notification-container"></div>

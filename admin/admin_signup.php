@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bind_param("ssss", $full_name, $username, $email, $password);
 
     if ($stmt->execute()) {
-        echo "<script>alert('Admin registration successful!'); window.location.href = 'admin_login.php';</script>";
+        echo "<script>alert('Admin registration successful!'); window.location.href = 'admin_login';</script>";
     } else {
         echo "<script>alert('Error: Could not register admin.');</script>";
     }

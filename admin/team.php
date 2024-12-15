@@ -109,6 +109,7 @@ if (!$team_result) {
 <body>
     <div class="dashboard-container">
         <h2>Admin Dashboard - Meet Our Team</h2>
+        <a href="admin_dashboard" class="button">Back TO Dashboard</a>
         <a href="../logout" class="button">Logout</a>
 
         <?php if (isset($success_message)) echo "<p class='success'>$success_message</p>"; ?>

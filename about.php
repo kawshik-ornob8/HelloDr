@@ -59,6 +59,8 @@ $conn->close();
             background-image: url("./images/bg-texture.png");
         }
     </style>
+    <link rel="icon" href="./images/favicon.png" type="image/png">
+    <link rel="shortcut icon" href="./images/favicon.png" type="image/x-icon">
 </head>
 <body>
     <!-- Header / Navbar -->

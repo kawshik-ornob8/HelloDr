@@ -64,6 +64,8 @@ $conn->close();
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Reset Password</title>
     <link rel="stylesheet" href="css/login.css">
+    <link rel="icon" href="./images/favicon.png" type="image/png">
+    <link rel="shortcut icon" href="./images/favicon.png" type="image/x-icon">
     <style>
         /* Basic Reset */
         * {

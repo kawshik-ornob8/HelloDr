@@ -34,7 +34,8 @@ if ($result->num_rows > 0) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book an Appointment</title>
     <link rel="stylesheet" href="css/doctor lists.css">
-    
+    <link rel="icon" href="./images/favicon.png" type="image/png">
+    <link rel="shortcut icon" href="./images/favicon.png" type="image/x-icon">
 </head>
 <body>
 
@@ -87,7 +88,7 @@ if ($result->num_rows > 0) {
                 ?>
                 <tr>
                     <td>
-                        <a href="doctor%20info/view_profile.php?doctor_id=<?php echo $doctor['doctor_id']; ?>">
+                        <a href="doctor/view_profile.php?doctor_id=<?php echo $doctor['doctor_id']; ?>">
                             <?php echo htmlspecialchars($doctor['full_name']); ?>
                         </a>
                     </td>

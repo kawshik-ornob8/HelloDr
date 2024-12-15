@@ -11,7 +11,7 @@ require_once '../config.php';
 
 // Get doctor information from the database
 $doctor_id = $_SESSION['doctor_id'];
-$sql = "SELECT fullname, dob, phone, email, reg_id, specialty, degree, bio, profile_photo FROM doctors WHERE id = ?";
+$sql = "SELECT full_name, date_of_birth, phone_number, email, doctor_reg_id, specialty, degree, bio, profile_photo FROM doctors WHERE doctor_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $doctor_id);
 $stmt->execute();

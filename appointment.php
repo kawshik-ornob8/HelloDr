@@ -111,6 +111,8 @@ $prev_time = isset($_COOKIE['appointment_time']) ? $_COOKIE['appointment_time'] 
             background-color: #4e73e6;
         }
     </style>
+    <link rel="icon" href="./images/favicon.png" type="image/png">
+    <link rel="shortcut icon" href="./images/favicon.png" type="image/x-icon">
 </head>
 
 <body>
@@ -120,7 +122,7 @@ $prev_time = isset($_COOKIE['appointment_time']) ? $_COOKIE['appointment_time'] 
             alt="Profile photo of Dr. <?php echo htmlspecialchars($doctor['full_name']); ?>"
             loading="lazy">
         <h2>Consult With</h2>
-        <h2>Dr. <?php echo htmlspecialchars($doctor['full_name']); ?></h2>
+        <h2><?php echo htmlspecialchars($doctor['full_name']); ?></h2>
         <p>Specialty: <?php echo htmlspecialchars($doctor['specialty']); ?></p>
         <p>Bio: <?php echo htmlspecialchars($doctor['bio']); ?></p>
 

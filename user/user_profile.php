@@ -81,7 +81,9 @@ $result = $stmt->get_result();
             text-decoration: none;
             font-weight: bold;
             display: inline-block;
+            width: 200px;
         }
+        
 
         /* Message Section */
         .message-section {
@@ -114,7 +116,7 @@ $result = $stmt->get_result();
         .view-conversation-btn {
             cursor: pointer;
             color: #0066cc;
-            text-decoration: underline;
+            text-decoration: none;
         }
         .view-all-btn {
             background: #0066cc;
@@ -125,6 +127,7 @@ $result = $stmt->get_result();
             cursor: pointer;
             margin-top: 10px;
         }
+        
 
         /* Responsive styles */
         @media (min-width: 600px) {
@@ -177,6 +180,7 @@ $result = $stmt->get_result();
             </div>
             <a href="patients_view_appointments" class="profile-btn">View Appointments</a>
             <a href="edit_user_profile" class="profile-btn">Edit Profile</a>
+            <a href="../index" class="profile-btn">Back to Dashboard</a>
         </div>
 
         <!-- Message Section -->
@@ -206,7 +210,7 @@ $result = $stmt->get_result();
                     $message_count++;
                     ?>
                     <div class="message-item <?php echo $message_count <= 3 ? 'visible' : ''; ?>">
-                        <p><strong>Dr.: <span class="view-conversation-btn" data-doctor-id="<?php echo $doctor_id; ?>"><?php echo $doctor_name; ?></span></strong></p>
+                        <p><strong><span class="view-conversation-btn" data-doctor-id="<?php echo $doctor_id; ?>"><?php echo $doctor_name; ?></span></strong></p>
                         <p class="message-text"><?php echo $message_text; ?></p>
                         <p class="message-status">Status: <?php echo $is_read; ?></p>
                     </div>

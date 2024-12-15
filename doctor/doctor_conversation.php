@@ -129,10 +129,24 @@ $patient_result = $patient_stmt->get_result();
             border-radius: 8px;
             margin-top: 10px;
         }
+        .back-button {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background-color: #0073e6;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+        }
+        .back-button:hover {
+            background-color: #005bb5;
+        }
     </style>
 </head>
 <body>
-
 <div class="container">
     <!-- Patient List Section -->
     <div class="patient-list">
@@ -149,6 +163,7 @@ $patient_result = $patient_stmt->get_result();
                 echo "<p>No patients found.</p>";
             }
             ?>
+            
         </ul>
     </div>
 
@@ -166,8 +181,9 @@ $patient_result = $patient_stmt->get_result();
             <button type="button" onclick="sendMessage()">Send</button>
         </form>
     </div>
+    
 </div>
-
+<a href="doctor_dashboard" class="back-button">Back to Dashboard</a>
 <script>
     let currentPatientId = null;
 
@@ -268,6 +284,7 @@ function autoFetchMessages() {
         });
     }
 </script>
+
 
 </body>
 </html>

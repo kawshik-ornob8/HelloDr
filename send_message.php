@@ -81,6 +81,7 @@ if ($stmt) {
             background-image: url("./images/bg-texture.png");
         }
     </style>
+    
     <link rel="icon" type="image/x-icon" href="./images/favicon.png">
 </head>
 <body>

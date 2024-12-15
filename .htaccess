@@ -5,6 +5,11 @@ RewriteEngine On
 RewriteCond %{REQUEST_URI} ^/HelloDr./error/assets/ [NC]
 RewriteRule .* - [L]
 
+
+# Allow access to favicon
+RewriteCond %{REQUEST_URI} ^/images/favicon\.png [NC]
+RewriteRule .* - [L]
+
 # Add favicon for all pages
 <IfModule mod_headers.c>
     Header set Link "</images/favicon.png>; rel=\"icon\"; type=\"image/x-icon\""
