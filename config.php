@@ -19,7 +19,7 @@ if ($conn->connect_error) {
 // Email Configuration
 $config = [
     'smtp_username' => 'kawshik15-14750@diu.edu.bd',
-    'smtp_password' => '212-15-14750-ornob',
+    'smtp_password' => 'e-mail pass',
     'smtp_host' => 'smtp.gmail.com', // Update based on your email provider
     'smtp_port' => 587, // Typical port for TLS
     'smtp_secure' => 'tls', // Use 'ssl' or 'tls' based on your provider
