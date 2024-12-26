@@ -137,7 +137,7 @@ We welcome contributions from the community! To contribute to HelloDr, follow th
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is under the "All Rights Reserved License." Please refer to the [LICENSE](LICENSE) file for details on usage and permissions.
 
 ## Contact
 
