@@ -1,1 +1,603 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HelloDr | Virtual Healthcare Platform</title>
+    <meta name="description" content="HelloDr – Virtual Healthcare Platform by Kawshik Ahmed Ornob. Connects patients with certified doctors for online video consultations, appointments, and messaging.">
+    <meta name="keywords" content="e-health, telemedicine, PHP, MySQL, video consultation, healthcare platform, Kawshik Ahmed Ornob">
+    <meta name="author" content="Kawshik Ahmed Ornob">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+    <style>
+        /* =========================================
+           CSS Variables (Healthcare Blue Theme)
+           Matches Kawshik Portfolio Consistency
+        ========================================== */
+        :root {
+            /* KAW (Primary) - Medical Blue */
+            --primary-color: #0284c7; /* Sky-600 */
+            --primary-hover: #0369a1; /* Sky-700 */
+            
+            /* SHIK (Secondary) - Vitality Teal */
+            --secondary-color: #0d9488; /* Teal-600 */
+            
+            --bg-color: #f8fafc;      /* Slate-50 */
+            --text-color: #0f172a;    /* Slate-900 */
+            --text-muted: #475569;    /* Slate-600 */
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --code-bg: #1e293b;       /* Slate-800 */
+            
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+            --radius: 16px;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #020617;      /* Slate-950 */
+            --text-color: #f1f5f9;    /* Slate-100 */
+            --text-muted: #94a3b8;    /* Slate-400 */
+            --card-bg: #0f172a;       /* Slate-900 */
+            --border-color: #1e293b;  /* Slate-800 */
+            --code-bg: #020617;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+            position: relative;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+
+        /* --- Navigation & Actions --- */
+        .float-nav {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .back-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--card-bg);
+            padding: 10px 20px;
+            border-radius: 30px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            font-weight: 500;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+        .back-link:hover {
+            color: var(--primary-color);
+            transform: translateX(-3px);
+            border-color: var(--primary-color);
+        }
+        
+        .icon-btn {
+            width: 45px;
+            height: 45px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            color: var(--text-color);
+            transition: 0.3s;
+        }
+        .icon-btn:hover { color: var(--primary-color); transform: rotate(15deg); }
+
+        /* --- Layout --- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        .section-padding { padding: 80px 0; }
+        
+        /* --- Hero Section --- */
+        .hero {
+            min-height: 85vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: radial-gradient(circle at 50% 50%, rgba(2, 132, 199, 0.1) 0%, transparent 60%);
+            padding-top: 60px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+            line-height: 1.1;
+        }
+        
+        .hero p { 
+            font-size: 1.2rem; 
+            color: var(--text-muted); 
+            max-width: 700px; 
+            margin: 0 auto 40px; 
+        }
+
+        .tagline {
+            display: inline-block;
+            background: rgba(2, 132, 199, 0.1);
+            color: var(--primary-color);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .btn-group { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+
+        .btn {
+            padding: 14px 28px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50px;
+            font-weight: 600;
+            display: inline-flex; align-items: center; gap: 8px;
+            box-shadow: 0 4px 14px 0 rgba(2, 132, 199, 0.3);
+            transition: 0.3s;
+        }
+        .btn:hover { transform: translateY(-3px); background: var(--primary-hover); }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--border-color);
+            color: var(--text-color);
+            box-shadow: none;
+        }
+        .btn-outline:hover {
+            border-color: var(--text-color);
+            background: var(--card-bg);
+        }
+
+        /* --- Feature Grid --- */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+            margin-top: -60px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            padding: 30px 25px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .feature-card:hover { 
+            transform: translateY(-5px); 
+            border-color: var(--primary-color); 
+        }
+        
+        .feature-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            transition: 0.3s;
+        }
+        .feature-card:hover::after { width: 100%; }
+
+        .feature-icon { 
+            font-size: 2rem; 
+            margin-bottom: 15px; 
+            color: var(--primary-color);
+            background: rgba(2, 132, 199, 0.1);
+            width: 50px; height: 50px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 12px;
+        }
+        .feature-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+        .feature-desc { font-size: 0.9rem; color: var(--text-muted); }
+
+        /* --- Tech Stack --- */
+        .section-header { margin-bottom: 40px; }
+        .section-header h2 { font-size: 2rem; margin-bottom: 10px; }
+        
+        .tech-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .tech-pill {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        .tech-pill i { color: var(--secondary-color); }
+
+        /* --- Gallery --- */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        @media(max-width: 768px) { .gallery-grid { grid-template-columns: 1fr; } }
+
+        .gallery-item {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .gallery-img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16/9;
+            background: #cbd5e1;
+            object-fit: cover;
+            display: block;
+            transition: 0.4s;
+        }
+        .gallery-item:hover .gallery-img { transform: scale(1.02); }
+
+        .gallery-caption {
+            padding: 15px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* --- Installation (Terminal) --- */
+        .install-box {
+            background: var(--code-bg);
+            border-radius: var(--radius);
+            padding: 30px;
+            color: #e2e8f0;
+            font-family: 'JetBrains Mono', monospace;
+            overflow-x: auto;
+        }
+        .step { margin-bottom: 25px; }
+        .step-title { color: var(--secondary-color); margin-bottom: 10px; font-weight: 600; display: block;}
+        .cmd-block {
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid var(--primary-color);
+            font-size: 0.9rem;
+        }
+        .cmd { color: #facc15; }
+        .comment { color: #64748b; font-style: italic; }
+
+        /* --- Info Cards --- */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+        .info-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+        }
+        .info-card h3 { margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .info-card ul li { margin-bottom: 10px; padding-left: 20px; position: relative; }
+        .info-card ul li::before {
+            content: '•';
+            color: var(--primary-color);
+            position: absolute; left: 0; font-weight: bold;
+        }
+
+        /* --- Footer --- */
+        .footer-bottom {
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 80px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            background: var(--card-bg);
+        }
+        .footer-bottom a { color: var(--primary-color); font-weight: 600; }
+        .footer-bottom a:hover { text-decoration: underline; }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary-color);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4);
+            display: flex; align-items: center; justify-content: center;
+            transition: 0.3s;
+            z-index: 999;
+            opacity: 0.9;
+        }
+        .scroll-top:hover { transform: translateY(-3px); opacity: 1; }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .feature-grid { margin-top: 20px; }
+            .back-link span { display: none; } 
+            .back-link { border-radius: 50%; width: 45px; height: 45px; padding: 0; justify-content: center; }
+            .btn { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body data-theme="light">
+
+    <a href="https://kawshik.dev" class="back-link" title="Back to Projects">
+        <i class="fas fa-arrow-left"></i> <span>Back to Portfolio</span>
+    </a>
+
+    <div class="float-nav">
+        <div class="icon-btn" onclick="toggleTheme()" title="Toggle Dark Mode">
+            <i class="fas fa-moon"></i>
+        </div>
+        <a href="https://github.com/kawshik-ornob8/HelloDr" target="_blank" class="icon-btn" title="View Repository">
+            <i class="fab fa-github"></i>
+        </a>
+    </div>
+
+    <header class="hero">
+        <div class="container">
+            <span class="tagline">Making Healthcare Accessible</span>
+            <h1>HelloDr</h1>
+            <p>A full-featured virtual healthcare platform connecting patients with certified doctors for online video consultations, appointments, and secure messaging.</p>
+            
+            <div class="btn-group">
+                <a href="#installation" class="btn">
+                    <i class="fas fa-download"></i> Installation
+                </a>
+                <a href="https://github.com/kawshik-ornob8/HelloDr" target="_blank" class="btn btn-outline">
+                    <i class="fab fa-github"></i> View Source
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-user-injured"></i></div>
+                <div class="feature-title">Patient Portal</div>
+                <div class="feature-desc">Search doctors, book appointments, manage health history, and join video calls easily.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-user-md"></i></div>
+                <div class="feature-title">Doctor Dashboard</div>
+                <div class="feature-desc">Manage availability slots, view patient records, write prescriptions, and conduct consultations.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-video"></i></div>
+                <div class="feature-title">Video Consultation</div>
+                <div class="feature-desc">Integrated secure video calling system for real-time remote diagnostics and follow-ups.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                <div class="feature-title">Admin Control</div>
+                <div class="feature-desc">Complete oversight of user verification, platform analytics, and content management.</div>
+            </div>
+        </div>
+
+        <section class="section-padding">
+            <div class="section-header">
+                <h2>Project Overview</h2>
+                <p style="color: var(--text-muted);">HelloDr aims to bridge the gap between patients and healthcare providers, specifically in remote areas. The platform ensures data privacy while offering a seamless user experience similar to modern native apps.</p>
+                
+                <div class="tech-container">
+                    <div class="tech-pill"><i class="fab fa-html5"></i> HTML5</div>
+                    <div class="tech-pill"><i class="fab fa-css3-alt"></i> CSS3</div>
+                    <div class="tech-pill"><i class="fab fa-js"></i> JavaScript</div>
+                    <div class="tech-pill"><i class="fab fa-php"></i> PHP</div>
+                    <div class="tech-pill"><i class="fas fa-database"></i> MySQL</div>
+                    <div class="tech-pill"><i class="fab fa-git-alt"></i> Git</div>
+                    <div class="tech-pill"><i class="fas fa-video"></i> WebRTC API</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-padding" style="padding-top: 0;">
+            <div class="section-header">
+                <h2>App Screenshots</h2>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://raw.githubusercontent.com/kawshik-ornob8/HelloDr/main/Project%20Screenshots/index_page.png" 
+                         alt="HelloDr Home Page" 
+                         class="gallery-img"
+                         onerror="this.src='https://via.placeholder.com/800x450.png?text=Image+Not+Found+(Check+Filename)'">
+                    <div class="gallery-caption">Landing Page & Search</div>
+                </div>
+                
+                <div class="gallery-item">
+                    <img src="https://raw.githubusercontent.com/kawshik-ornob8/HelloDr/main/Project%20Screenshots/doctor_profiles.png" 
+                         alt="Doctor Profile View" 
+                         class="gallery-img"
+                         onerror="this.src='https://via.placeholder.com/800x450.png?text=Image+Not+Found+(Check+Filename)'">
+                    <div class="gallery-caption">Doctor Profile & Booking</div>
+                </div>
+                
+                <div class="gallery-item">
+                    <img src="https://raw.githubusercontent.com/kawshik-ornob8/HelloDr/main/Project%20Screenshots/video_consultations.png" 
+                         alt="Video Consultation Interface" 
+                         class="gallery-img"
+                         onerror="this.src='https://via.placeholder.com/800x450.png?text=Image+Not+Found+(Check+Filename)'">
+                    <div class="gallery-caption">Live Video Consultation</div>
+                </div>
+                
+                <div class="gallery-item">
+                    <img src="https://raw.githubusercontent.com/kawshik-ornob8/HelloDr/main/Project%20Screenshots/appointment_booking.png" 
+                         alt="Appointment Booking" 
+                         class="gallery-img"
+                         onerror="this.src='https://via.placeholder.com/800x450.png?text=Image+Not+Found+(Check+Filename)'">
+                    <div class="gallery-caption">Appointment Booking System</div>
+                </div>
+
+                <div class="gallery-item">
+                    <img src="https://raw.githubusercontent.com/kawshik-ornob8/HelloDr/main/Project%20Screenshots/mobile_view.png" 
+                         alt="Mobile Responsive View" 
+                         class="gallery-img"
+                         onerror="this.src='https://via.placeholder.com/800x450.png?text=Image+Not+Found+(Check+Filename)'">
+                    <div class="gallery-caption">Mobile Responsive View</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="installation" class="section-padding">
+            <div class="section-header">
+                <h2>Installation & Setup</h2>
+            </div>
+            
+            <div class="install-box">
+                <div class="step">
+                    <span class="step-title">1. Clone the Repository</span>
+                    <div class="cmd-block">
+                        <span class="cmd">git clone</span> https://github.com/kawshik-ornob8/HelloDr.git<br>
+                        <span class="cmd">cd</span> HelloDr
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-title">2. Database Setup</span>
+                    <div class="cmd-block">
+                        <span class="comment"># Open phpMyAdmin or your MySQL client</span><br>
+                        1. Create a database named <span class="cmd">'hello_dr'</span><br>
+                        2. Import the <span class="cmd">'hello_dr.sql'</span> file from the root folder.
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-title">3. Configure Database Connection</span>
+                    <div class="cmd-block">
+                        <span class="comment">// Edit config.php</span><br>
+                        $servername = <span class="cmd">"localhost"</span>;<br>
+                        $username = <span class="cmd">"root"</span>;<br>
+                        $password = <span class="cmd">""</span>;<br>
+                        $dbname = <span class="cmd">"hello_dr"</span>;
+                    </div>
+                </div>
+
+                <div class="step" style="margin-bottom: 0;">
+                    <span class="step-title">4. Run Application</span>
+                    <div class="cmd-block">
+                        <span class="comment"># Move folder to XAMPP/htdocs and visit:</span><br>
+                        http://localhost/HelloDr/
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="info-grid">
+            <div class="info-card">
+                <h3><i class="fas fa-rocket" style="color: var(--secondary-color);"></i> Future Enhancements</h3>
+                <ul>
+                    <li>AI-powered symptom checker bot.</li>
+                    <li>Multilingual support (English/Bangla).</li>
+                    <li>Payment gateway integration (Stripe/Bkash).</li>
+                    <li>Advanced analytics dashboard for Admins.</li>
+                </ul>
+            </div>
+            <div class="info-card">
+                <h3><i class="fas fa-code-branch" style="color: var(--secondary-color);"></i> Contributing</h3>
+                <p style="margin-bottom: 15px; color: var(--text-muted);">Contributions are welcome! Please follow these steps:</p>
+                <ul>
+                    <li>Fork the repository.</li>
+                    <li>Create a new branch (<code style="background: var(--border-color); padding: 2px 5px; border-radius: 4px;">git checkout -b feature</code>).</li>
+                    <li>Commit changes and push.</li>
+                    <li>Open a Pull Request.</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        <p class="copyright">
+            &copy; 2023–2026 
+            <a href="https://kawshik.dev" target="_blank" rel="noopener noreferrer">
+                Kawshik Ahmed Ornob
+            </a>. All Rights Reserved.
+        </p>
+        <p style="font-size: 0.85rem; margin-top: 5px;">
+            Questions? <a href="mailto:kawshik.ornob8@gmail.com">kawshik.ornob8@gmail.com</a>
+        </p>
+
+        <button class="scroll-top" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" aria-label="Scroll to top">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+    </div>
+
+    <script>
+        // Toggle Theme
+        function toggleTheme() {
+            const body = document.body;
+            const isDark = body.getAttribute('data-theme') === 'dark';
+            body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            
+            // Optional: Save preference to localStorage
+            localStorage.setItem('theme', isDark ? 'light' : 'dark');
+        }
+
+        // Check for saved theme preference
+        window.onload = () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                document.body.setAttribute('data-theme', savedTheme);
+            }
+        };
+    </script>
+</body>
+</html>
