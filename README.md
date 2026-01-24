@@ -269,29 +269,35 @@ cd HelloDr
 2. Create a new database named `hello_dr`
 3. Click on the `hello_dr` database
 4. Go to the "Import" tab
-5. Click "Choose File" and select the `hello_dr.sql` file from the project root
+5. Click "Choose File" and navigate to your local HelloDr project folder, then select the `hello_dr.sql` file from the project root directory
 6. Click "Go" and wait for the import to complete (grab a coffee, you deserve it)
 
 #### 4️⃣ Configure Database Connection
 
-Open the `config.php` file and update it with your database credentials:
+Open the `config.php` file and update it with your database credentials. Below is a simplified example showing the main database configuration:
 
 ```php
 <?php
+// Database Configuration
 $servername = "localhost";
-$username = "root";        // Your MySQL username
-$password = "";            // Your MySQL password
+$username = "root";        // Your MySQL username (default for XAMPP)
+$password = "";            // Your MySQL password (default for XAMPP is empty)
 $dbname = "hello_dr";      // Database name
 
-// Create connection
+// Create database connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Check connection
+// Set character set to utf8mb4 for full Unicode support
+$conn->set_charset("utf8mb4");
+
+// Check database connection
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+    die("Database connection failed: " . $conn->connect_error);
 }
 ?>
 ```
+
+**Note:** The actual `config.php` file includes additional configurations for email settings (SMTP), base URLs, and error handling functions. Make sure to update those settings as well based on your environment.
 
 #### 5️⃣ Launch the Application
 
