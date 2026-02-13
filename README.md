@@ -150,3 +150,4 @@ If you have any questions or suggestions, feel free to reach out to us:
 
 *Thank you for using HelloDr! We hope it makes your healthcare experience better and more convenient.*
 
+Added Pair Extraordinaire achievement with co-author.
